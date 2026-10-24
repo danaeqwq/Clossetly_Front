@@ -1,5 +1,5 @@
 .Login {
-  min-height: 100vh;
+  min-height: 95vh;
   width: 100%;
   display: grid;
   place-items: center;
@@ -11,11 +11,9 @@
 
 .Login__panel {
   width: min(100%, 1440px);
-  min-height: min(100vh, 900px);
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 64px 120px;
   gap: 82px;
 }
 
@@ -26,10 +24,8 @@
   min-width: 0;
 }
 
-.Login__art {
-  width: min(100%, 530px);
-  height: auto;
-  max-height: 680px;
+.Login__ilustration-img {
+    width: 60vh;
 }
 
 .Login__formulario {
@@ -39,22 +35,22 @@
 
 .Login__encabezado {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .Login__titulo {
   color: var(--color-rosaTerra);
-  font-family: var(--font-CormGaram);
-  font-size: clamp(34px, 3vw, 52px);
+  font-family: var(--font-Newsreader);
+  font-size: clamp(20px, 3vw, 40px);
   font-weight: 700;
-  line-height: 1.08;
+  margin-bottom: -15px;
 }
 
 .Login__subtitulo {
-  margin-top: 5px;
   color: var(--color-rosaTerra);
-  font-size: 16px;
-  line-height: 1.45;
+  font-family: var(--font-manrope);
+  font-size: 18px;
+  font-weight: 100;
 }
 
 .Login__form {
@@ -63,12 +59,11 @@
 }
 
 .Login__label {
-  margin-bottom: 7px;
+  margin-bottom: 10px;
   color: var(--color-carbon);
-  font-family: var(--font-CormGaram);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1;
+  font-family: var(--font-CormUpri);
+  font-size: 25px;
+  font-weight: 600;
 }
 
 .Login__label--conMargen {
@@ -76,25 +71,18 @@
 }
 
 .Login__campo {
-  min-height: 45px;
+  min-height: 35px;
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 0 12px;
+  gap: 7px;
+  padding: 0 10px;
   border: 1px solid var(--color-rosaTerra);
-  border-radius: 13px;
+  border-radius: 15px;
   background: var(--color-blancaso);
 }
 
 .Login__icono {
-  color: var(--color-rosaTerra);
-  font-family: var(--font-manrope);
-  font-size: 15px;
-  line-height: 1;
-}
-
-.Login__icono--final {
-  margin-left: auto;
+    width: 2.5vh;
 }
 
 .Login__input {
@@ -121,20 +109,20 @@
 
 .Login__enlace--olvido {
   align-self: flex-start;
-  margin-top: 7px;
+  margin-top: 10px;
   font-size: 13px;
 }
 
 .Login__boton {
-  min-height: 52px;
+  min-height: 45px;
   border: 1px solid var(--color-rosaTerra);
   border-radius: 13px;
-  font-family: var(--font-CormGaram);
+  font-family: var(--font-Kurale);
   font-size: 18px;
 }
 
 .Login__boton--principal {
-  margin-top: 15px;
+  margin-top: 20px;
   border-color: var(--color-bordoVino);
   background: var(--color-bordoVino);
   color: var(--color-blancaso);
@@ -147,8 +135,8 @@
   gap: 10px;
   margin: 21px 0 17px;
   color: var(--color-bordoVino);
-  font-family: var(--font-CormGaram);
-  font-size: 15px;
+  font-family: var(--font-Kurale);
+  font-size: 16px;
   text-align: center;
 }
 
@@ -165,22 +153,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   background: transparent;
   color: var(--color-carbon);
-}
-
-.Login__googleIcon {
-  display: inline-grid;
-  width: 20px;
-  height: 20px;
-  place-items: center;
-  border: 2px solid var(--color-bordoVino);
-  border-radius: 50%;
-  color: var(--color-bordoVino);
-  font-family: var(--font-manrope);
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .Login__registro {
