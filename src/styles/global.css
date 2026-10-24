@@ -8,10 +8,10 @@
 /* ===== CONFIGURACIÓN GENERAL ===== */
 html {
     scroll-behavior: smooth;
+    background-color: var(--color-background);
 }
 
 body {
-    background-color: var(--color-background);
     color: var(--color-text);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

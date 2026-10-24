@@ -1,0 +1,271 @@
+
+.Nav {
+  position: fixed;
+  z-index: 2;
+  top: 160px;
+  left: 9px;
+  width: 46px;
+  padding: 9px 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  border-radius: 25px;
+  background: var(--color-bordoVino);
+
+  transition: border-radius 0.3s ease;
+}
+
+.Nav__enlace {
+  position: relative;
+  flex-shrink: 0;
+
+  width: 28px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--color-blancaso);
+  text-decoration: none;
+  border-radius: 12px;
+
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease,
+    
+}
+
+/* Íconos originales importados */
+.Nav__enlace img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+/* Logo provisional */
+.Nav__enlace--logo svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Etiquetas de escritorio */
+.Nav__enlace:not(.Nav__enlace--logo)::after {
+  content: attr(data-label);
+
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 19px;
+
+  height: 40px;
+  width: max-content;
+  box-sizing: border-box;
+  padding: 0 16px 0 42px;
+
+  display: flex;
+  align-items: center;
+
+  color: var(--color-blancaso);
+  background: #ad807d;
+  border-radius: 0 14px 14px 0;
+  box-shadow: 0 3px 5px rgb(0 0 0 / 30%);
+
+  font-family: var(--font-manrope);
+  font-size: 14px;
+  font-weight: 300;
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-8px);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+/* Expansión sin cambiar el ancho de la barra */
+@media (hover: hover) and (min-width: 769px) {
+  .Nav__enlace:not(.Nav__enlace--logo):hover {
+    background: #ad807d;
+  }
+
+  .Nav__enlace:not(.Nav__enlace--logo):hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
+/* Foco accesible por teclado */
+.Nav__enlace:focus-visible {
+  outline: 2px solid var(--color-blancaso);
+  outline-offset: 2px;
+}
+
+@media (max-height: 700px) and (min-width: 769px) {
+  .Nav {
+    top: 110px;
+    gap: 4px;
+  }
+
+  .Nav__enlace {
+    height: 34px;
+  }
+
+  .Nav__enlace:not(.Nav__enlace--logo)::after {
+    height: 34px;
+  }
+}
+
+/* RESPONSIVE: barra inferior como en tu imagen */
+@media (max-width: 768px) {
+  .Nav {
+    top: auto;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: min(100%, 600px);
+    box-sizing: border-box;
+    padding: 14px 12px 10px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0;
+
+    border-radius: 40px 40px 0 0;
+    background: var(--color-bordoVino);
+  }
+
+  .Nav__enlace {
+    width: auto;
+    height: 58px;
+    min-width: 0;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .Nav__enlace img,
+  .Nav__enlace--logo svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* En móvil se muestra el nombre debajo del ícono */
+  .Nav__enlace:not(.Nav__enlace--logo)::after {
+    position: static;
+    z-index: auto;
+
+    width: auto;
+    height: auto;
+    padding: 0;
+
+    display: block;
+    overflow: visible;
+
+    color: var(--color-blancaso);
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  /* El logo provisional no muestra etiqueta */
+  .Nav__enlace--logo {
+    display: none;
+  }
+
+  /* Sin expansión en pantallas táctiles */
+  .Nav__enlace:not(.Nav__enlace--logo):hover {
+    width: auto;
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .Nav {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .Nav__enlace {
+    gap: 4px;
+  }
+
+  .Nav__enlace img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .Nav__enlace:not(.Nav__enlace--logo)::after {
+    font-size: 10px;
+  }
+}
+
+
+/* Rayita dentro de la barra de navegación */
+.Nav__enlace:not(.Nav__enlace--logo)::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 3px;
+  height: 0;
+  border-radius: 4px;
+
+  background: #ad807d;
+  opacity: 0;
+
+  transition:
+    height 0.3s ease,
+    opacity 0.25s ease;
+}
+
+/* Aparece al pasar el cursor */
+@media (hover: hover) and (min-width: 769px) {
+  .Nav__enlace:not(.Nav__enlace--logo):hover::before {
+    height: 28px;
+    opacity: 1;
+  }
+}
+
+/* Se oculta en responsive */
+@media (max-width: 768px) {
+  .Nav__enlace:not(.Nav__enlace--logo)::before {
+    display: none;
+  }
+}
+
