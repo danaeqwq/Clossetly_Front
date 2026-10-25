@@ -1,6 +1,6 @@
 import "./App.css"
 import "./styles/global.css"
-import Login from "./pages/login/Login"
+import Explorar from "./pages/explorar/Explorar"
 import Header from "./componentes/header/Header"
 import Nav from "./componentes/nav/Nav"
 import Footer from "./componentes/footer/Footer"
@@ -9,7 +9,7 @@ export default function App(){
         <div>
             <Header></Header>
             <Nav></Nav>
-            <Login></Login>
+            <Explorar></Explorar>
             <Footer></Footer>
         </div>
     )
