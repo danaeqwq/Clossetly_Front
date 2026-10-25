@@ -1,0 +1,117 @@
+.CrearConsulta { display: grid; gap: 18px; }
+
+.CrearConsulta__presentacion {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.CrearConsulta__foto {
+  display: flex;
+  min-height: 145px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 10px;
+  color: var(--color-bordoVino);
+  background: #f7eeeb;
+  font: 13px var(--font-manrope);
+}
+
+.CrearConsulta__foto .material-symbols-outlined { font-size: 42px; }
+
+.CrearConsulta__colores h3 {
+  margin-bottom: 10px;
+  color: var(--color-carbon);
+  font: 400 clamp(16px, 1.2vw, 18px)/1.2 var(--font-Kurale);
+}
+
+.CrearConsulta__paleta {
+  display: grid;
+  grid-template-columns: repeat(5, 20px);
+  gap: 10px 12px;
+}
+
+.CrearConsulta__muestra {
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgb(52 44 48 / 14%);
+  border-radius: 50%;
+  background: var(--muestra-color);
+}
+
+.CrearConsulta__muestra--activa { outline: 2px solid var(--color-rosaEmpol); outline-offset: 2px; }
+
+.CrearConsulta__campo { display: grid; gap: 6px; }
+
+.CrearConsulta__campo label {
+  color: var(--color-carbon);
+  font: 400 clamp(15px, 1.1vw, 17px)/1.2 var(--font-Kurale);
+}
+
+.CrearConsulta__campo input,
+.CrearConsulta__campo textarea {
+  width: 100%;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 8px;
+  outline: none;
+  color: var(--color-carbon);
+  background: var(--color-blancaso);
+  font: 12px var(--font-manrope);
+}
+
+.CrearConsulta__campo input { height: 42px; padding: 0 14px; }
+.CrearConsulta__campo textarea { min-height: 96px; padding: 10px 12px; resize: none; }
+.CrearConsulta__campo input::placeholder,
+.CrearConsulta__campo textarea::placeholder { color: var(--color-rosaTerra); opacity: 1; }
+
+.CrearConsulta__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding-top: 2px;
+}
+
+.CrearConsulta__acciones button {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 17px;
+  border-radius: 8px;
+  font: 13px var(--font-CormGaram);
+}
+
+.CrearConsulta__publicar { border: 1px solid var(--color-bordoVino); color: var(--color-blancaso); background: var(--color-bordoVino); }
+.CrearConsulta__salir { border: 1px solid #B91C1C; color: #B91C1C; background: transparent; }
+.CrearConsulta__salir .material-symbols-outlined { font-size: 17px; }
+
+@media (max-width: 600px) {
+  .CrearConsulta { gap: 13px; }
+  .CrearConsulta__presentacion { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .CrearConsulta__foto { min-height: 112px; gap: 4px; font-size: 11px; }
+  .CrearConsulta__foto .material-symbols-outlined { font-size: 32px; }
+  .CrearConsulta__colores h3 { margin-bottom: 8px; font-size: 16px; }
+  .CrearConsulta__paleta { grid-template-columns: repeat(5, 16px); gap: 8px 9px; }
+  .CrearConsulta__muestra { width: 15px; height: 15px; }
+  .CrearConsulta__campo { gap: 4px; }
+  .CrearConsulta__campo label { font-size: 15px; }
+  .CrearConsulta__campo input,
+  .CrearConsulta__campo textarea { font-size: 12px; border-radius: 7px; }
+  .CrearConsulta__campo input { height: 38px; padding-inline: 10px; }
+  .CrearConsulta__campo textarea { min-height: 88px; padding: 9px 10px; }
+  .CrearConsulta__acciones { flex-wrap: wrap; gap: 8px; }
+  .CrearConsulta__acciones button { min-height: 36px; flex: 1; gap: 5px; padding-inline: 9px; font-size: 13px; }
+  .CrearConsulta__salir .material-symbols-outlined { font-size: 15px; }
+}
+
+@media (max-width: 380px) {
+  .CrearConsulta__presentacion { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 10px; }
+  .CrearConsulta__colores h3 { font-size: 14px; }
+  .CrearConsulta__acciones { flex-direction: column; }
+  .CrearConsulta__acciones button { flex: initial; width: 100%; }
+}

@@ -6,6 +6,7 @@ import TarjetaConsejo from "../../componentes/tarjetaConsejo/TarjetaConsejo";
 import TarjetaOutfit from "../../componentes/tarjetaOutfit/TarjetaOutfit";
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
+import FormularioCrearConsulta from "./modales/FormularioCrearConsulta";
 
 export default function Explorar() {
   return (
@@ -30,6 +31,9 @@ export default function Explorar() {
           <span className="material-symbols-outlined">forum</span>
           CONSEJOS
         </span>
+        <button className="Explorar__crearConsulta" type="button">
+          + Crear consulta
+        </button>
       </div>
 
       <section
@@ -49,6 +53,7 @@ export default function Explorar() {
         <TarjetaConsejo />
         <TarjetaConsejo />
       </section>
+      <FormularioCrearConsulta />
     </main>
   );
 }
