@@ -4,6 +4,8 @@ import "../../styles/variables.css";
 import TarjetaPrenda from "../../componentes/tarjetaPrenda/TarjetaPrenda";
 import TarjetaConsejo from "../../componentes/tarjetaConsejo/TarjetaConsejo";
 import TarjetaOutfit from "../../componentes/tarjetaOutfit/TarjetaOutfit";
+import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
+import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 
 export default function Explorar() {
   return (
@@ -35,6 +37,8 @@ export default function Explorar() {
         aria-label="Publicaciones para explorar"
       >
         <TarjetaOutfit />
+        <TarjetaIntercambio />
+        <TarjetaVenta />
         <TarjetaOutfit />
         <TarjetaPrenda />
         <TarjetaConsejo />

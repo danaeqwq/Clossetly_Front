@@ -88,6 +88,27 @@
 }
 
 @media (max-width: 1100px) {
+  .TarjetaConsejo {
+    height: clamp(240px, 27vw, 297px);
+  }
+
+  .TarjetaConsejo__pie {
+    width: 76%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    align-self: flex-start;
+    font-size: 13px;
+  }
+
+  .TarjetaConsejo__pie p {
+    margin-bottom: 4px;
+  }
+
+  .TarjetaConsejo__usuario { gap: 4px; font-size: 11px; }
+  .TarjetaConsejo__avatar { width: 16px; height: 16px; }
+  .TarjetaConsejo__comentarios { font-size: 9px; }
+  .TarjetaConsejo__comentarios .material-symbols-outlined { font-size: 12px; }
+
   .TarjetaConsejo__tipo {
     top: 6px;
     left: 6px;
@@ -102,7 +123,7 @@
 
 @media (max-width: 760px) {
   .TarjetaConsejo {
-    height: 250px;
+    height: clamp(210px, 65vw, 250px);
   }
 
   .TarjetaConsejo__tipo {
@@ -115,4 +136,13 @@
   .TarjetaConsejo__tipo .material-symbols-outlined {
     font-size: 10px;
   }
+
+  .TarjetaConsejo__pie {
+    width: 100%;
+    padding: 5px 7px;
+    font-size: 11px;
+  }
+
+  .TarjetaConsejo__usuario { font-size: 9px; }
+  .TarjetaConsejo__avatar { width: 14px; height: 14px; }
 }

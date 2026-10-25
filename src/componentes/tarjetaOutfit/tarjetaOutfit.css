@@ -168,6 +168,19 @@
 /* VARIANTE VERDE */
 /* RESPONSIVE: PANTALLAS MEDIANAS */
 @media (max-width: 1100px) {
+  .TarjetaOutfit {
+    height: clamp(240px, 27vw, 297px);
+  }
+
+  .TarjetaOutfit__overlay {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .TarjetaOutfit__overlay b { font-size: 14px; }
+  .TarjetaOutfit__overlay span { font-size: 10px; }
+  .TarjetaOutfit__overlay small { font-size: 9px; }
+
   .TarjetaOutfit__favorito {
     width: 28px;
     height: 28px;
@@ -182,7 +195,7 @@
 /* RESPONSIVE: PANTALLAS PEQUEÑAS */
 @media (max-width: 760px) {
   .TarjetaOutfit {
-    height: 250px;
+    height: clamp(210px, 65vw, 250px);
   }
 
   .TarjetaOutfit__fotos {
@@ -195,6 +208,20 @@
     right: 4px;
     width: calc(50% - 6px);
     height: calc(50% - 6px);
+    padding: 5px;
+    gap: 3px;
+  }
+
+  .TarjetaOutfit__overlay b {
+    font-size: 11px;
+  }
+
+  .TarjetaOutfit__overlay span {
+    font-size: 9px;
+  }
+
+  .TarjetaOutfit__overlay small {
+    font-size: 8px;
   }
 
   .TarjetaOutfit__favorito {
