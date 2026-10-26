@@ -1,5 +1,5 @@
 import "./App.css"
-import Login from "./pages/login/Login"
+import Login from "./pages/testInicial/testInicial"
 export default function App(){
     return(
         <div>

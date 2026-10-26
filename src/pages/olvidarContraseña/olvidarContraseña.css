@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.OlvidarContraseña {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-cremita);
+}
+
+.OlvidarContraseña__section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 220px;
+    width: 100%;
+    max-width: 1250px;
+}
+
+.OlvidarContraseña__ilustracion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.OlvidarContraseña__ilustracion-img {
+    display: block;
+    width: 100%;
+    max-width: 68vh;
+    object-fit: contain;
+}
+
+.OlvidarContraseña__contenido {
+    width: 100%;
+    max-width: 800px;
+    min-width: 0;
+    justify-self: center;
+}
+
+.OlvidarContraseña__header {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.OlvidarContraseña__titulo {
+    color: var(--color-rosaTerra);
+    font-family: var(--font-Newsreader);
+    font-size: 45px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.OlvidarContraseña__descripcion {
+    max-width: 450px;
+    margin: 0 auto;
+    color: var(--color-rosaTerra);
+    font-family: var(--font-manrope);
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.OlvidarContraseña__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.OlvidarContraseña__form .Boton {
+    margin-top: 5px;
+}
+
+.OlvidarContraseña__volver {
+    margin-top: 30px;
+    color: var(--color-rosaTerra);
+    font-family: var(--font-manrope);
+    font-size: 15px;
+    text-align: center;
+}
+
+.OlvidarContraseña__volver-link {
+    color: var(--color-rosaTerra);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+    .OlvidarContraseña {
+        min-height: 100vh;
+        padding: 32px 24px;
+    }
+
+    .OlvidarContraseña__section {
+        display: block;
+        max-width: 450px;
+    }
+
+    .OlvidarContraseña__ilustracion-img {
+        width: 40vh;
+        margin-bottom: 20px;
+    }
+
+    .OlvidarContraseña__contenido {
+        margin: 0 auto;
+    }
+
+    .OlvidarContraseña__titulo {
+        font-size: 25px;
+    }
+
+    .OlvidarContraseña__descripcion {
+        font-size: 14px;
+    }
+}

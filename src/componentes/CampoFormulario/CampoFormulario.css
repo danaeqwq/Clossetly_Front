@@ -1,0 +1,45 @@
+.Label {
+    margin-bottom: 12px;
+    color: var(--color-carbon);
+    font-family: var(--font-CormUpri);
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.Campo {
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    border: 1px solid var(--color-rosaTerra);
+    border-radius: 15px;
+    background: var(--color-blancaso);
+    margin-bottom: 10px;
+}
+
+.Campo__img {
+    width: 20px;
+    object-fit: contain;
+    background: transparent;
+}
+
+.Campo__input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--color-carbon);
+    font-family: var(--font-manrope);
+    font-size: 12px;
+}
+
+.Campo__input::placeholder {
+    color: var(--color-rosaTerra);
+}
+
+.Campo__img--final {
+    margin-left: auto;
+    background: transparent;
+}

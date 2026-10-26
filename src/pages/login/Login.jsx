@@ -1,5 +1,7 @@
 import "./Login.css"
 import "../../styles/variables.css"
+import CampoFormulario from "../../componentes/CampoFormulario/CampoFormulario"
+import Boton from "../../componentes/Boton/Boton"
 import ilustracion from "../../assets/ilustracion__login.svg";
 import Icono__correo from "../../assets/Icono__correo.svg";
 import Icono_candado from "../../assets/Icono_candado.svg";
@@ -21,25 +23,37 @@ export default function Login() {
                     </header>
 
                     <form className="Login__form">
-                        <label className="Login__label" htmlFor="login-email">Email</label>
-                        <div className="Login__campo">
-                            <img src={Icono__correo} alt="Correo" className="Login__icono" />
-                            <input id="login-email" className="Login__input" type="email" placeholder="ejemplo@gmail.com" />
-                        </div>
+                        <CampoFormulario
+                            texto="Email"
+                            icono={Icono__correo}
+                            tipo="text"
+                            placeholder="ejemplo@gmail.com"
+                        />
 
-                        <label className="Login__label Login__label--conMargen" htmlFor="login-password">Contraseña</label>
-                        <div className="Login__campo">
-                            <img src={Icono_candado} alt="candado" className="Login__icono" />
-                            <input id="login-password" className="Login__input" type="password" placeholder="ejemplocontraseña" />
-                            <img src={Icono__ojo} alt="ojito-cerrado" className="Login__icono-img"/>
-                        </div>
+                        <CampoFormulario
+                            texto="Contraseña"
+                            id="registro-password"
+                            icono={Icono_candado}
+                            iconoFinal={Icono__ojo}
+                            tipo="password"
+                            placeholder="ej: contraseña"
+                        />
 
                         <a className="Login__enlace Login__enlace--olvido">¿Se te olvidó la contraseña?</a>
-                        <button className="Login__boton Login__boton--principal" type="button">Iniciar sesión</button>
+                        <Boton
+                            texto="Iniciar sesion"
+                            variante="principal"
+                            type="submit"
+                        />
                     </form>
 
                     <div className="Login__separador"><span>o continuar con</span></div>
-                    <button className="Login__boton Login__boton--google" type="button"><img src={Icono__google} alt="G" className="Login__googleIcon"/>Google</button>
+                    <Boton
+                        texto="Google"
+                        variante="secundario"
+                        icono={Icono__google}
+                        type="button"
+                    />
                     <p className="Login__registro">¿No tienes cuenta? <a className="Login__enlace">Regístrate</a></p>
                 </div>
             </section>
