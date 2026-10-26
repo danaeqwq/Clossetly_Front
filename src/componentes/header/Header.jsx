@@ -1,6 +1,6 @@
 import "./header.css";
 
-export default function Header() {
+export default function Header({ seccion = "Explorar" }) {
     return (
         <header className="Header">
             <a
@@ -17,7 +17,7 @@ export default function Header() {
             />
 
             <a className="Header__seccion" href="#">
-                Explorar
+                {seccion}
             </a>
 
             <div className="Header__acciones">

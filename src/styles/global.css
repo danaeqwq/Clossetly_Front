@@ -8,10 +8,10 @@
 /* ===== CONFIGURACIÓN GENERAL ===== */
 html {
     scroll-behavior: smooth;
+    background-color: var(--color-cremita);
 }
 
 body {
-    background-color: var(--color-background);
     color: var(--color-text);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -66,4 +66,29 @@ ol {
 /* ===== CONTENEDOR PRINCIPAL ===== */
 #root {
     min-height: 100vh;
+}
+
+/* Scroll rosa */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rosaEmpol) var(--color-cremita);
+}
+
+/* Chrome, Edge y otros navegadores */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cremita);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-rosaEmpol);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-bordoVino);
 }
