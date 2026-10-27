@@ -52,7 +52,7 @@
 
 @media (max-width: 870px) {
   .TerminoPregunta__encabezado {
-    min-height: 72px;
+    min-height: 40px;
     gap: 12px;
     padding: 15px 17px;
   }
