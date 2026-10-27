@@ -3,6 +3,7 @@ import "../../styles/variables.css";
 
 export default function Select({
   opciones = [],
+  seleccionada,
   ariaLabel = "Categorías",
   className = "",
 }) {
@@ -14,9 +15,10 @@ export default function Select({
     >
       {opciones.map((opcion) => (
         <button
-          className="Select__opcion"
+          className={`Select__opcion${(seleccionada === opcion.valor || (seleccionada === undefined && opcion.activa)) ? " Select__opcion--activa" : ""}`}
           type="button"
           key={opcion.valor}
+          aria-pressed={seleccionada === opcion.valor || (seleccionada === undefined && Boolean(opcion.activa))}
         >
           {opcion.icono && (
             <span
