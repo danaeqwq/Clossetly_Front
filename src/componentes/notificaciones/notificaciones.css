@@ -1,0 +1,78 @@
+.Notificaciones__lista {
+  padding: 10px 18px 24px;
+}
+
+.Notificaciones__fecha {
+  margin-bottom: 10px;
+  color:rgba(136, 87, 83, 1);
+  font: italic 600 17px/1.3 var(--font-CormGaram);
+}
+
+.Notificaciones__tarjeta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  border: 1px solid #d8c6c3;
+  border-radius: 6px;
+  background: #fbf7f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.Notificaciones__tarjeta--no-leido::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c91f2d;
+  transform: translateY(-50%);
+}
+
+.Notificaciones__tarjeta--no-leido { padding-left: 22px; }
+
+.Notificaciones__avatar {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #c7aaa6;
+  border-radius: 50%;
+  color: var(--color-bordoVino);
+  background: #e7d7d4;
+  font-size: 26px;
+}
+
+.Notificaciones__texto {
+  min-width: 0;
+  padding-right: 24px;
+  font: 400 15px/1.25 var(--font-Newsreader);
+  color: var(--color-carbon);
+}
+
+.Notificaciones__texto strong { font-weight: 500; }
+
+.Notificaciones__detalle {
+  margin-top: 3px;
+  font: 12px/1.3 var(--font-manrope);
+}
+
+.Notificaciones__hora {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  color: #756a68;
+  font: 9px/1 var(--font-manrope);
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .Notificaciones__lista { padding: 12px 14px 24px; }
+  .Notificaciones__tarjeta { min-height: 78px; }
+}

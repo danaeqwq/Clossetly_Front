@@ -1,5 +1,7 @@
 import "./header.css";
-
+import "../../styles/global.css"
+import iconoFavoritos from "../../assets/componentes/icono favoritos.svg";
+import iconoCampana from "../../assets/componentes/icono campana.svg";
 export default function Header({ seccion = "Explorar" }) {
     return (
         <header className="Header">
@@ -31,22 +33,23 @@ export default function Header({ seccion = "Explorar" }) {
                         placeholder="Buscar prenda..."
                     />
 
-                    <span
-                        className="material-symbols-outlined"
-                        aria-hidden="true"
-                    >
-                        search
-                    </span>
+                    <span className="Header__buscadorIcono material-symbols-outlined" aria-hidden="true">search</span>
                 </label>
 
                 <button
                     className="Header__icono"
                     type="button"
-                    aria-label="Carrito de compras"
+                    aria-label="Favoritos"
                 >
-                    <span className="material-symbols-outlined">
-                        shopping_cart
-                    </span>
+                    <img src={iconoFavoritos} alt="" />
+                </button>
+
+                <button
+                    className="Header__icono"
+                    type="button"
+                    aria-label="Notificaciones"
+                >
+                    <img src={iconoCampana} alt="" />
                 </button>
 
                 <button

@@ -1,15 +1,11 @@
 import "./modal.css";
-import { useEffect } from "react";
-
-export default function Modal({ titulo, descripcion, children }) {
-  useEffect(() => {
-    const desplazamientoAnterior = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = desplazamientoAnterior;
-    };
-  }, []);
+export default function Modal({
+  titulo,
+  descripcion,
+  children,
+  confirmar,
+  cancelar,
+}) {
 
   return (
     <div className="Modal" role="presentation">
@@ -29,6 +25,29 @@ export default function Modal({ titulo, descripcion, children }) {
           </button>
         </header>
         <div className="Modal__contenido">{children}</div>
+        {(confirmar || cancelar) && (
+          <footer className="Modal__acciones">
+            {confirmar && (
+              <button
+                className="Modal__accion Modal__accion--confirmar"
+                type={confirmar.type || "button"}
+                onClick={confirmar.onClick}
+              >
+                {confirmar.texto}
+              </button>
+            )}
+            {cancelar && (
+              <button
+                className="Modal__accion Modal__accion--cancelar"
+                type={cancelar.type || "button"}
+                onClick={cancelar.onClick}
+              >
+                {cancelar.texto}
+                {cancelar.icono && <span className="material-symbols-outlined" aria-hidden="true">{cancelar.icono}</span>}
+              </button>
+            )}
+          </footer>
+        )}
       </section>
     </div>
   );

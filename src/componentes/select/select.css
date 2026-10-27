@@ -1,0 +1,41 @@
+.Select {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.Select__opcion {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  min-width: 130px;
+  padding: 0 15px;
+  border: 1.5px solid color-mix(in srgb, var(--color-rosaEmpol) 50%, transparent);
+  border-radius: 12px;
+  color: var(--color-bordoVino);
+  background: transparent;
+  font: 12px var(--font-manrope);
+  white-space: nowrap;
+}
+
+.Select__opcion .material-symbols-outlined {
+  font-size: 25px;
+  font-weight: 200;
+}
+
+.Select__opcion--activa {
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+@media (max-width: 760px) {
+  .Select {
+    gap: 8px;
+  }
+
+  .Select__opcion { min-width: max-content; }
+}

@@ -2,6 +2,7 @@
 import "./footer.css";
 import cartita from "../../assets/componentes/cartita footer.svg";
 import mariposa from "../../assets/componentes/mariposa.svg";
+import "../../styles/global.css"
 export default function Footer() {
   return (
     <footer className="Footer">

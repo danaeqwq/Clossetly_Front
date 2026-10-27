@@ -89,7 +89,7 @@
 }
 
 .Header__icono {
-    width: 24px;
+    width: 34px;
     height: 28px;
     padding: 0;
     border: 0;
@@ -111,6 +111,14 @@
     -webkit-font-smoothing: antialiased;
 }
 
+.Header__icono img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.Header__buscadorIcono { color: var(--color-rosaTerra); }
+
 .Header__srOnly {
     position: absolute;
     width: 1px;
@@ -126,13 +134,16 @@
 
 @media (max-width: 640px) {
     .Header {
-        height: 76px;
-        gap: 12px;
+        min-height: 76px;
+        height: auto;
+        gap: 8px;
         padding: 0 12px;
     }
 
     .Header__marca {
-        font-size: 37px;
+        flex: 0 1 auto;
+        min-width: 0;
+        font-size: clamp(29px, 10vw, 37px);
     }
 
     .Header__separador {
@@ -140,15 +151,19 @@
     }
 
     .Header__seccion {
-        font-size: 22px;
+        flex: 0 1 auto;
+        min-width: 0;
+        font-size: clamp(18px, 6vw, 22px);
     }
 
     .Header__acciones {
-        gap: 12px;
+        min-width: 0;
+        gap: 8px;
     }
 
     .Header__buscador {
-        width: 34px;
+        flex: 0 0 24px;
+        width: 24px;
         height: 34px;
         padding: 0;
         border: none;
@@ -163,4 +178,12 @@
     .Header__buscador .material-symbols-outlined {
         font-size: 22px;
     }
+}
+
+@media (max-width: 380px) {
+    .Header { gap: 6px; padding-inline: 8px; }
+    .Header__acciones { gap: 5px; }
+    .Header__icono { width: 27px; }
+    .Header__icono .material-symbols-outlined { font-size: 21px; }
+    .Header__icono img { width: 27px; height: 27px; }
 }
