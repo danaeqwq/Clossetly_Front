@@ -2,14 +2,14 @@ import "./App.css"
 import Header from "./componentes/header/Header"
 import Footer from "./componentes/footer/Footer"
 import NavBar from "./componentes/nav/Nav"
-import Terminos from "./pages/explorar/Explorar"
+import Favoritos from "./pages/favoritos/favoritosCompra/FavoritosCompra";
 
 export default function App(){
     return(
         <div>
             <Header></Header>
             <NavBar></NavBar>
-            <Terminos></Terminos>
+            <Favoritos></Favoritos>
             <Footer></Footer>
         </div>
     )
