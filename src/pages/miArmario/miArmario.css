@@ -38,18 +38,18 @@
   align-items: center;
   gap: 14px;
   color: var(--color-rosaTerra);
-  font: 12px var(--font-manrope);
+  font: 14px var(--font-manrope);
 }
 
 .MiArmario__crearOutfit {
-  min-height: 34px;
-  padding: 0 16px;
+  min-height: 30px;
+  padding: 0 27px;
   border: 1px solid var(--color-rosaEmpol);
   border-radius: 5px;
   color: var(--color-rosaTerra);
   background: transparent;
   box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
-  font: 11px var(--font-manrope);
+  font: 14px var(--font-manrope);
 }
 
 .MiArmario__seccion {
@@ -79,7 +79,7 @@
 .MiArmario__seccionEncabezado > span:nth-of-type(1),
 .MiArmario__seccionCerrada > span:first-of-type {
   margin-right: 14px;
-  font: 11px var(--font-manrope);
+  font: 200 16px var(--font-manrope);
 }
 
 .MiArmario__seccionEncabezado .material-symbols-outlined,

@@ -16,6 +16,15 @@
   object-fit: cover;
 }
 
+.TarjetaPrenda--seleccionada::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgb(255 255 255 / 70%);
+  content: "";
+  pointer-events: none;
+}
+
 .TarjetaPrenda__favorito {
   position: absolute;
   top: 8px;
@@ -53,6 +62,7 @@
   width: 27px;
   height: 27px;
   font-size: 15px;
+  z-index: 2;
 }
 
 .TarjetaPrenda--armario .TarjetaPrenda__etiqueta {
@@ -66,17 +76,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 13px;
+  z-index: 2;
 }
 
 .TarjetaPrenda--seleccionada {
-  outline: 3px solid var(--color-rosaTerra);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-rosaEmpol) 65%, transparent), 0 6px 12px #342c3050;
+  box-shadow: 0 4px 10px #342c3050;
 }
 
 .TarjetaPrenda__opciones {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 8px;
   right: 8px;
   display: grid;
@@ -116,6 +125,10 @@
 }
 
 .TarjetaPrenda__menu .material-symbols-outlined { font-size: 14px; }
+
+.TarjetaPrenda__menu li:last-child {
+  color: #d64545;
+}
 
 @media (max-width: 1100px) {
   .TarjetaPrenda {
