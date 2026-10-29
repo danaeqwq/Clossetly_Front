@@ -9,53 +9,6 @@
   box-shadow: 0 4px 8px #342c3042;
 }
 
-.TarjetaIntercambio--armario {
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: 54px minmax(90px, 1fr) minmax(110px, 1fr) 78px;
-  align-items: center;
-  gap: 8px;
-  height: 86px;
-  padding: 5px;
-  border: 1px solid var(--color-rosaEmpol);
-  border-radius: 9px;
-  background: #f1e8e5;
-  box-shadow: none;
-}
-
-.TarjetaIntercambio--armario .TarjetaIntercambio__imagen {
-  width: 54px;
-  height: 74px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.TarjetaIntercambio__datosArmario,
-.TarjetaIntercambio__metricasArmario,
-.TarjetaIntercambio__accionesArmario {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  font: 11px var(--font-manrope);
-}
-
-.TarjetaIntercambio__datosArmario,
-.TarjetaIntercambio__metricasArmario {
-  align-self: stretch;
-  border-right: 1px solid var(--color-rosaEmpol);
-}
-
-.TarjetaIntercambio__nombreArmario { overflow: hidden; font: 14px var(--font-Kurale); text-overflow: ellipsis; white-space: nowrap; }
-.TarjetaIntercambio__datosArmario > span:last-child { color: var(--color-rosaTerra); }
-.TarjetaIntercambio__metricasArmario b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; color: white; background: var(--color-bordoVino); font-weight: 500; }
-.TarjetaIntercambio__enlaceArmario { color: var(--color-rosaTerra); text-decoration: underline; }
-.TarjetaIntercambio__accionesArmario { align-items: flex-start; gap: 8px; font-size: 10px; }
-.TarjetaIntercambio__accionesArmario span { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
-.TarjetaIntercambio__accionesArmario i { font-size: 13px; }
-.TarjetaIntercambio__accionesArmario .TarjetaIntercambio__eliminar { color: #d64545; }
-
 .TarjetaIntercambio__imagen {
   width: 100%;
   height: 100%;
@@ -155,18 +108,6 @@
   .TarjetaIntercambio__nombre { font-size: 14px; }
   .TarjetaIntercambio__talle { font-size: 12px; }
   .TarjetaIntercambio__accion { width: 29px; height: 29px; font-size: 21px; }
-}
-
-@media (max-width: 760px) {
-  .TarjetaIntercambio--armario {
-    grid-template-columns: 48px minmax(70px, 1fr) minmax(90px, 1fr);
-    height: auto;
-    min-height: 82px;
-    gap: 8px;
-  }
-  .TarjetaIntercambio--armario .TarjetaIntercambio__imagen { width: 48px; height: 70px; }
-  .TarjetaIntercambio--armario .TarjetaIntercambio__metricasArmario { border-right: 0; font-size: 9px; }
-  .TarjetaIntercambio--armario .TarjetaIntercambio__accionesArmario { grid-column: 2 / -1; flex-direction: row; justify-content: space-between; padding-right: 4px; }
 }
 
 @media (max-width: 760px) {

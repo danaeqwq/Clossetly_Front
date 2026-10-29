@@ -1,0 +1,99 @@
+.MiArmario__crearPrenda {
+  flex: 0 0 auto;
+  min-height: 26px;
+  padding: 0 12px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 5px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
+  font: 11px var(--font-manrope);
+}
+
+.MiArmario__barraAcciones {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 12px;
+}
+
+.MiArmario__seccion {
+  overflow: hidden;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 6px;
+  background: var(--color-cremita);
+  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
+}
+
+.MiArmario__seccionEncabezado,
+.MiArmario__seccionCerrada {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 20px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+.MiArmario__seccionEncabezado h2,
+.MiArmario__seccionCerrada h2 {
+  flex: 1;
+  font: 500 20px var(--font-Kurale);
+}
+
+.MiArmario__seccionEncabezado > span:nth-of-type(1),
+.MiArmario__seccionCerrada > span:first-of-type {
+  margin-right: 14px;
+  font: 200 12px var(--font-manrope);
+}
+
+.MiArmario__seccionEncabezado .material-symbols-outlined,
+.MiArmario__seccionCerrada .material-symbols-outlined { font-size: 20px; }
+
+.MiArmario__seccionContenido {
+  max-height: 690px;
+  overflow-y: auto;
+  padding: 18px 22px 22px;
+}
+
+.MiArmario__grilla {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px 34px;
+  align-items: stretch;
+}
+
+.MiArmario__grilla > * { width: 100%; }
+
+.MiArmario__otrasSecciones {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.MiArmario__seccionCerrada {
+  min-height: 48px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgb(52 44 48 / 15%);
+}
+
+.MiArmario__seccionCerrada h2 { font-size: 17px; }
+
+@media (max-width: 1100px) {
+  .MiArmario__grilla { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 760px) {
+  .MiArmario__crearPrenda { margin-left: auto; }
+  .MiArmario__seccionEncabezado,
+  .MiArmario__seccionCerrada { min-height: 30px; padding-inline: 12px; }
+  .MiArmario__seccionEncabezado h2 { font-size: 16px; }
+  .MiArmario__seccionContenido { max-height: 650px; padding: 12px; }
+  .MiArmario__grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+    gap: 14px;
+  }
+  .MiArmario__grilla > * { max-width: 258px; }
+  .MiArmario__seccionCerrada h2 { font-size: 15px; }
+}

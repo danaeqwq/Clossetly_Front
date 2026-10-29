@@ -1,30 +1,6 @@
 import "./tarjetaIntercambio.css";
 
-export default function TarjetaIntercambio({ variante = "explorar", nombre = "Vestido art", imagen }) {
-  if (variante === "armario") {
-    return (
-      <article className="TarjetaIntercambio TarjetaIntercambio--armario">
-        <img
-          className="TarjetaIntercambio__imagen"
-          src={imagen || "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=700&q=85"}
-          alt={nombre}
-        />
-        <div className="TarjetaIntercambio__datosArmario">
-          <span className="TarjetaIntercambio__nombreArmario">{nombre}</span>
-          <span>Talle: M</span>
-        </div>
-        <div className="TarjetaIntercambio__metricasArmario">
-          <span>Propuestas: <b>1</b></span>
-          <span className="TarjetaIntercambio__enlaceArmario">Ver propuestas</span>
-        </div>
-        <div className="TarjetaIntercambio__accionesArmario">
-          <span><i className="material-symbols-outlined" aria-hidden="true">edit</i>Modificar</span>
-          <span className="TarjetaIntercambio__eliminar"><i className="material-symbols-outlined" aria-hidden="true">delete_outline</i>Eliminar</span>
-        </div>
-      </article>
-    );
-  }
-
+export default function TarjetaIntercambio() {
   return (
     <article className="TarjetaIntercambio">
       <img

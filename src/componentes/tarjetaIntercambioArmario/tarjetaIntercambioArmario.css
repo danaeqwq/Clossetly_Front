@@ -1,0 +1,81 @@
+.TarjetaIntercambioArmario {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 54px minmax(90px, 1fr) minmax(110px, 1fr) 78px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 86px;
+  padding: 5px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 9px;
+  background: #f1e8e5;
+}
+
+.TarjetaIntercambioArmario__imagen {
+  width: 54px;
+  height: 74px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.TarjetaIntercambioArmario__datos,
+.TarjetaIntercambioArmario__metricas,
+.TarjetaIntercambioArmario__acciones {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  font: 11px var(--font-manrope);
+}
+
+.TarjetaIntercambioArmario__datos,
+.TarjetaIntercambioArmario__metricas {
+  align-self: stretch;
+  border-right: 1px solid var(--color-rosaEmpol);
+}
+
+.TarjetaIntercambioArmario__nombre {
+  overflow: hidden;
+  font: 14px var(--font-Kurale);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TarjetaIntercambioArmario__talle { color: var(--color-rosaTerra); }
+
+.TarjetaIntercambioArmario__metricas b {
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  font-weight: 500;
+}
+
+.TarjetaIntercambioArmario__enlace { color: var(--color-rosaTerra); text-decoration: underline; }
+.TarjetaIntercambioArmario__acciones { align-items: flex-start; gap: 8px; font-size: 10px; }
+.TarjetaIntercambioArmario__acciones span { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.TarjetaIntercambioArmario__acciones i { font-size: 13px; }
+.TarjetaIntercambioArmario__eliminar { color: #d64545; }
+
+@media (max-width: 760px) {
+  .TarjetaIntercambioArmario {
+    grid-template-columns: 48px minmax(70px, 1fr) minmax(90px, 1fr);
+    height: auto;
+    min-height: 82px;
+    gap: 8px;
+  }
+
+  .TarjetaIntercambioArmario__imagen { width: 48px; height: 70px; }
+  .TarjetaIntercambioArmario__metricas { border-right: 0; font-size: 9px; }
+  .TarjetaIntercambioArmario__acciones {
+    grid-column: 2 / -1;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 4px;
+  }
+}

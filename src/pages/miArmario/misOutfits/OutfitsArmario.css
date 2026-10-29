@@ -1,0 +1,33 @@
+.MiArmario__outfits {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px 30px;
+}
+
+.MiArmario__resumen {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 14px;
+  color: var(--color-rosaTerra);
+  font: 14px var(--font-manrope);
+}
+
+.MiArmario__crearOutfit {
+  min-height: 30px;
+  padding: 0 27px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 5px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
+  font: 14px var(--font-manrope);
+}
+
+@media (max-width: 1100px) {
+  .MiArmario__outfits { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 760px) {
+  .MiArmario__outfits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+}
