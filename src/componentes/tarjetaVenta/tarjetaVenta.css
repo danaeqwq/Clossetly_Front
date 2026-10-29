@@ -9,6 +9,59 @@
   box-shadow: 0 4px 8px #342c3042;
 }
 
+.TarjetaVenta--armario {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 54px minmax(90px, 1fr) minmax(130px, 1.2fr) 78px;
+  align-items: center;
+  gap: 8px;
+  height: 86px;
+  padding: 5px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 9px;
+  background: #f1e8e5;
+  box-shadow: none;
+}
+
+.TarjetaVenta--armario .TarjetaVenta__imagen {
+  width: 54px;
+  height: 74px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.TarjetaVenta__datosArmario,
+.TarjetaVenta__metricasArmario,
+.TarjetaVenta__accionesArmario {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  font: 11px var(--font-manrope);
+}
+
+.TarjetaVenta__datosArmario,
+.TarjetaVenta__metricasArmario {
+  align-self: stretch;
+  border-right: 1px solid var(--color-rosaEmpol);
+}
+
+.TarjetaVenta__nombreArmario {
+  overflow: hidden;
+  font: 14px var(--font-Kurale);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TarjetaVenta__stock { color: var(--color-rosaTerra); }
+.TarjetaVenta__metricasArmario b { display: inline-grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; color: white; background: var(--color-bordoVino); font-weight: 500; }
+.TarjetaVenta__enlaceArmario { color: var(--color-rosaTerra); text-decoration: underline; }
+.TarjetaVenta__accionesArmario { align-items: flex-start; gap: 8px; font-size: 10px; }
+.TarjetaVenta__accionesArmario span { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.TarjetaVenta__accionesArmario i { font-size: 13px; }
+.TarjetaVenta__accionesArmario .TarjetaVenta__eliminar { color: #d64545; }
+
 .TarjetaVenta__imagen {
   width: 100%;
   height: 100%;
@@ -110,6 +163,18 @@
   .TarjetaVenta__nombre { font-size: 14px; }
   .TarjetaVenta__precio { font-size: 12px; }
   .TarjetaVenta__accion { width: 29px; height: 29px; font-size: 21px; }
+}
+
+@media (max-width: 760px) {
+  .TarjetaVenta--armario {
+    grid-template-columns: 48px minmax(70px, 1fr) minmax(90px, 1fr);
+    height: auto;
+    min-height: 82px;
+    gap: 8px;
+  }
+  .TarjetaVenta--armario .TarjetaVenta__imagen { width: 48px; height: 70px; }
+  .TarjetaVenta--armario .TarjetaVenta__metricasArmario { border-right: 0; font-size: 9px; }
+  .TarjetaVenta--armario .TarjetaVenta__accionesArmario { grid-column: 2 / -1; flex-direction: row; justify-content: space-between; padding-right: 4px; }
 }
 
 @media (max-width: 760px) {
