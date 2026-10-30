@@ -56,6 +56,35 @@
 
 .Modal__contenido { margin-top: 18px; }
 
+.Modal__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.Modal__accion {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid var(--color-bordoVino);
+  border-radius: 8px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  font: 600 16px var(--font-CormGaram);
+}
+
+.Modal__accion--cancelar {
+  border-color: #B91C1C;
+  color: #B91C1C;
+  background: transparent;
+}
+
+.Modal__accion .material-symbols-outlined { font-size: 17px; }
+
 @media (max-width: 600px) {
   .Modal {
     display: block;
@@ -80,4 +109,11 @@
   .Modal__cerrar { flex-basis: 28px; width: 28px; height: 28px; }
   .Modal__cerrar .material-symbols-outlined { font-size: 21px; }
   .Modal__contenido { margin-top: 16px; }
+  .Modal__acciones { flex-wrap: wrap; gap: 8px; }
+  .Modal__accion { flex: 1 1 150px; padding-inline: 9px; }
+}
+
+@media (max-width: 380px) {
+  .Modal__acciones { flex-direction: column; }
+  .Modal__accion { flex: initial; width: 100%; }
 }

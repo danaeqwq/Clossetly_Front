@@ -18,6 +18,8 @@ export default function FormularioCrearConsulta() {
     <Modal
       titulo="Crear consulta"
       descripcion="Compartí tu look con la comunidad, agregá una foto y contanos qué consejo necesitás. ¡Entre todos te ayudamos a encontrar la mejor opción!"
+      confirmar={{ texto: "Publicar consulta" }}
+      cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
     >
       <div className="CrearConsulta">
         <div className="CrearConsulta__presentacion">
@@ -50,13 +52,6 @@ export default function FormularioCrearConsulta() {
           <textarea id="consulta-descripcion" placeholder="Contá más específico sobre tu consulta" />
         </div>
 
-        <div className="CrearConsulta__acciones">
-          <button className="CrearConsulta__publicar" type="button">Publicar consulta</button>
-          <button className="CrearConsulta__salir" type="button">
-            Salir sin guardar
-            <span className="material-symbols-outlined" aria-hidden="true">logout</span>
-          </button>
-        </div>
       </div>
     </Modal>
   );

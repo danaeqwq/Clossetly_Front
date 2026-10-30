@@ -173,7 +173,7 @@
     height: 28px;
   }
 
-  /* En móvil se muestra el nombre debajo del ícono */
+  /* Etiquetas visibles debajo de cada ícono, como en la referencia móvil */
   .Nav__enlace:not(.Nav__enlace--logo)::after {
     position: static;
     z-index: auto;
@@ -189,7 +189,6 @@
     background: transparent;
     border-radius: 0;
     box-shadow: none;
-
     font-size: 12px;
     line-height: 16px;
     white-space: nowrap;

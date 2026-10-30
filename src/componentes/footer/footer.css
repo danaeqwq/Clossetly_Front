@@ -238,4 +238,15 @@
         gap: 12px;
         padding-top: 12px;
     }
+
+    .Footer__legal > span,
+    .Footer__legal > div {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .Footer__legal > div {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+    }
 }

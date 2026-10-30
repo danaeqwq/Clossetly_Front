@@ -1,6 +1,6 @@
 
 import "./nav.css";
-
+import "../../styles/global.css"
 import iconTest from "../../assets/componentes/icon test.svg";
 import iconBoutique from "../../assets/componentes/icon Boutique.svg";
 import iconExplorar from "../../assets/componentes/icon Explorar.svg";
