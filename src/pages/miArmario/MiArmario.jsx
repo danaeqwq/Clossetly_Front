@@ -16,9 +16,7 @@ const seccionActiva = "prendas";
 export default function MiArmario() {
   return (
     <main className="MiArmario">
-      <div className="MiArmario__barra">
-        <Select className="MiArmario__tabs" opciones={opcionesArmario} seleccionada={seccionActiva} ariaLabel="Secciones de Mi armario" />
-      </div>
+      <Select opciones={opcionesArmario} seleccionada={seccionActiva} ariaLabel="Secciones de Mi armario" />
 
       {seccionActiva === "publicaciones" && <PublicacionesArmario />}
       {seccionActiva === "prendas" && <PrendasArmario />}

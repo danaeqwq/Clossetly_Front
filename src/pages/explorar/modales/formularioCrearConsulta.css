@@ -88,3 +88,24 @@
   .CrearConsulta__presentacion { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 10px; }
   .CrearConsulta__colores h3 { font-size: 14px; }
 }
+
+.Modal:has(.CrearConsulta) .Modal__ventana { display: flex; min-height: 0; flex-direction: column; overflow: hidden; }
+.Modal:has(.CrearConsulta) .Modal__encabezado,
+.Modal:has(.CrearConsulta) .Modal__acciones { flex: 0 0 auto; }
+.Modal:has(.CrearConsulta) .Modal__contenido {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 600px) {
+  .Modal:has(.CrearConsulta) .Modal__ventana {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: none;
+    overflow: hidden;
+  }
+}

@@ -5,32 +5,6 @@
   background: var(--color-cremita);
 }
 
-.MiArmario__barra {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 16px;
-}
-
-.MiArmario__tabs {
-  flex: 0 1 510px;
-  width: auto;
-  gap: 10px;
-}
-
-.MiArmario__tabs .Select__opcion {
-  min-width: 0;
-  height: 30px;
-  padding-inline: 13px;
-  border-radius: 12px;
-  font: 10px var(--font-manrope);
-}
-
-.MiArmario__tabs .Select__opcion--activa {
-  color: var(--color-blancaso);
-  background: var(--color-bordoVino);
-}
 
 @media (max-width: 760px) {
   .MiArmario { padding: 12px 15px 100px; }

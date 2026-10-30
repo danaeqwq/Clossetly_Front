@@ -1,0 +1,216 @@
+.Modal:has(.PropuestasIntercambio) .Modal__ventana {
+  width: min(850px, 100%);
+  padding: 24px 30px 0;
+  border-color: #dfc7c2;
+  border-radius: 16px;
+  box-shadow: 0 14px 36px rgb(52 44 48 / 28%);
+}
+
+.Modal:has(.PropuestasIntercambio) .Modal__titulo {
+  font-size: 27px;
+  letter-spacing: -.02em;
+}
+.Modal:has(.PropuestasIntercambio) .Modal__descripcion {
+  margin-top: 3px;
+  font-size: 13px;
+}
+.Modal:has(.PropuestasIntercambio) .Modal__cerrar { color: #986966; }
+.Modal:has(.PropuestasIntercambio) .Modal__contenido { margin-top: 20px; }
+.Modal:has(.PropuestasIntercambio) .Modal__acciones {
+  gap: 12px;
+  margin: 20px -30px 0;
+  padding: 16px 30px 22px;
+  border-top-color: #eadbd8;
+}
+.Modal:has(.PropuestasIntercambio) .Modal__accion {
+  min-width: 150px;
+  min-height: 40px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.Modal:has(.PropuestasIntercambio) .Modal__accion--cancelar {
+  border-color: #c96868;
+  color: #a7464d;
+  background: transparent;
+}
+
+.PropuestasIntercambio {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 140px));
+  align-items: start;
+  gap: 16px;
+  min-width: 0;
+  color: #614c4c;
+  font-family: var(--font-manrope);
+}
+
+.PropuestasIntercambio__tarjeta {
+  display: flex;
+  width: 140px;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+}
+.PropuestasIntercambio__imagen {
+  display: block;
+  width: 140px;
+  height: 182px;
+  border: 1px solid #d8c6c1;
+  border-radius: 5px;
+  background: #eee5e1;
+  object-fit: cover;
+  object-position: center 38%;
+}
+.PropuestasIntercambio__detalle {
+  min-height: 27px;
+  padding: 2px 8px;
+  border: 1px solid #d8c1bc;
+  border-radius: 6px;
+  color: #8b6261;
+  background: #fffaf8;
+  font: 12px var(--font-manrope);
+}
+.PropuestasIntercambio__decisiones {
+  display: flex;
+  gap: 7px;
+}
+.PropuestasIntercambio__decisiones button {
+  display: grid;
+  width: 64px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid;
+  border-radius: 5px;
+  background: transparent;
+  transition: background-color .18s ease, transform .18s ease;
+}
+.PropuestasIntercambio__decisiones button:hover { transform: translateY(-1px); }
+.PropuestasIntercambio__decisiones button:focus-visible,
+.PropuestasIntercambio__detalle:focus-visible {
+  outline: 2px solid #a87975;
+  outline-offset: 2px;
+}
+.PropuestasIntercambio__decisiones .material-symbols-outlined { font-size: 19px; }
+.PropuestasIntercambio__aceptar {
+  border-color: #b6c99e !important;
+  color: #718d59;
+  background: #edf2e5 !important;
+}
+.PropuestasIntercambio__aceptar:hover { background: #e2ebd5 !important; }
+.PropuestasIntercambio__rechazar {
+  border-color: #d8bdb8 !important;
+  color: #b18b87;
+  background: #fffaf8 !important;
+}
+.PropuestasIntercambio__rechazar:hover { background: #f5e8e5 !important; }
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .Modal:has(.PropuestasIntercambio) .Modal__ventana {
+    width: min(760px, calc(100vw - 48px));
+    padding: 22px 24px 0;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__acciones {
+    margin-right: -24px;
+    margin-left: -24px;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 720px) {
+  .PropuestasIntercambio { grid-template-columns: repeat(3, minmax(0, 140px)); }
+}
+
+@media (max-width: 600px) {
+  .Modal:has(.PropuestasIntercambio) {
+    display: block;
+    overflow: hidden;
+    padding: 0;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__ventana {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: none;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: max(22px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: 0;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__encabezado { gap: 10px; }
+  .Modal:has(.PropuestasIntercambio) .Modal__titulo { font-size: clamp(21px, 6vw, 25px); }
+  .Modal:has(.PropuestasIntercambio) .Modal__descripcion { max-width: 34ch; font-size: 12px; }
+  .Modal:has(.PropuestasIntercambio) .Modal__contenido {
+    display: flex;
+    min-width: 0;
+    flex: 1 0 auto;
+    justify-content: center;
+    margin-top: 18px;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__acciones {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px -18px calc(-1 * max(18px, env(safe-area-inset-bottom)));
+    padding: 14px 18px max(18px, env(safe-area-inset-bottom));
+    background: #f8f2f0;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__accion {
+    min-width: 0;
+    min-height: 42px;
+    flex: 1 1 0;
+    padding-inline: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .PropuestasIntercambio__tarjeta { width: 132px; }
+  .PropuestasIntercambio {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 132px));
+    justify-content: center;
+    gap: 14px 10px;
+  }
+  .PropuestasIntercambio__tarjeta { width: 100%; }
+  .PropuestasIntercambio__imagen { width: 100%; height: 172px; }
+}
+
+@media (max-width: 380px) {
+  .Modal:has(.PropuestasIntercambio) .Modal__ventana {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__acciones {
+    flex-direction: column;
+    gap: 7px;
+    margin-right: -14px;
+    margin-left: -14px;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+  .Modal:has(.PropuestasIntercambio) .Modal__accion {
+    width: 100%;
+    min-height: 40px;
+    flex: none;
+  }
+}
+
+@media (max-height: 500px) and (max-width: 600px) {
+  .Modal:has(.PropuestasIntercambio) .Modal__ventana { padding-top: max(14px, env(safe-area-inset-top)); }
+}
+
+/* Mantiene encabezado y acciones visibles mientras el cuerpo se desplaza. */
+.Modal:has(.PropuestasIntercambio) .Modal__ventana { display: flex; min-height: 0; flex-direction: column; overflow: hidden; }
+.Modal:has(.PropuestasIntercambio) .Modal__encabezado,
+.Modal:has(.PropuestasIntercambio) .Modal__acciones { flex: 0 0 auto; }
+.Modal:has(.PropuestasIntercambio) .Modal__contenido {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}

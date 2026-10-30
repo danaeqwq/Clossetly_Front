@@ -1,4 +1,4 @@
-import Modal from "../../../../componentes/modal/Modal";
+import Modal from "../../../../../componentes/modal/Modal";
 import "./crearOutfit.css";
 
 const prendasSeleccionadas = [

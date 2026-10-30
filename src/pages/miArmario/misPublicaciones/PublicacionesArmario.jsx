@@ -1,7 +1,8 @@
 import "./PublicacionesArmario.css";
 import TarjetaVentaArmario from "../../../componentes/tarjetaVentaArmario/TarjetaVentaArmario";
 import TarjetaIntercambioArmario from "../../../componentes/tarjetaIntercambioArmario/TarjetaIntercambioArmario";
-
+import GestionarVentas from "./modales/Gestionar ventas/GestionarVentas"
+import PropuestasDeIntercambio from "./modales/Propuestas de intercambio/PropuestasDeIntercambio"
 export default function PublicacionesArmario() {
   return (
     <section className="MiArmario__publicaciones" aria-label="Mis publicaciones">
@@ -23,6 +24,7 @@ export default function PublicacionesArmario() {
           <TarjetaVentaArmario nombre="Abrigo Nocturne" />
         </div>
       </div>
+      <GestionarVentas />
     </section>
   );
 }

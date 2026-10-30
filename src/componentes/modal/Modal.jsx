@@ -5,10 +5,11 @@ export default function Modal({
   children,
   confirmar,
   cancelar,
+  className = "",
 }) {
 
   return (
-    <div className="Modal" role="presentation">
+    <div className={`Modal ${className}`.trim()} role="presentation">
       <section
         className="Modal__ventana"
         role="dialog"

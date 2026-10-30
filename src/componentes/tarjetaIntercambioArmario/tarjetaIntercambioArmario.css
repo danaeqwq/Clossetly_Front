@@ -64,18 +64,40 @@
 
 @media (max-width: 760px) {
   .TarjetaIntercambioArmario {
-    grid-template-columns: 48px minmax(70px, 1fr) minmax(90px, 1fr);
-    height: auto;
-    min-height: 82px;
-    gap: 8px;
+    grid-template-columns: clamp(70px, 22vw, 104px) minmax(0, 1fr) minmax(92px, .9fr);
+    grid-template-areas:
+      "imagen datos metricas"
+      "imagen acciones acciones";
+    min-height: 0;
+    gap: 6px 12px;
+    padding: 10px;
+    border-radius: 16px;
   }
 
-  .TarjetaIntercambioArmario__imagen { width: 48px; height: 70px; }
-  .TarjetaIntercambioArmario__metricas { border-right: 0; font-size: 9px; }
+  .TarjetaIntercambioArmario__imagen { grid-area: imagen; width: 100%; height: clamp(112px, 30vw, 152px); border: 1px solid var(--color-rosaEmpol); border-radius: 12px; }
+  .TarjetaIntercambioArmario__datos { grid-area: datos; border-right: 0; font-size: 13px; }
+  .TarjetaIntercambioArmario__nombre { white-space: normal; font-size: clamp(14px, 4vw, 20px); line-height: 1.15; }
+  .TarjetaIntercambioArmario__talle { font-size: clamp(12px, 3.5vw, 17px); }
+  .TarjetaIntercambioArmario__metricas { grid-area: metricas; align-items: flex-start; border-left: 1px solid var(--color-rosaEmpol); border-right: 0; padding-left: 12px; font-size: clamp(11px, 3.3vw, 15px); }
+  .TarjetaIntercambioArmario__metricas b { width: 32px; height: 32px; font-size: 16px; }
+  .TarjetaIntercambioArmario__enlace { white-space: nowrap; }
   .TarjetaIntercambioArmario__acciones {
-    grid-column: 2 / -1;
+    grid-area: acciones;
     flex-direction: row;
-    justify-content: space-between;
-    padding-right: 4px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(12px, 5vw, 30px);
+    padding: 0 4px 0 0;
+    font-size: clamp(12px, 3.4vw, 16px);
   }
+  .TarjetaIntercambioArmario__acciones i { font-size: 19px; }
+}
+
+@media (max-width: 380px) {
+  .TarjetaIntercambioArmario { grid-template-columns: 68px minmax(0, 1fr) 88px; gap: 5px 8px; padding: 8px; }
+  .TarjetaIntercambioArmario__imagen { height: 112px; }
+  .TarjetaIntercambioArmario__metricas { padding-left: 8px; }
+  .TarjetaIntercambioArmario__metricas b { width: 18px; height: 18px; font-size: 10px; }
+  .TarjetaIntercambioArmario__acciones { gap: 12px; font-size: 11px; }
+  .TarjetaIntercambioArmario__acciones i { font-size: 16px; }
 }

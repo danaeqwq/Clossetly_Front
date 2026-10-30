@@ -219,3 +219,15 @@
   .CrearOutfit__composicion { grid-template-columns: 64px minmax(0, 1fr); }
   .CrearOutfit__etiqueta { padding-left: 8px; }
 }
+
+.Modal:has(.CrearOutfit) .Modal__ventana { min-height: 0; }
+.Modal:has(.CrearOutfit) .Modal__acciones { flex: 0 0 auto; }
+.Modal:has(.CrearOutfit) .Modal__contenido {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}

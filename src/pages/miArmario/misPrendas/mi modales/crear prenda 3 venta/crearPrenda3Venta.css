@@ -1,0 +1,84 @@
+.Venta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #754344;
+  font-family: var(--font-manrope);
+}
+
+.Venta__campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.Venta__campo { display: grid; min-width: 0; gap: 5px; }
+.Venta__etiqueta {
+  color: #754344;
+  font-size: 15px;
+  font-weight: 600;
+}
+.Venta__entrada {
+  display: flex;
+  min-width: 0;
+  height: 44px;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #d6b9b4;
+  border-radius: 8px;
+  background: #fffdfc;
+  color: #8d6967;
+  font-size: 13px;
+}
+.Venta__entrada > span {
+  display: grid;
+  height: 100%;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0 10px;
+  border-right: 1px solid #e2cdca;
+}
+.Venta__entrada input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  outline: 0;
+  color: #754344;
+  background: transparent;
+  font-size: 13px;
+}
+.Venta__entrada input::placeholder { color: #bd9d99; opacity: 1; }
+.Venta__entrada--stock > span { border-right: 0; border-left: 1px solid #e2cdca; }
+
+@media (max-width: 600px) {
+  .Venta { gap: 16px; }
+  .Venta__campos { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
+.Modal:has(.Venta) .Modal__acciones { align-items: center; gap: 10px; }
+.Modal:has(.Venta) .Modal__acciones::before {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 7px;
+  color: #fff;
+  background: #754344;
+  content: "chevron_left";
+  font: 24px "Material Symbols Outlined";
+}
+.Modal:has(.Venta) .Modal__accion--confirmar { min-width: 180px; }
+.Modal:has(.Venta) .Modal__accion--confirmar::after {
+  content: "arrow_forward";
+  font: 18px "Material Symbols Outlined";
+}
+.Modal:has(.Venta) .Modal__accion--cancelar { border-color: #b34f55; color: #a7464d; }
+@media (max-width: 600px) {
+  .Modal:has(.Venta) .Modal__acciones { flex-wrap: wrap; gap: 7px; }
+  .Modal:has(.Venta) .Modal__acciones::before { width: 34px; height: 36px; flex-basis: 34px; }
+  .Modal:has(.Venta) .Modal__accion--confirmar { min-width: 0;}
+  .Modal:has(.Venta) .Modal__accion--cancelar { min-width: 0;  }
+}
