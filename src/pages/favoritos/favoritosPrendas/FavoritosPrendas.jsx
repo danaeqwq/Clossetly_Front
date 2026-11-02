@@ -2,6 +2,7 @@ import "./FavoritosPrendas.css"
 import "../../../styles/global.css"
 import "../../../styles/variables.css"
 import TarjetaPrenda from "../../../componentes/tarjetaPrenda/TarjetaPrenda"
+import FavoritoPrenda from "./FavoritoPrenda"
 
 export default function Favoritos() {
     return (
@@ -43,6 +44,7 @@ export default function Favoritos() {
                 <TarjetaPrenda />
                 <TarjetaPrenda />
             </section>
+            <FavoritoPrenda />
         </main>
     );
 }

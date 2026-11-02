@@ -1,6 +1,6 @@
 import "./boutique.css";
 import "../../styles/variables.css";
-
+import "../../styles/global.css"
 import Select from "../../componentes/select/Select";
 import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";

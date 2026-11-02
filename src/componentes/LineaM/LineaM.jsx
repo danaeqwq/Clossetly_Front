@@ -1,5 +1,5 @@
 import "./LineaM.css"
-import Mariposa from "../../assets/Mariposa.svg"
+import Mariposa from "../../assets/componentes/mariposa.svg"
 
 export default function LineaM({ lado }) {
   return (
