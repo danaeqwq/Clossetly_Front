@@ -4,6 +4,8 @@ import CrearOutfit from "./mi modales/crear oufit/CrearOutfit";
 import CrearPrenda from "./mi modales/crear prenda/CrearPrenda";
 import CrearPrenda2 from "./mi modales/crear prenda 2/CrearPrenda2";
 import CrearPrenda3venta from "./mi modales/crear prenda 3 venta/CrearPrenda3Venta";
+import CrearPrendaIntercambio from "./mi modales/crear prenda 3 intercambio/CrearPrenda3Intercambio"
+import CrearPrendaVenta from "./mi modales/crear prenda 3 venta/CrearPrenda3Venta"
 const seccionesCerradas = [
   { nombre: "Pantalones", cantidad: "5 Prendas" },
   { nombre: "Cortos", cantidad: "9 Prendas" },
@@ -39,7 +41,7 @@ export default function PrendasArmario() {
           </section>
         ))}
       </div>
-      <CrearPrenda3venta />
+      <CrearPrendaVenta />
     </>
   );
 }

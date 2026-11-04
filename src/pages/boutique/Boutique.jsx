@@ -6,7 +6,7 @@ import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaInte
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 
 const filtrosBoutique = [
-  { valor: "intercambio", texto: "INTERCAMBIO", icono: "sync" },
+  { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" },
   { valor: "todos", texto: "TODOS", icono: "sell" },
   { valor: "compra", texto: "COMPRA", icono: "shopping_basket" },
 ];

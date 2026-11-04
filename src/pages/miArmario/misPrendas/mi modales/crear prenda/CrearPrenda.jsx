@@ -3,8 +3,8 @@ import Select from "../../../../../componentes/select/Select";
 import "./crearPrenda.css";
 
 const tiposPublicacion = [
-  { valor: "prenda", icono: "checkroom", texto: "PRENDA", activa: true },
-  { valor: "intercambio", icono: "sync", texto: "INTERCAMBIO" },
+  { valor: "prenda", icono: "apparel", texto: "PRENDA", activa: true },
+  { valor: "intercambio", icono: "autorenew", texto: "INTERCAMBIO" },
   { valor: "compra", icono: "shopping_basket", texto: "COMPRA" },
 ];
 
@@ -22,7 +22,7 @@ export default function CrearPrenda() {
     <Modal
       titulo="Agregar Prenda"
       descripcion="Completá la información para agregar una prenda a tu armario"
-      confirmar={{ texto: "Siguiente paso  →" }}
+      confirmar={{ texto: <>Siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></> }}
       cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
     >
       <div className="AgregarPrenda">
@@ -31,6 +31,7 @@ export default function CrearPrenda() {
           <Select
             opciones={tiposPublicacion}
             ariaLabel="Tipo de publicación"
+            className="AgregarPrenda__select"
           />
         </div>
 

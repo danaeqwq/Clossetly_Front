@@ -10,7 +10,7 @@ export default function TarjetaIntercambio() {
       />
 
       <span className="TarjetaIntercambio__tipo">
-        <span className="material-symbols-outlined" aria-hidden="true">swap_horiz</span>
+        <span className="material-symbols-outlined" aria-hidden="true">autorenew</span>
         INTERCAMBIO
       </span>
       <span className="TarjetaIntercambio__favorito material-symbols-outlined" aria-label="Favorito">
@@ -23,7 +23,7 @@ export default function TarjetaIntercambio() {
           <span className="TarjetaIntercambio__talle">Talle: M</span>
         </div>
         <span className="TarjetaIntercambio__accion material-symbols-outlined" aria-hidden="true">
-          swap_horiz
+          autorenew
         </span>
       </div>
     </article>

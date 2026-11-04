@@ -21,8 +21,8 @@ export default function CrearPrenda3Venta() {
           <label className="Venta__campo">
             <span className="Venta__etiqueta">Stock</span>
             <span className="Venta__entrada Venta__entrada--stock">
-              <input aria-label="Unidades en stock" inputMode="numeric" placeholder="Unidades" />
-              <span aria-hidden="true">Ej: 100</span>
+              <span aria-hidden="true">Unidades</span>
+              <input aria-label="Unidades en stock" inputMode="numeric" placeholder="Ej: 100" />
             </span>
           </label>
         </div>

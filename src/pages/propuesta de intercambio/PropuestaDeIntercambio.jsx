@@ -23,7 +23,7 @@ export default function PropuestaDeIntercambio() {
                 descripcionImagen="Camisa a rayas"
               />
               <span className="Propuesta__cambiar material-symbols-outlined" aria-label="Intercambiar prendas">
-                sync
+                autorenew
               </span>
               <button className="Propuesta__agregar" type="button">
                 <span className="material-symbols-outlined" aria-hidden="true">add</span>

@@ -30,7 +30,7 @@ export default function CrearPrenda2() {
     <Modal
       titulo="Agregar Prenda"
       descripcion="Completá la información para agregar una prenda a tu armario"
-      confirmar={{ texto: "siguiente paso  →" }}
+      confirmar={{ texto: <>siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></> }}
       cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
     >
       <div className="CrearPrenda2">

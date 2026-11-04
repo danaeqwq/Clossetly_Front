@@ -9,7 +9,7 @@ export default function CrearPrenda3Intercambio() {
       className="Modal--intercambio"
       titulo="Prenda Para Intercambiar"
       descripcion="Completa la información para agregar una prenda a tu armario"
-      confirmar={{ texto: "Guardar" }}
+      confirmar={{ texto: <>Guardar <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></> }}
       cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
     >
       <form className="Intercambiar" aria-label="Datos de la prenda para intercambiar">
@@ -18,14 +18,14 @@ export default function CrearPrenda3Intercambio() {
             <span className="Intercambiar__etiqueta">Precio</span>
             <span className="Intercambiar__entrada Intercambiar__entrada--precio">
               <span aria-hidden="true">$</span>
-              <input aria-label="Precio" inputMode="decimal" placeholder="10.000" />
+              <input aria-label="Precio" inputMode="decimal" placeholder="Ej: 10.000" />
             </span>
           </label>
           <label className="Intercambiar__campo">
             <span className="Intercambiar__etiqueta">Stock</span>
             <span className="Intercambiar__entrada Intercambiar__entrada--stock">
-              <input aria-label="Cantidad" inputMode="numeric" placeholder="Unidades" />
-              <span aria-hidden="true">Ej: 100</span>
+              <span aria-hidden="true">Unidades</span>
+              <input aria-label="Cantidad" inputMode="numeric" placeholder="Ej: 100" />
             </span>
           </label>
         </div>

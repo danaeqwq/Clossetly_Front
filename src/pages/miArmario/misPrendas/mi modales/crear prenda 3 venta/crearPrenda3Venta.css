@@ -14,9 +14,10 @@
 
 .Venta__campo { display: grid; min-width: 0; gap: 5px; }
 .Venta__etiqueta {
-  color: #754344;
-  font-size: 15px;
-  font-weight: 600;
+  color: var(--color-carbon);
+  font-family: var(--font-CormUpri);
+  font-size: 20px;
+  font-weight: 700;
 }
 .Venta__entrada {
   display: flex;
@@ -50,7 +51,9 @@
   font-size: 13px;
 }
 .Venta__entrada input::placeholder { color: #bd9d99; opacity: 1; }
+.Venta__entrada--stock input { width: auto; flex: 1 1 auto; }
 .Venta__entrada--stock > span { border-right: 0; border-left: 1px solid #e2cdca; }
+.Venta__entrada--stock > span:first-child { border-right: 1px solid #e2cdca; border-left: 0; }
 
 @media (max-width: 600px) {
   .Venta { gap: 16px; }
@@ -77,8 +80,8 @@
 }
 .Modal:has(.Venta) .Modal__accion--cancelar { border-color: #b34f55; color: #a7464d; }
 @media (max-width: 600px) {
-  .Modal:has(.Venta) .Modal__acciones { flex-wrap: wrap; gap: 7px; }
+  .Modal:has(.Venta) .Modal__acciones { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 7px; }
   .Modal:has(.Venta) .Modal__acciones::before { width: 34px; height: 36px; flex-basis: 34px; }
-  .Modal:has(.Venta) .Modal__accion--confirmar { min-width: 0;}
-  .Modal:has(.Venta) .Modal__accion--cancelar { min-width: 0;  }
+  .Modal:has(.Venta) .Modal__accion--confirmar { grid-column: 2; grid-row: 1; min-width: 0; }
+  .Modal:has(.Venta) .Modal__accion--cancelar { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
 }

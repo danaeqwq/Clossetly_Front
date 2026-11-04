@@ -2,7 +2,6 @@ import "./FavoritosCompra.css"
 import "../../../styles/global.css"
 import "../../../styles/variables.css"
 import TarjetaCompra from "../../../componentes/tarjetaVenta/TarjetaVenta"
-import PanelDesplegable from "../../../componentes/panelDesplegable/PanelDesplegable"
 
 export default function Favoritos() {
     return (

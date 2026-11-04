@@ -30,7 +30,7 @@
 
 .Modal__titulo {
   color: var(--color-bordoVino);
-  font: 500 clamp(24px, 2vw, 28px)/1.05 var(--font-Kurale);
+  font: 500 clamp(23px, 2vw, 25px)/1.05 var(--font-Kurale);
 }
 
 .Modal__descripcion {
@@ -60,7 +60,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 10px;
   padding-top: 16px;
   border-top: 1px solid rgb(52 44 48 / 20%);
 }
@@ -76,7 +76,7 @@
   border-radius: 8px;
   color: var(--color-blancaso);
   background: var(--color-bordoVino);
-  font: 600 16px var(--font-CormGaram);
+  font: 200 16px var(--font-Kurale);
 }
 
 .Modal__accion--cancelar {
