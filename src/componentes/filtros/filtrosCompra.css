@@ -1,0 +1,8 @@
+.FiltrosCompra__campoPrecio {
+  min-height: 43px;
+  margin-top: 7px;
+}
+
+.FiltrosCompra__campoPrecio .FiltrosIntercambio__etiqueta {
+  color: var(--color-rosaTerra);
+}

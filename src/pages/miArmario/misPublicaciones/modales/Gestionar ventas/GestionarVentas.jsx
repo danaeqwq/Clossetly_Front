@@ -1,14 +1,15 @@
 import Modal from "../../../../../componentes/modal/Modal";
 import "./gestionarVentas.css";
-
+import iconwsp from "../../../../../assets/logo wsp mi armario.svg";
 const ventas = [
-  { usuario: "@uwu", estado: "CONFIRMADO", avatar: "GV__avatar--rosa" },
-  { usuario: "@lol", estado: "EN CONTACTO", avatar: "GV__avatar--oscuro" },
+  { usuario: "@uwu", estado: "CONFIRMADO", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96&q=80" },
+  { usuario: "@lol", estado: "EN CONTACTO", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=96&h=96&q=80" },
 ];
 
 export default function GestionarVentas() {
   return (
     <Modal
+      className="Modal--gestionarVentas"
       titulo="Gestionar Ventas"
       descripcion="Acá podés gestionar tus ventas y solicitudes de venta."
       confirmar={{ texto: "Guardar" }}
@@ -17,8 +18,8 @@ export default function GestionarVentas() {
       <div className="GestionarVentas" aria-label="Solicitudes de venta">
         {ventas.map(({ usuario, estado, avatar }) => (
           <article className="GestionarVentas__fila" key={usuario}>
-            <span className={`GestionarVentas__avatar ${avatar}`} aria-hidden="true">
-              <span className="material-symbols-outlined">person</span>
+            <span className="GestionarVentas__avatar" aria-hidden="true">
+              <img src={avatar} alt="" />
             </span>
             <span className="GestionarVentas__usuario">{usuario}</span>
             <label className="GestionarVentas__estado">
@@ -29,7 +30,7 @@ export default function GestionarVentas() {
               </select>
             </label>
             <button className="GestionarVentas__contacto" type="button" aria-label={`Contactar a ${usuario}`}>
-              <span className="material-symbols-outlined" aria-hidden="true">call</span>
+              <img src={iconwsp} alt="" aria-hidden="true" />
             </button>
           </article>
         ))}

@@ -11,7 +11,7 @@ const opcionesArmario = [
   { valor: "outfits", texto: "MIS OUTFITS" },
 ];
 
-const seccionActiva = "prendas";
+const seccionActiva = "publicaciones";
 
 export default function MiArmario() {
   return (

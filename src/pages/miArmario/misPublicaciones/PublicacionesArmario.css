@@ -33,7 +33,7 @@
 }
 
 .MiArmario__encabezadoPublicaciones h2 .material-symbols-outlined { font-size: 16px; }
-.MiArmario__encabezadoPublicaciones > span { font: 11px var(--font-manrope); }
+.MiArmario__encabezadoPublicaciones > span { font: 200 11px var(--font-manrope); }
 
 .MiArmario__listaPublicaciones {
   display: grid;
@@ -44,16 +44,16 @@
   align-content: start;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 960px) {
   .MiArmario__publicaciones { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .MiArmario__panelPublicaciones { height: auto; }
-  .MiArmario__encabezadoPublicaciones { padding-inline: 10px; }
+  .MiArmario__panelPublicaciones { height: auto; border-radius: 9px; }
+  .MiArmario__encabezadoPublicaciones { min-height: 35px; padding-inline: 10px; }
   .MiArmario__encabezadoPublicaciones h2 { font-size: 15px; }
   .MiArmario__encabezadoPublicaciones > span { font-size: 10px; }
   .MiArmario__listaPublicaciones {
     height: auto;
     overflow: visible;
-    padding: 10px;
+    padding: 8px;
   }
 }
 
@@ -63,5 +63,5 @@
   .MiArmario__encabezadoPublicaciones h2 { gap: 5px; font-size: 14px; }
   .MiArmario__encabezadoPublicaciones h2 .material-symbols-outlined { font-size: 15px; }
   .MiArmario__encabezadoPublicaciones > span { font-size: 9px; }
-  .MiArmario__listaPublicaciones { padding: 8px; }
+  .MiArmario__listaPublicaciones { padding: 7px; }
 }

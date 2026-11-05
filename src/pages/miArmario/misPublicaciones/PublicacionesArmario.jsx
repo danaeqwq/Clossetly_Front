@@ -24,7 +24,7 @@ export default function PublicacionesArmario() {
           <TarjetaVentaArmario nombre="Abrigo Nocturne" />
         </div>
       </div>
-      <GestionarVentas />
+      <PropuestasDeIntercambio/>
     </section>
   );
 }

@@ -41,7 +41,7 @@ export default function PrendasArmario() {
           </section>
         ))}
       </div>
-      <CrearPrendaVenta />
+      <CrearOutfit />
     </>
   );
 }

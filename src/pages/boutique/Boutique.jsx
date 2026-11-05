@@ -4,6 +4,7 @@ import "../../styles/global.css"
 import Select from "../../componentes/select/Select";
 import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
+import FiltrosTodo from "../../componentes/filtros/FiltrosTodo";
 
 const filtrosBoutique = [
   { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" },
@@ -38,6 +39,7 @@ export default function Boutique() {
         <TarjetaVenta />
         <TarjetaVenta />
       </section>
+      <FiltrosTodo />
     </main>
   );
 }

@@ -7,6 +7,11 @@
   font-family: var(--font-manrope);
 }
 
+@media (min-width: 601px) {
+  .Modal--gestionarVentas { align-items: start; }
+  .Modal--gestionarVentas .Modal__ventana { width: min(570px, 100%); margin-top: 5vh; }
+}
+
 .GestionarVentas__fila {
   display: grid;
   grid-template-columns: 38px minmax(48px, .6fr) minmax(0, 1.8fr) 34px;
@@ -30,16 +35,13 @@
   color: #fff7f4;
   background: radial-gradient(circle at 50% 35%, #dfb19e 0 18%, #9e6c66 19% 36%, #d4a497 37% 54%, #7b5150 55%);
 }
-.GestionarVentas__avatar--oscuro {
-  border-color: #8f7466;
-  background: radial-gradient(circle at 48% 34%, #bb9478 0 17%, #302c2b 18% 37%, #715646 38% 54%, #282525 55%);
-}
-.GestionarVentas__avatar .material-symbols-outlined { font-size: 22px; opacity: .72; }
+.GestionarVentas__avatar img { width: 100%; height: 100%; object-fit: cover; }
 .GestionarVentas__usuario {
   overflow: hidden;
   color: #403838;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 15px;
+  font-family: var(--font-Newsreader);
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -61,46 +63,52 @@
   border-radius: 7px;
   color: #453d3d;
   background: #fbf6f4;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 .GestionarVentas__contacto {
   display: grid;
   width: 32px;
   height: 32px;
+  padding: 0;
   place-items: center;
+  overflow: hidden;
   border: 0;
   border-radius: 50%;
   color: #fff;
   background: #88514f;
 }
-.GestionarVentas__contacto .material-symbols-outlined { font-size: 18px; }
+.GestionarVentas__contacto img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 @media (max-width: 600px) {
   .GestionarVentas { gap: 9px; }
   .GestionarVentas__fila {
-    grid-template-columns: 38px minmax(0, 1fr) 34px;
-    grid-template-areas:
-      "avatar usuario contacto"
-      "avatar estado estado";
-    gap: 5px 9px;
-    padding: 8px;
+    grid-template-columns: 32px minmax(42px, .55fr) minmax(0, 1fr) 30px;
+    gap: 4px 6px;
+    min-height: 52px;
+    padding: 6px;
   }
-  .GestionarVentas__avatar { grid-area: avatar; }
-  .GestionarVentas__usuario { grid-area: usuario; }
+  .GestionarVentas__avatar { width: 32px; height: 32px; }
+  .GestionarVentas__usuario { font-size: 12px; }
   .GestionarVentas__estado {
-    grid-area: estado;
-    justify-content: space-between;
-    gap: 6px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 10px;
+    line-height: 1.1;
+  }
+  .GestionarVentas__estado select {
+    width: 100%;
+    max-width: 120px;
+    height: 28px;
+    padding-inline: 6px 18px;
     font-size: 11px;
   }
-  .GestionarVentas__estado select { width: min(180px, 58%); }
-  .GestionarVentas__contacto { grid-area: contacto; }
-}
-
-@media (max-width: 360px) {
-  .GestionarVentas__estado { align-items: flex-start; flex-direction: column; }
-  .GestionarVentas__estado select { width: 100%; }
+  .GestionarVentas__contacto { width: 30px; height: 30px; }
+  .Modal--gestionarVentas .Modal__titulo { font-size: 18px; }
+  .Modal--gestionarVentas .Modal__contenido { margin-top: 14px; }
+  .Modal--gestionarVentas .Modal__acciones { flex-direction: column; gap: 8px; }
+  .Modal--gestionarVentas .Modal__accion { flex: initial; width: 100%; }
 }
 
 
