@@ -42,13 +42,13 @@
   height: 23px;
   display: grid;
   place-items: center;
+  overflow: hidden;
   border: 1px solid #c9d0d0;
   border-radius: 50%;
-  color: #637d82;
   background: #eef3f0;
-  font-size: 18px;
-  line-height: 1;
 }
+
+.Propuesta__avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 .Propuesta__items {
   display: grid;
@@ -68,16 +68,7 @@
 }
 
 .Propuesta .TarjetaPrenda__etiqueta {
-  bottom: 10%;
-  width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  padding: 4px 7px;
-  border-radius: 0;
-  background: #86544f;
-  font: 12px var(--font-CormGaram);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 12px;
 }
 
 .Propuesta__cambiar {
@@ -103,7 +94,7 @@
   color: #bd918c;
   background: #f4e9e6;
   box-shadow: 0 2px 5px #8d5e5a35;
-  font: italic 19px var(--font-CormGaram);
+  font: 600 italic 21px var(--font-CormGaram);
 }
 
 .Propuesta__agregar .material-symbols-outlined {
@@ -120,7 +111,7 @@
 .Propuesta__acciones {
   display: grid;
   gap: 7px;
-  width: min(100%, 430px);
+  width: min(60%, 430px);
   margin: 18px auto 0;
 }
 
@@ -132,11 +123,11 @@
   gap: 7px;
   padding: 4px 12px;
   border-radius: 7px;
-  font: 14px var(--font-CormGaram);
+  font: 14px var(--font-Kurale);
 }
 
 .Propuesta__acciones .material-symbols-outlined {
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .Propuesta__confirmar {
@@ -168,16 +159,20 @@
 }
 
 .Propuesta__encabezado h1 {
-  font: 600 22px/1.15 var(--font-CormGaram);
+  font: 700 22px/1.15 var(--font-CormUpri);
+  color: var(--color-bordoVino);
 }
+
 
 .Propuesta__encabezado p {
   display: flex;
   align-items: center;
   gap: 4px;
-  font: 13px/1.25 var(--font-CormGaram);
+  font: 13px/1.25 var(--font-manrope);
 }
-
+.Propuesta__encabezado p .material-symbols-outlined{
+  font-weight: 200;
+}
 .Propuesta__lista {
   max-height: 370px;
   overflow-y: auto;
@@ -188,7 +183,14 @@
   scrollbar-color: #a87874 #ebdbd8;
 }
 
-.Propuesta__lista .TarjetaPrenda {
+.Propuesta__prenda {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.Propuesta__prenda .TarjetaPrenda {
   width: 100%;
   height: auto;
   aspect-ratio: 0.82;
@@ -196,17 +198,21 @@
 }
 
 .Propuesta__seleccionar {
-  position: absolute;
-  top: 50%;
-  left: 34px;
-  transform: translateY(-50%);
-  padding: 3px 7px;
-  border: 1px solid #ddc7c3;
+  display: flex;
+  width: 100%;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 1px 5px;
+  border: 1px solid #D8B7B3;
   border-radius: 5px;
-  color: #9b706c;
+  color: #754344;
   background: #faf5f3;
-  font: 12px var(--font-CormGaram);
+  font: 12px var(--font-Kurale);
 }
+
+.Propuesta__seleccionar .material-symbols-outlined { font-size: 14px; }
 
 @media (max-width: 1050px) {
   .Propuesta {
@@ -237,12 +243,9 @@
     padding-inline: 20px;
   }
 
-  .Propuesta__seleccionar {
-    left: 20px;
-  }
-
   .Propuesta__lista {
     gap: 14px 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -255,16 +258,16 @@
 
   .Propuesta {
     min-height: auto;
-    padding: 24px 16px 100px;
+    padding: 8px 12px 90px;
   }
 
   .Propuesta__intercambio {
     grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    gap: 18px;
   }
 
   .Propuesta__seleccion {
-    padding: 0 0 22px;
+    padding: 0 0 14px;
     border-right: 0;
     border-bottom: 1px solid #ead8d4;
   }
@@ -281,7 +284,19 @@
   }
 
   .Propuesta__acciones {
+    width: 100%;
     margin-top: 14px;
+    gap: 6px;
+  }
+
+  .Propuesta__acciones button {
+    min-height: 29px;
+    padding: 3px 7px;
+    font-size: 12px;
+  }
+
+  .Propuesta__acciones .material-symbols-outlined {
+    font-size: 16px;
   }
 
   .Propuesta__disponibles {
@@ -289,26 +304,31 @@
   }
 
   .Propuesta__encabezado h1 {
-    font-size: 20px;
+    font-size: 17px;
   }
-
+  .Propuesta__encabezado p{
+    font-size: 12px;
+  }
   .Propuesta__lista {
-    max-height: none;
+    max-height: clamp(300px, 48vh, 370px);
+    overflow-y: auto;
     padding-right: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+    scrollbar-width: thin;
   }
 
-  .Propuesta__lista .TarjetaPrenda {
+  .Propuesta__prenda {
     max-width: 180px;
     margin: 0 auto;
   }
 
   .Propuesta__seleccionar {
-    position: static;
-    display: block;
-    margin: 12px auto 0;
-    transform: none;
+    min-height: 28px;
+    gap: 3px;
+    padding-inline: 3px;
+    font-size: clamp(10px, 3vw, 12px);
+    white-space: nowrap;
   }
 }
 
