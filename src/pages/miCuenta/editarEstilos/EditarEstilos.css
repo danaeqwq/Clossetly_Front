@@ -1,0 +1,195 @@
+.EditarEstilos {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4.4vw, 84px) 28px;
+  color: var(--color-carbon);
+}
+
+.EditarEstilos__panel {
+  min-height: 418px;
+  padding: 32px 26px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.EditarEstilos__panel > h1 {
+  margin-bottom: 18px;
+  color: var(--color-carbon);
+  font: 600 26px/1.2 var(--font-CormGaram);
+  text-align: left;
+}
+
+.EditarEstilos__preferencias {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 22px;
+}
+
+.EditarEstilos__grupo {
+  min-width: 0;
+  min-height: 94px;
+  padding: 13px 0 15px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 72%, transparent);
+}
+
+.EditarEstilos__grupo:nth-last-child(-n + 2) { border-bottom: 0; }
+
+.EditarEstilos__encabezadoGrupo {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.EditarEstilos__encabezadoGrupo h2 {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-carbon);
+  font: 400 16px/1.35 var(--font-manrope);
+}
+
+.EditarEstilos__encabezadoGrupo .material-symbols-outlined {
+  flex: 0 0 auto;
+  color: var(--color-rosaTerra);
+  font-size: 19px !important;
+  line-height: 1;
+}
+
+.EditarEstilos__agregar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 24px;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 10px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 20px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  font: 11px/1.2 var(--font-manrope);
+}
+
+.EditarEstilos__etiquetas,
+.EditarEstilos__paleta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.EditarEstilos__etiqueta {
+  display: inline-flex;
+  min-height: 23px;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 20px;
+  color: var(--color-rosaTerra);
+  font: 11px/1.2 var(--font-manrope);
+  white-space: nowrap;
+}
+
+.EditarEstilos__etiqueta > span {
+  font-size: 14px;
+  line-height: 0.8;
+}
+
+.EditarEstilos__etiqueta--seleccionada {
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+.EditarEstilos__paleta { gap: 9px; }
+
+.EditarEstilos__color,
+.EditarEstilos__agregarColor {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.EditarEstilos__color--vino { background: var(--color-bordoVino); }
+.EditarEstilos__color--malva { background: var(--color-rojo); }
+.EditarEstilos__color--azul { background: var(--color-azul); }
+.EditarEstilos__color--rosa { background: var(--color-rosaEmpol); }
+.EditarEstilos__color--coral { background: var(--color-naranja); }
+
+.EditarEstilos__agregarColor {
+  border: 1px solid var(--color-rosaEmpol);
+  color: var(--color-rosaTerra);
+  background: var(--color-blancaso);
+  font: 18px/1 var(--font-manrope);
+}
+
+@media (min-width: 901px) {
+  .EditarEstilos__panel > h1 {
+    font-size: 30px;
+    text-align: left;
+  }
+  .EditarEstilos__preferencias { column-gap: 38px; }
+  .EditarEstilos__grupo { min-height: 104px; padding-block: 15px 17px; }
+  .EditarEstilos__encabezadoGrupo h2 { font-size: 17px; }
+  .EditarEstilos__encabezadoGrupo .material-symbols-outlined { font-size: 20px !important; }
+  .EditarEstilos__agregar { min-height: 27px; padding-inline: 12px; font-size: 12px; }
+  .EditarEstilos__etiqueta { min-height: 25px; font-size: 12px; }
+  .EditarEstilos__color,
+  .EditarEstilos__agregarColor { width: 32px; height: 32px; }
+}
+
+@media (max-width: 900px) {
+  .EditarEstilos { padding-inline: 28px; }
+  .EditarEstilos__panel { min-height: 0; padding: 26px 22px; }
+  .EditarEstilos__preferencias { column-gap: 20px; }
+  .EditarEstilos__grupo { min-height: 90px; }
+  .EditarEstilos__encabezadoGrupo h2 { font-size: 14px; }
+  .EditarEstilos__encabezadoGrupo .material-symbols-outlined { font-size: 17px !important; }
+  .EditarEstilos__agregar { min-height: 22px; padding-inline: 8px; font-size: 10px; }
+  .EditarEstilos__etiqueta { min-height: 21px; padding-inline: 8px; font-size: 9px; }
+  .EditarEstilos__color,
+  .EditarEstilos__agregarColor { width: 26px; height: 26px; }
+}
+
+@media (max-width: 700px) {
+  .EditarEstilos { padding: 8px 16px 24px; }
+  .EditarEstilos__panel {
+    min-height: 0;
+    padding: 22px 18px;
+  }
+  .EditarEstilos__panel > h1 { margin-bottom: 10px; font-size: 23px; }
+  .EditarEstilos__preferencias { grid-template-columns: minmax(0, 1fr); }
+  .EditarEstilos__grupo,
+  .EditarEstilos__grupo:nth-last-child(-n + 2) {
+    min-height: 0;
+    padding: 13px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 72%, transparent);
+  }
+  .EditarEstilos__grupo:last-child { border-bottom: 0; }
+  .EditarEstilos__encabezadoGrupo h2 { font-size: 14px; }
+  .EditarEstilos__etiqueta { min-height: 22px; font-size: 9px; }
+  .EditarEstilos__color,
+  .EditarEstilos__agregarColor { width: 25px; height: 25px; }
+}
+
+@media (max-width: 420px) {
+  .EditarEstilos { padding-inline: 10px; }
+  .EditarEstilos__panel { padding: 18px 12px; }
+  .EditarEstilos__panel > h1 { font-size: 21px; }
+  .EditarEstilos__encabezadoGrupo { gap: 6px; }
+  .EditarEstilos__encabezadoGrupo h2 { gap: 5px; font-size: 13px; }
+  .EditarEstilos__encabezadoGrupo .material-symbols-outlined { font-size: 16px !important; }
+  .EditarEstilos__agregar { min-height: 21px; padding-inline: 7px; font-size: 9px; }
+  .EditarEstilos__etiquetas,
+  .EditarEstilos__paleta { gap: 6px; }
+  .EditarEstilos__etiqueta { padding-inline: 7px; font-size: 8px; }
+}
