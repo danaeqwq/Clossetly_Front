@@ -1,0 +1,155 @@
+.Modal:has(.BloquearUsuario__contenido) .Modal__ventana {
+  width: (px, calc(100vw - 96px));
+  height: auto;
+  min-height: min(540px, 30vh);
+  max-height: min(80vh, 650px);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.Modal:has(.BloquearUsuario__contenido) .Modal__encabezado { gap: 8px; }
+
+.Modal:has(.BloquearUsuario__contenido) .Modal__titulo {
+  font: 500 17px/1.15 var(--font-Kurale);
+}
+
+.Modal:has(.BloquearUsuario__contenido) .Modal__descripcion {
+  max-width: 570px;
+  margin-top: 5px;
+  font: 13px/1.3 var(--font-manrope);
+}
+
+.Modal:has(.BloquearUsuario__contenido) .Modal__cerrar {
+  flex-basis: 22px;
+  width: 25px;
+  height: 25px;
+}
+
+.Modal:has(.BloquearUsuario__contenido) .Modal__cerrar .material-symbols-outlined { font-size: 20px; }
+.Modal:has(.BloquearUsuario__contenido) .Modal__contenido { margin-top: 8px; }
+
+.BloquearUsuario__contenido { min-width: 0; }
+
+.BloquearUsuario__avatar {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 7px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.BloquearUsuario__detalle { text-align: center; }
+
+.BloquearUsuario__detalle h3 {
+  color: var(--color-bordoVino);
+  font: 500 18px/1.2 var(--font-Kurale);
+}
+
+.BloquearUsuario__detalle p {
+  margin-top: 5px;
+  color: var(--color-carbon);
+  font: 13px/1.35 var(--font-manrope);
+}
+
+.BloquearUsuario__detalle p span { color: var(--color-rojo1); }
+
+.BloquearUsuario__motivo {
+  margin: 9px 0 0;
+  padding: 6px 9px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 7px;
+  color: var(--color-carbon);
+  font: 13px/1.3 var(--font-manrope);
+}
+
+.BloquearUsuario__motivo strong {
+  color: var(--color-bordoVino);
+  font-weight: 600;
+}
+
+.BloquearUsuario__duraciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.BloquearUsuario__duracion {
+  display: inline-flex;
+  min-width: 70px;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 6px;
+  color: var(--color-rosaTerra);
+  font: 12px/1 var(--font-manrope);
+}
+
+.BloquearUsuario__duracion i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--color-rosaTerra);
+  border-radius: 50%;
+}
+
+.BloquearUsuario__duracion--actual {
+  border-color: var(--color-bordoVino);
+  color: var(--color-bordoVino);
+}
+
+.BloquearUsuario__duracion--actual i {
+  border-color: var(--color-bordoVino);
+  background: var(--color-bordoVino);
+  box-shadow: inset 0 0 0 2px var(--color-blancaso);
+}
+
+.BloquearUsuario__acciones {
+  display: flex;
+  justify-content:end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.BloquearUsuario__acciones .Boton {
+  width: 120px;
+  min-height: 27px;
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font: 11px/1 var(--font-Kurale);
+}
+
+.BloquearUsuario__acciones .Boton__img { width: 12px; height: 12px; }
+
+.BloquearUsuario__acciones .BloquearUsuario__confirmar {
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+.BloquearUsuario__acciones .BloquearUsuario__cancelar {
+  border-color: var(--color-rojo1);
+  color: var(--color-rojo1);
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .Modal:has(.BloquearUsuario__contenido) .Modal__ventana {
+    width: 100%;
+    max-height: none;
+    padding: max(22px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+  }
+  .Modal:has(.BloquearUsuario__contenido) .Modal__titulo { font-size: 20px; }
+  .Modal:has(.BloquearUsuario__contenido) .Modal__descripcion { font-size: 11px; }
+  .BloquearUsuario__avatar { width: 100px; height: 100px; margin-top: 8px; }
+  .BloquearUsuario__detalle h3 { font-size: 18px; }
+  .BloquearUsuario__detalle p,
+  .BloquearUsuario__motivo { font-size: 11px; }
+  .BloquearUsuario__duracion { min-height: 28px; font-size: 10px; }
+  .BloquearUsuario__acciones { gap: 8px; }
+  .BloquearUsuario__acciones .Boton { flex: 1; width: auto; min-height: 38px; font-size: 14px; }
+}

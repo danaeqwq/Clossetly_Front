@@ -1,0 +1,129 @@
+.GestionDeUsuario {
+  width: 100%;
+  min-height: calc(100dvh - 150px);
+  margin: 0 auto;
+  padding: 12px clamp(24px, 5vw, 96px) 42px;
+  color: var(--color-carbon);
+}
+
+.GestionDeUsuario__encabezado h1 {
+  color: var(--color-bordoVino);
+  font: 600 30px/1.2 var(--font-CormGaram);
+}
+
+.GestionDeUsuario__encabezado p {
+  margin-top: 2px;
+  color: var(--color-carbon);
+  font: 16px/1.4 var(--font-manrope);
+}
+
+.GestionDeUsuario__resumen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 18px 0 22px;
+}
+
+.GestionDeUsuario__indicador {
+  display: flex;
+  min-width: 196px;
+  min-height: 68px;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--color-rosaEmpol) 13%, var(--color-cremita));
+}
+
+.GestionDeUsuario__indicadorIcono {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-bordoVino);
+  background: color-mix(in srgb, var(--color-rosaEmpol) 82%, var(--color-blancaso));
+  font-size: 25px !important;
+}
+
+.GestionDeUsuario__indicadorTexto {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  color: var(--color-bordoVino);
+  font: 14px/1.2 var(--font-CormGaram);
+}
+
+.GestionDeUsuario__indicadorTexto strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.GestionDeUsuario__tablaContenedor {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 9px;
+}
+
+.GestionDeUsuario__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.GestionDeUsuario__tabla th {
+  height: 26px;
+  padding: 4px 16px;
+  border-bottom: 1px solid var(--color-rosaEmpol);
+  color: var(--color-bordoVino);
+  font: 600 12px/1.2 var(--font-CormGaram);
+  text-align: left;
+}
+
+.GestionDeUsuario__tabla .Usuario__celda { padding-inline: 16px; }
+
+.GestionDeUsuario__tabla th:nth-child(1) { width: 18%; }
+.GestionDeUsuario__tabla th:nth-child(2) { width: 28%; }
+.GestionDeUsuario__tabla th:nth-child(3) { width: 18%; }
+.GestionDeUsuario__tabla th:nth-child(4) { width: 36%; }
+
+@media (min-width: 761px) {
+  .GestionDeUsuario__tablaContenedor { min-height: 320px; }
+  .GestionDeUsuario__tabla th { height: 38px; padding-inline: 18px; font-size: 16px; }
+  .GestionDeUsuario__tabla .Usuario__celda { padding: 8px 18px; font-size: 14px; }
+  .GestionDeUsuario__tabla .Usuario__fila { height: 56px; }
+  .GestionDeUsuario__tabla th:nth-child(1) { width: 18%; }
+  .GestionDeUsuario__tabla th:nth-child(2) { width: 30%; }
+  .GestionDeUsuario__tabla th:nth-child(3) { width: 20%; }
+  .GestionDeUsuario__tabla th:nth-child(4) { width: 32%; }
+}
+
+@media (max-width: 900px) {
+  .GestionDeUsuario { padding-right: 28px; padding-left: 28px; }
+}
+
+@media (max-width: 760px) {
+  .GestionDeUsuario { padding: 8px 16px 28px; }
+  .GestionDeUsuario__encabezado h1 { font-size: 21px; }
+  .GestionDeUsuario__encabezado p { font-size: 12px; }
+  .GestionDeUsuario__resumen { gap: 8px; margin: 10px 0 14px; }
+  .GestionDeUsuario__indicador { min-width: 0; flex: 1 1 calc(33.333% - 8px); gap: 6px; padding: 6px; }
+  .GestionDeUsuario__indicadorIcono { width: 30px; height: 30px; font-size: 17px !important; }
+  .GestionDeUsuario__indicadorTexto { font-size: 10px; }
+  .GestionDeUsuario__indicadorTexto strong { font-size: 10px; }
+  .GestionDeUsuario__tablaContenedor { overflow: visible; border: 0; border-radius: 0; }
+  .GestionDeUsuario__tabla,
+  .GestionDeUsuario__tabla tbody { display: block; width: 100%; }
+  .GestionDeUsuario__tabla thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); }
+  .GestionDeUsuario__tabla tbody { display: grid; gap: 10px; }
+}
+
+@media (max-width: 420px) {
+  .GestionDeUsuario { padding-inline: 10px; }
+  .GestionDeUsuario__resumen { display: grid; grid-template-columns: 1fr; }
+  .GestionDeUsuario__indicador { min-height: 44px; }
+  .GestionDeUsuario__tabla tbody { gap: 8px; }
+}

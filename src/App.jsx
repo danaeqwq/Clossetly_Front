@@ -2,7 +2,7 @@ import "./App.css"
 import Header from "./componentes/header/Header"
 import Footer from "./componentes/footer/Footer"
 import NavBar from "./componentes/nav/Nav"
-import Micuenta from "./pages/miCuenta/editarEstilos/EditarEstilos"
+import Micuenta from "./pages/gestionDeUsuario/gestionDeUsuario"
 
 export default function App(){
     return(
