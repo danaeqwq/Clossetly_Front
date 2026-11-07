@@ -1,6 +1,9 @@
 
+import { NavLink } from "react-router";
+
 import "./nav.css";
-import "../../styles/global.css"
+import "../../styles/global.css";
+
 import iconTest from "../../assets/componentes/icon test.svg";
 import iconBoutique from "../../assets/componentes/icon Boutique.svg";
 import iconExplorar from "../../assets/componentes/icon Explorar.svg";
@@ -10,9 +13,10 @@ import iconMiCuenta from "../../assets/componentes/icon Mi cuenta.svg";
 export default function Nav() {
   return (
     <nav className="Nav" aria-label="Navegación principal">
-      <a
+
+      <NavLink
+        to="/boutique"
         className="Nav__enlace Nav__enlace--logo"
-        href="#"
         aria-label="Inicio"
       >
         <svg viewBox="0 0 24 24">
@@ -20,52 +24,63 @@ export default function Nav() {
           <path d="m7 16 3.5-4 2.5 2.5 1.5-1.5 2.5 3z" />
           <circle cx="15.5" cy="8.5" r="1" />
         </svg>
-      </a>
+      </NavLink>
 
-      <a
-        className="Nav__enlace"
-        href="#guia-estilo"
+      <NavLink
+        to="/guia-talle"
+        className={({ isActive }) =>
+          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
+        }
         aria-label="Guía de estilo"
         data-label="Guía de estilo"
       >
         <img src={iconTest} alt="" />
-      </a>
+      </NavLink>
 
-      <a
-        className="Nav__enlace"
-        href="#boutique"
+      <NavLink
+        to="/boutique"
+        className={({ isActive }) =>
+          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
+        }
         aria-label="Boutique"
         data-label="Boutique"
       >
         <img src={iconBoutique} alt="" />
-      </a>
+      </NavLink>
 
-      <a
-        className="Nav__enlace"
-        href="#explorar"
+      <NavLink
+        to="/explorar"
+        className={({ isActive }) =>
+          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
+        }
         aria-label="Explorar"
         data-label="Explorar"
       >
         <img src={iconExplorar} alt="" />
-      </a>
+      </NavLink>
 
-      <a
-        className="Nav__enlace"
-        href="#mi-armario"
+      <NavLink
+        to="/armario"
+        className={({ isActive }) =>
+          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
+        }
         aria-label="Mi armario"
         data-label="Mi armario"
       >
         <img src={iconMiArmario} alt="" />
-      </a>
+      </NavLink>
 
-      <a
-        className="Nav__enlace"
-        href="#mi-cuenta"
+      <NavLink
+        to="/perfil"
+        className={({ isActive }) =>
+          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
+        }
         aria-label="Mi cuenta"
         data-label="Mi cuenta"
       >
         <img src={iconMiCuenta} alt="" />
-      </a>
+      </NavLink>
+
     </nav>
   );
 }

@@ -1,26 +1,31 @@
 
+import { Link } from "react-router";
+
 import "./footer.css";
+import "../../styles/global.css";
+
 import cartita from "../../assets/componentes/cartita footer.svg";
 import mariposa from "../../assets/componentes/mariposa.svg";
-import "../../styles/global.css"
+
 export default function Footer() {
   return (
     <footer className="Footer">
       <div className="Footer__principal">
+
         <div className="Footer__marcaYLinks">
-          <a className="Footer__marca" href="#">
+          <Link className="Footer__marca" to="/boutique">
             Clossetly
-          </a>
+          </Link>
 
           <nav
             className="Footer__links"
             aria-label="Enlaces del pie de página"
           >
-            <a href="#">Mi armario</a>
-            <a href="#">Mi cuenta</a>
-            <a href="#">Guía de estilo</a>
-            <a href="#">Boutique</a>
-            <a href="#">Explorar</a>
+            <Link to="/armario">Mi armario</Link>
+            <Link to="/perfil">Mi cuenta</Link>
+            <Link to="/guia-talle">Guía de estilo</Link>
+            <Link to="/boutique">Boutique</Link>
+            <Link to="/explorar">Explorar</Link>
           </nav>
         </div>
 
@@ -55,21 +60,38 @@ export default function Footer() {
             </button>
           </form>
         </div>
+
       </div>
 
       <div className="Footer__flor" aria-hidden="true">
         <span className="Footer__florLinea" />
-        <img className="Footer__mariposa Footer__mariposa--izquierda" src={mariposa} alt="" />
-        <img className="Footer__mariposa Footer__mariposa--derecha" src={mariposa} alt="" />
+
+        <img
+          className="Footer__mariposa Footer__mariposa--izquierda"
+          src={mariposa}
+          alt=""
+        />
+
+        <img
+          className="Footer__mariposa Footer__mariposa--derecha"
+          src={mariposa}
+          alt=""
+        />
       </div>
 
       <div className="Footer__legal">
         <span>© 2026 Clossetly. Todos los derechos</span>
 
         <div>
-          <a href="#">Preguntas frecuentes</a>
+          <Link to="/preguntas-frecuentes">
+            Preguntas frecuentes
+          </Link>
+
           <i />
-          <a href="#">Terminos y condiciones</a>
+
+          <Link to="/terminos-y-condiciones">
+            Terminos y condiciones
+          </Link>
         </div>
       </div>
     </footer>
