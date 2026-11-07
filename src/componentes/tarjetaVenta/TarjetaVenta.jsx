@@ -1,28 +1,44 @@
+
 import "./tarjetaVenta.css";
 
-export default function TarjetaVenta() {
+export default function TarjetaVenta({ producto }) {
   return (
     <article className="TarjetaVenta">
       <img
         className="TarjetaVenta__imagen"
-        src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=700&q=85"
-        alt="Remera a rayas rosa y blanca"
+        src={producto.imagen}
+        alt={producto.alt}
       />
 
       <span className="TarjetaVenta__tipo">
-        <span className="material-symbols-outlined" aria-hidden="true">sell</span>
-        VENTA
+        <span className="material-symbols-outlined" aria-hidden="true">
+          sell
+        </span>
+        COMPRA
       </span>
-      <span className="TarjetaVenta__favorito material-symbols-outlined" aria-label="Favorito">
+
+      <span
+        className="TarjetaVenta__favorito material-symbols-outlined"
+        aria-label="Favorito"
+      >
         favorite_border
       </span>
 
       <div className="TarjetaVenta__pie">
         <div className="TarjetaVenta__datos">
-          <span className="TarjetaVenta__nombre">Remera rayas</span>
-          <span className="TarjetaVenta__precio">$10.000</span>
+          <span className="TarjetaVenta__nombre">
+            {producto.nombre}
+          </span>
+
+          <span className="TarjetaVenta__precio">
+            ${producto.precio.toLocaleString("es-AR")}
+          </span>
         </div>
-        <span className="TarjetaVenta__accion material-symbols-outlined" aria-hidden="true">
+
+        <span
+          className="TarjetaVenta__accion material-symbols-outlined"
+          aria-hidden="true"
+        >
           shopping_cart
         </span>
       </div>

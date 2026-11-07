@@ -1,3 +1,4 @@
+
 import "./select.css";
 import "../../styles/variables.css";
 
@@ -6,6 +7,7 @@ export default function Select({
   seleccionada,
   ariaLabel = "Categorías",
   className = "",
+  onChange,
 }) {
   return (
     <div
@@ -13,26 +15,32 @@ export default function Select({
       role="group"
       aria-label={ariaLabel}
     >
-      {opciones.map((opcion) => (
-        <button
-          className={`Select__opcion${(seleccionada === opcion.valor || (seleccionada === undefined && opcion.activa)) ? " Select__opcion--activa" : ""}`}
-          type="button"
-          key={opcion.valor}
-          aria-pressed={seleccionada === opcion.valor || (seleccionada === undefined && Boolean(opcion.activa))}
-        >
-          {opcion.icono && (
-            <span
-              className="material-symbols-outlined"
-              aria-hidden="true"
-            >
-              {opcion.icono}
-            </span>
-          )}
+      {opciones.map((opcion) => {
+        const activa =
+          seleccionada === opcion.valor ||
+          (seleccionada === undefined && opcion.activa);
 
-          {opcion.texto}
-        </button>
-      ))}
+        return (
+          <button
+            className={`Select__opcion${activa ? " Select__opcion--activa" : ""}`}
+            type="button"
+            key={opcion.valor}
+            aria-pressed={Boolean(activa)}
+            onClick={() => onChange?.(opcion.valor)}
+          >
+            {opcion.icono && (
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+              >
+                {opcion.icono}
+              </span>
+            )}
 
+            {opcion.texto}
+          </button>
+        );
+      })}
     </div>
   );
 }
