@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import { Link } from "react-router";
@@ -15,7 +16,7 @@ const pedidosIniciales = [
     usuario: "@user67",
     telefono: "5492901650809",
     estado: null,
-    expandido: true,
+    expandido: false,
     productos: [
       { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 0 },
       { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
@@ -35,7 +36,7 @@ const pedidosIniciales = [
     usuario: "@luna",
     telefono: "5492901000002",
     estado: "Confirmado",
-    expandido: true,
+    expandido: false,
     productos: [
       { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 5 },
       { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
@@ -45,7 +46,7 @@ const pedidosIniciales = [
     usuario: "@mora",
     telefono: "5492901000003",
     estado: "Completado",
-    expandido: true,
+    expandido: false,
     productos: [
       { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 5 },
       { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
@@ -91,7 +92,7 @@ const aparienciaEstado = {
   Completado: { icono: "verified", clase: "completado" },
 };
 
-export default function Carrito() {
+export default function Carrito({ onCerrar }) {
   const [pedidos, setPedidos] = useState(pedidosIniciales);
 
   // Desplegar o contraer un pedido
@@ -177,6 +178,7 @@ export default function Carrito() {
       titulo="Carrito"
       icono="shopping_cart"
       className="Carrito"
+      onClose={onCerrar}
     >
       <div className="Carrito__layout">
         <Link className="Carrito__ayuda" to="/preguntas-frecuentes">

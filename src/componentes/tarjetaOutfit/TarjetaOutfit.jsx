@@ -1,9 +1,23 @@
 
 import "./tarjetaOutfit.css";
+import { useNavigate } from "react-router";
 
 export default function TarjetaOutfit() {
+  const navigate = useNavigate();
   return (
-    <article className="TarjetaOutfit">
+    <article
+      className="TarjetaOutfit TarjetaOutfit--clickeable"
+      role="link"
+      tabIndex={0}
+      aria-label="Ver detalle del outfit"
+      onClick={() => navigate("/detalles/outfit")}
+      onKeyDown={(evento) => {
+        if (evento.key === "Enter" || evento.key === " ") {
+          evento.preventDefault();
+          navigate("/detalles/outfit");
+        }
+      }}
+    >
       {/* Collage de imágenes */}
       <div className="TarjetaOutfit__fotos">
         <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=85" alt="Zapatillas negras" />

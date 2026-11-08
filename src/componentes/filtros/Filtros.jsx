@@ -95,6 +95,7 @@ export default function Filtros({
   setMostrarTodasCategorias,
   criterios = {},
   setCriterios,
+  onCerrar,
 }) {
   const claseTipo = {
     todos: "FiltrosTodo",
@@ -157,6 +158,7 @@ export default function Filtros({
       titulo="Filtros"
       icono="tune"
       className={`FiltrosIntercambio FiltrosBoutique ${claseTipo}`}
+      onClose={onCerrar}
     >
       <div className="FiltrosIntercambio__contenido">
 

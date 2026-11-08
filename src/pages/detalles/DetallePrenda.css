@@ -144,7 +144,7 @@
   padding: 28px clamp(16px, 2vw, 34px);
 }
 
-.material-symbols-outlined {
+.DetallePrenda .material-symbols-outlined {
     font-family: 'Material Symbols Outlined'!important;
     font-weight: normal;
     font-style: normal;

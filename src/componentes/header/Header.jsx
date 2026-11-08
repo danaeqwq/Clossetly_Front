@@ -2,7 +2,30 @@ import "./header.css";
 import "../../styles/global.css"
 import iconoFavoritos from "../../assets/componentes/icono favoritos.svg";
 import iconoCampana from "../../assets/componentes/icono campana.svg";
-export default function Header({ seccion = "Explorar" }) {
+import { useLocation } from "react-router";
+
+const nombresSeccion = {
+    "/admin": "Administración",
+    "/boutique": "Boutique",
+    "/explorar": "Explorar",
+    "/perfil": "Mi cuenta",
+    "/guia-talle": "Guía de talles",
+    "/armario": "Mi armario",
+    "/preguntas-frecuentes": "Preguntas frecuentes",
+    "/propuesta-intercambio": "Propuesta de intercambio",
+    "/terminos-y-condiciones": "Términos y condiciones",
+    "/registro": "Crear cuenta",
+    "/detalles/prenda": "Detalle de prenda",
+    "/detalles/outfit": "Detalle de outfit",
+    "/detalles/venta": "Detalle de venta",
+    "/detalles/intercambio": "Detalle de intercambio",
+};
+
+export default function Header({ seccion = "Explorar", carritoAbierto, onAbrirFiltros, onAlternarCarrito }) {
+    const { pathname } = useLocation();
+    const esBoutique = pathname === "/boutique";
+    const nombreSeccion = nombresSeccion[pathname] || seccion;
+
     return (
         <header className="Header">
             <a
@@ -19,7 +42,7 @@ export default function Header({ seccion = "Explorar" }) {
             />
 
             <a className="Header__seccion" href="#">
-                {seccion}
+                {nombreSeccion}
             </a>
 
             <div className="Header__acciones">
@@ -52,15 +75,31 @@ export default function Header({ seccion = "Explorar" }) {
                     <img src={iconoCampana} alt="" />
                 </button>
 
-                <button
-                    className="Header__icono"
-                    type="button"
-                    aria-label="Filtros"
-                >
-                    <span className="material-symbols-outlined">
-                        tune
-                    </span>
-                </button>
+                {esBoutique && (
+                    <button
+                        className="Header__icono"
+                        type="button"
+                        aria-label={carritoAbierto ? "Cerrar carrito" : "Abrir carrito"}
+                        onClick={onAlternarCarrito}
+                    >
+                        <span className="material-symbols-outlined" aria-hidden="true">
+                            shopping_cart
+                        </span>
+                    </button>
+                )}
+
+                {esBoutique && (
+                    <button
+                        className="Header__icono"
+                        type="button"
+                        aria-label="Abrir filtros de Boutique"
+                        onClick={onAbrirFiltros}
+                    >
+                        <span className="material-symbols-outlined" aria-hidden="true">
+                            tune
+                        </span>
+                    </button>
+                )}
             </div>
         </header>
     );

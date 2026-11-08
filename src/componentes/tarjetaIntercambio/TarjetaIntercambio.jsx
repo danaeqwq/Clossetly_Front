@@ -1,14 +1,21 @@
 import "./tarjetaIntercambio.css";
 
-export default function TarjetaIntercambio({ producto, color, colorTexto, colorAccion }) {
+export default function TarjetaIntercambio({
+  producto,
+  color,
+  colorTexto,
+  colorAccion,
+  onClick,
+}) {
   return (
     <article
-      className="TarjetaIntercambio"
+      className="TarjetaIntercambio TarjetaIntercambio--clickeable"
       style={{
         "--tarjeta-color": color,
         "--tarjeta-texto": colorTexto,
         "--tarjeta-accion-color": colorAccion || color,
       }}
+      onClick={onClick}
     >
       <img
         className="TarjetaIntercambio__imagen"
@@ -17,16 +24,11 @@ export default function TarjetaIntercambio({ producto, color, colorTexto, colorA
       />
 
       <span className="TarjetaIntercambio__tipo">
-        <span className="material-symbols-outlined" aria-hidden="true">
-          autorenew
-        </span>
+        <span className="material-symbols-outlined">autorenew</span>
         INTERCAMBIO
       </span>
 
-      <span
-        className="TarjetaIntercambio__favorito material-symbols-outlined"
-        aria-label="Favorito"
-      >
+      <span className="TarjetaIntercambio__favorito material-symbols-outlined">
         favorite_border
       </span>
 
@@ -41,10 +43,7 @@ export default function TarjetaIntercambio({ producto, color, colorTexto, colorA
           </span>
         </div>
 
-        <span
-          className="TarjetaIntercambio__accion material-symbols-outlined"
-          aria-hidden="true"
-        >
+        <span className="TarjetaIntercambio__accion material-symbols-outlined">
           autorenew
         </span>
       </div>

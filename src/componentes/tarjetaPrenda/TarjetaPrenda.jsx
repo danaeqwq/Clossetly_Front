@@ -1,41 +1,61 @@
 import "./tarjetaPrenda.css";
-
-const imagenPorDefecto = "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=600&q=85";
+import { useNavigate } from "react-router";
 
 export default function TarjetaPrenda({
-  imagen = imagenPorDefecto,
-  descripcionImagen = "Vestido color oscuro",
-  nombre = "Vestido art",
+  prenda,
   color,
   mostrarOpciones = false,
   seleccionada = false,
   menuAbierto = false,
+  clickable = true,
 }) {
-  const clases = [
-    "TarjetaPrenda",
-    mostrarOpciones && "TarjetaPrenda--armario",
-    seleccionada && "TarjetaPrenda--seleccionada",
-  ].filter(Boolean).join(" ");
+  const navigate = useNavigate();
 
   return (
-    <article className={clases} style={color ? { "--TarjetaPrenda-color": color } : undefined}>
-      <img className="TarjetaPrenda__imagen" src={imagen} alt={descripcionImagen} />
+    <article
+      className={`TarjetaPrenda
+        ${mostrarOpciones ? "TarjetaPrenda--armario" : ""}
+        ${seleccionada ? "TarjetaPrenda--seleccionada" : ""}
+        ${clickable && !mostrarOpciones ? "TarjetaPrenda--clickeable" : ""}
+      `}
+      style={color ? { "--TarjetaPrenda-color": color } : undefined}
+      onClick={
+        clickable && !mostrarOpciones
+          ? () => navigate("/detalles/prenda")
+          : undefined
+      }
+    >
+      <img
+        className="TarjetaPrenda__imagen"
+        src={prenda.imagen}
+        alt={prenda.alt}
+      />
+
       {mostrarOpciones && (
         <>
-          <button className="TarjetaPrenda__opciones" type="button" aria-label={`Opciones para ${nombre}`}>
-            <span aria-hidden="true">⋯</span>
+          <button
+            className="TarjetaPrenda__opciones"
+            type="button"
+            aria-label={`Opciones para ${prenda.nombre}`}
+          >
+            ⋯
           </button>
+
           {menuAbierto && (
-            <ul className="TarjetaPrenda__menu" aria-label={`Opciones para ${nombre}`}>
-              <li><span className="material-symbols-outlined" aria-hidden="true">edit</span>Modificar</li>
-              <li><span className="material-symbols-outlined" aria-hidden="true">checkroom</span>Armar outfit</li>
-              <li><span className="material-symbols-outlined" aria-hidden="true">delete_outline</span>Eliminar</li>
+            <ul className="TarjetaPrenda__menu">
+              <li>edit Modificar</li>
+              <li>checkroom Armar outfit</li>
+              <li>delete_outline Eliminar</li>
             </ul>
           )}
         </>
       )}
-      <span className="TarjetaPrenda__favorito material-symbols-outlined">favorite</span>
-      <span className="TarjetaPrenda__etiqueta">{nombre}</span>
+
+      <span className="TarjetaPrenda__favorito material-symbols-outlined">
+        favorite
+      </span>
+
+      <span className="TarjetaPrenda__etiqueta">{prenda.nombre}</span>
     </article>
   );
 }

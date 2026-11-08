@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import "./boutique.css";
 import "../../styles/variables.css";
@@ -8,7 +10,7 @@ import Select from "../../componentes/select/Select";
 import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import Filtros from "../../componentes/filtros/Filtros";
-import Carrito from "../../componentes/carrito/Carrito"
+import Carrito from "../../componentes/carrito/Carrito";
 
 // Filtros de Boutique
 const filtrosBoutique = [
@@ -227,12 +229,23 @@ const productos = [
     alt: "Sweater",
   },
 ];
+export default function Boutique({
+  carritoAbierto = false,
+  onCerrarCarrito,
+  filtrosAbiertos = false,
+  onCerrarFiltros,
+}) {
+  
+  const navigate = useNavigate();
 
-export default function Boutique() {
   const [filtro, setFiltro] = useState("todos");
   const [categoriasActivas, setCategoriasActivas] = useState([]);
   const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
-  const [criterios, setCriterios] = useState({ colores: [], tiposAceptados: [], ordenPrecio: "MAYOR MENOR" });
+  const [criterios, setCriterios] = useState({
+    colores: [],
+    tiposAceptados: [],
+    ordenPrecio: "MAYOR MENOR",
+  });
 
   const productosFiltrados = productos
     .filter((producto) => filtro === "todos" || producto.tipo === filtro)
@@ -245,15 +258,55 @@ export default function Boutique() {
         ["ocasion", criterios.ocasion],
         ["genero", criterios.genero],
       ];
-      const coincideCampos = campos.every(([campo, valor]) => !valor || producto[campo] === valor);
-      const coincideColor = !criterios.colores?.length || criterios.colores.some((color) => producto.colores?.includes(color));
-      const coincideEstilo = !categoriasActivas.length || categoriasActivas.some((estilo) => producto.estilos?.includes(estilo));
-      const coincideTiposAceptados = filtro !== "intercambio" || !criterios.tiposAceptados?.length || criterios.tiposAceptados.some((item) => producto.tiposAceptados?.includes(item));
-      const coincideEstadoMinimo = filtro !== "intercambio" || !criterios.estadoMinimoAceptado || nivelEstado[producto.estadoMinimoAceptado] <= nivelEstado[criterios.estadoMinimoAceptado];
-      const coincideTalleBuscado = filtro !== "intercambio" || !criterios.talleBuscado || producto.tallesBuscados?.includes(criterios.talleBuscado);
-      return coincideCampos && coincideColor && coincideEstilo && coincideTiposAceptados && coincideEstadoMinimo && coincideTalleBuscado;
+
+      const coincideCampos = campos.every(
+        ([campo, valor]) => !valor || producto[campo] === valor
+      );
+
+      const coincideColor =
+        !criterios.colores?.length ||
+        criterios.colores.some((color) => producto.colores?.includes(color));
+
+      const coincideEstilo =
+        !categoriasActivas.length ||
+        categoriasActivas.some((estilo) => producto.estilos?.includes(estilo));
+
+      const coincideTiposAceptados =
+        filtro !== "intercambio" ||
+        !criterios.tiposAceptados?.length ||
+        criterios.tiposAceptados.some((item) =>
+          producto.tiposAceptados?.includes(item)
+        );
+
+      const coincideEstadoMinimo =
+        filtro !== "intercambio" ||
+        !criterios.estadoMinimoAceptado ||
+        nivelEstado[producto.estadoMinimoAceptado] <=
+          nivelEstado[criterios.estadoMinimoAceptado];
+
+      const coincideTalleBuscado =
+        filtro !== "intercambio" ||
+        !criterios.talleBuscado ||
+        producto.tallesBuscados?.includes(criterios.talleBuscado);
+
+      return (
+        coincideCampos &&
+        coincideColor &&
+        coincideEstilo &&
+        coincideTiposAceptados &&
+        coincideEstadoMinimo &&
+        coincideTalleBuscado
+      );
     })
-    .sort((a, b) => filtro !== "compra" ? 0 : criterios.ordenPrecio === "MENOR MAYOR" ? (a.precio || 0) - (b.precio || 0) : criterios.ordenPrecio === "MAYOR MENOR" ? (b.precio || 0) - (a.precio || 0) : 0);
+    .sort((a, b) =>
+      filtro !== "compra"
+        ? 0
+        : criterios.ordenPrecio === "MENOR MAYOR"
+          ? (a.precio || 0) - (b.precio || 0)
+          : criterios.ordenPrecio === "MAYOR MENOR"
+            ? (b.precio || 0) - (a.precio || 0)
+            : 0
+    );
 
   return (
     <main className="Boutique">
@@ -265,50 +318,95 @@ export default function Boutique() {
           onChange={setFiltro}
         />
       </div>
-      <Filtros
-        tipo={filtro}
-        onChange={setFiltro}
-        categoriasActivas={categoriasActivas}
-        setCategoriasActivas={setCategoriasActivas}
-        mostrarTodasCategorias={mostrarTodasCategorias}
-        setMostrarTodasCategorias={setMostrarTodasCategorias}
-        criterios={criterios}
-        setCriterios={setCriterios}
-      />
+
+      {filtrosAbiertos && (
+        <Filtros
+          tipo={filtro}
+          onChange={setFiltro}
+          categoriasActivas={categoriasActivas}
+          setCategoriasActivas={setCategoriasActivas}
+          mostrarTodasCategorias={mostrarTodasCategorias}
+          setMostrarTodasCategorias={setMostrarTodasCategorias}
+          criterios={criterios}
+          setCriterios={setCriterios}
+          onCerrar={onCerrarFiltros}
+        />
+      )}
 
       <div className="Boutique__contenido">
-        <section className="Boutique__productos" aria-label="Productos de Boutique">
+        <section
+          className="Boutique__productos"
+          aria-label="Productos de Boutique"
+        >
           {productosFiltrados.map((producto) => {
             const color = coloresTarjeta[producto.color] || "#A87975";
-            const colorTexto = producto.color === "blanco" ? "#332D37" : "#FFFFFF";
-            const colorAccion = producto.color === "blanco" ? "#332D37" : color;
+            const colorTexto =
+              producto.color === "blanco" ? "#332D37" : "#FFFFFF";
+            const colorAccion =
+              producto.color === "blanco" ? "#332D37" : color;
+
+            const abrirDetalle = () => {
+              if (producto.tipo === "intercambio") {
+                navigate("/detalles/intercambio", {
+                  state: { producto },
+                });
+              } else {
+                navigate("/detalles/venta", {
+                  state: { producto },
+                });
+              }
+            };
 
             return producto.tipo === "intercambio" ? (
-              <TarjetaIntercambio key={producto.id} producto={producto} color={color} colorTexto={colorTexto} colorAccion={colorAccion} />
+              <TarjetaIntercambio
+                key={producto.id}
+                producto={producto}
+                color={color}
+                colorTexto={colorTexto}
+                colorAccion={colorAccion}
+                onClick={abrirDetalle}
+              />
             ) : (
-              <TarjetaVenta key={producto.id} producto={producto} color={color} colorTexto={colorTexto} colorAccion={colorAccion} />
+              <TarjetaVenta
+                key={producto.id}
+                producto={producto}
+                color={color}
+                colorTexto={colorTexto}
+                colorAccion={colorAccion}
+                onClick={abrirDetalle}
+              />
             );
           })}
         </section>
 
         {categoriasActivas.length > 0 && (
-          <aside className="Boutique__categoriasActivas" aria-label="Categorías seleccionadas">
+          <aside
+            className="Boutique__categoriasActivas"
+            aria-label="Categorías seleccionadas"
+          >
             <h2>ESTILOS</h2>
+
             {categoriasActivas.map((categoria) => (
               <button
                 className="Boutique__categoriaActiva"
                 type="button"
                 key={categoria}
                 aria-label={`Quitar ${categoria}`}
-                onClick={() => setCategoriasActivas((actuales) => actuales.filter((activa) => activa !== categoria))}
+                onClick={() =>
+                  setCategoriasActivas((actuales) =>
+                    actuales.filter((activa) => activa !== categoria)
+                  )
+                }
               >
-                <span>{categoria}</span><span aria-hidden="true">×</span>
+                <span>{categoria}</span>
+                <span aria-hidden="true">×</span>
               </button>
             ))}
           </aside>
         )}
       </div>
-      <Carrito/>
+
+      {carritoAbierto && <Carrito onCerrar={onCerrarCarrito} />}
     </main>
   );
 }
