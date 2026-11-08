@@ -4,11 +4,7 @@ import CampoFormulario from "../../componentes/CampoFormulario/CampoFormulario"
 import Boton from "../../componentes/Boton/Boton"
 
 import ilustracion from "../../assets/Ilustracion__registro.svg"
-import iconoCorreo from "../../assets/Icono__correo.svg"
-import iconoCandado from "../../assets/Icono_candado.svg"
-import iconoOjo from "../../assets/Icono__ojo-cerrado.svg"
 import iconoGoogle from "../../assets/Icono__google.svg"
-import iconoUser from "../../assets/Icono_user.svg"
 
 
 export default function Registro() {
@@ -27,35 +23,36 @@ export default function Registro() {
 
                     <form className="Registro__section-div-form">
                         <CampoFormulario
+                            id="registro-usuario"
                             texto="User"
-                            icono={iconoUser}
+                            iconoMaterial="person"
                             tipo="text"
                             placeholder="ej: dany"
                         />
 
                         <CampoFormulario
+                            id="registro-email"
                             texto="Email"
-                            icono={iconoCorreo}
-                            tipo="text"
+                            iconoMaterial="mail"
+                            tipo="email"
                             placeholder="ejemplo@gmail.com"
                         />
 
                         <CampoFormulario
                             texto="Contraseña"
                             id="registro-password"
-                            icono={iconoCandado}
-                            iconoFinal={iconoOjo}
+                            iconoMaterial="lock"
+                            iconoFinalMaterial="visibility_off"
                             tipo="password"
                             placeholder="ej: contraseña"
                         />
 
                         <CampoFormulario
-                            texto="Confirmar contraseña"
-                            id="registro-confirmar"
-                            icono={iconoCandado}
-                            iconoFinal={iconoOjo}
-                            tipo="password"
-                            placeholder="ej: contraseña"
+                            id="registro-whatsapp"
+                            texto="Número de WhatsApp"
+                            iconoMaterial="call"
+                            tipo="tel"
+                            placeholder="ej: +54 9 11 1234-5678"
                         />
 
                         <label className="Registro__section-div-form-recordar">

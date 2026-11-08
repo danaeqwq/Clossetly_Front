@@ -35,7 +35,7 @@ const campos = [
   {
     clave: "estado",
     etiqueta: "Estado",
-    opciones: ["TODAS", "COMO NUEVA", "MUY BUENO", "BUENO"],
+    opciones: ["TODAS", "NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"],
   },
   {
     clave: "ocasion",
@@ -387,9 +387,11 @@ export default function Filtros({
                   aria-label="Estado mínimo aceptado"
                 >
                   <option>TODOS</option>
-                  <option>COMO NUEVO</option>
-                  <option>MUY BUENO</option>
-                  <option>BUENO</option>
+                  <option>NUEVA CON ETIQUETA</option>
+                  <option>NUEVA SIN ETIQUETA</option>
+                  <option>COMO NUEVA</option>
+                  <option>MUY BUEN ESTADO</option>
+                  <option>BUEN ESTADO</option>
                 </select>
               </label>
 

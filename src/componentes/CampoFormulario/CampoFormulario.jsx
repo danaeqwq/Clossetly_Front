@@ -2,7 +2,7 @@ import "./CampoFormulario.css"
 import "../../styles/variables.css"
 
 
-export default function CampoFormulario({id, texto, icono, tipo, placeholder, iconoFinal}) {
+export default function CampoFormulario({id, texto, icono, iconoMaterial, tipo, placeholder, iconoFinal, iconoFinalMaterial}) {
     return (
         <>
             <label className="Label" htmlFor={id}>
@@ -10,11 +10,17 @@ export default function CampoFormulario({id, texto, icono, tipo, placeholder, ic
             </label>
 
             <div className="Campo">
-                <img 
-                src={icono} 
-                alt="" 
-                className="Campo__img" 
-                />
+                {iconoMaterial ? (
+                    <span className="material-symbols-outlined Campo__iconoMaterial" aria-hidden="true">
+                        {iconoMaterial}
+                    </span>
+                ) : (
+                    <img
+                        src={icono}
+                        alt=""
+                        className="Campo__img"
+                    />
+                )}
 
                 <input 
                 id={id} 
@@ -23,7 +29,13 @@ export default function CampoFormulario({id, texto, icono, tipo, placeholder, ic
                 placeholder={placeholder}
                 />
 
-                {iconoFinal && (
+                {iconoFinalMaterial && (
+                    <span className="material-symbols-outlined Campo__iconoMaterial Campo__iconoMaterial--final" aria-hidden="true">
+                        {iconoFinalMaterial}
+                    </span>
+                )}
+
+                {iconoFinal && !iconoFinalMaterial && (
                     <img
                         src={iconoFinal}
                         alt=""

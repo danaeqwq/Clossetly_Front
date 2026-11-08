@@ -8,6 +8,7 @@ import Select from "../../componentes/select/Select";
 import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import Filtros from "../../componentes/filtros/Filtros";
+import Carrito from "../../componentes/carrito/Carrito"
 
 // Filtros de Boutique
 const filtrosBoutique = [
@@ -31,7 +32,13 @@ const coloresTarjeta = {
   blanco: "#FFFFFF",
 };
 
-const nivelEstado = { "COMO NUEVO": 0, "COMO NUEVA": 0, "MUY BUENO": 1, BUENO: 2 };
+const nivelEstado = {
+  "NUEVA CON ETIQUETA": 0,
+  "NUEVA SIN ETIQUETA": 1,
+  "COMO NUEVA": 2,
+  "MUY BUEN ESTADO": 3,
+  "BUEN ESTADO": 4,
+};
 
 // Productos de prueba
 const productos = [
@@ -44,12 +51,12 @@ const productos = [
     color: "naranja",
     colores: ["rojo", "naranja"],
     temporada: "VERANO",
-    estado: "MUY BUENO",
+    estado: "MUY BUEN ESTADO",
     ocasion: "FIESTA",
     genero: "MUJER",
     estilos: ["Vintage", "Boho Chic"],
     tiposAceptados: ["Remeras", "Pantalones"],
-    estadoMinimoAceptado: "MUY BUENO",
+    estadoMinimoAceptado: "COMO NUEVA",
     tallesBuscados: ["S", "M"],
     imagen:
       "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=700&q=85",
@@ -65,7 +72,7 @@ const productos = [
     color: "rosa",
     colores: ["rosa", "blanco"],
     temporada: "PRIMAVERA",
-    estado: "COMO NUEVA",
+    estado: "NUEVA CON ETIQUETA",
     ocasion: "CASUAL",
     genero: "MUJER",
     estilos: ["Coquette", "Clean Girl"],
@@ -83,7 +90,7 @@ const productos = [
     color: "blanco",
     colores: ["blanco"],
     temporada: "VERANO",
-    estado: "COMO NUEVA",
+    estado: "NUEVA SIN ETIQUETA",
     ocasion: "CASUAL",
     genero: "UNISEX",
     estilos: ["Streetwear", "Clean Girl"],
@@ -101,7 +108,7 @@ const productos = [
     color: "negro",
     colores: ["negro"],
     temporada: "INVIERNO",
-    estado: "MUY BUENO",
+    estado: "COMO NUEVA",
     ocasion: "CASUAL",
     genero: "MUJER",
     estilos: ["Darkwear", "Goth"],
@@ -119,7 +126,7 @@ const productos = [
     color: "rojo",
     colores: ["rojo"],
     temporada: "INVIERNO",
-    estado: "BUENO",
+    estado: "BUEN ESTADO",
     ocasion: "CASUAL",
     genero: "UNISEX",
     estilos: ["Deportivo", "Streetwear"],
@@ -141,7 +148,7 @@ const productos = [
     genero: "MUJER",
     estilos: ["Cottagecore", "Boho Chic"],
     tiposAceptados: ["Accesorios"],
-    estadoMinimoAceptado: "COMO NUEVA",
+    estadoMinimoAceptado: "NUEVA SIN ETIQUETA",
     tallesBuscados: ["S", "M"],
     imagen:
       "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=700&q=85",
@@ -157,7 +164,7 @@ const productos = [
     color: "azul",
     colores: ["azul"],
     temporada: "OTOÑO",
-    estado: "MUY BUENO",
+    estado: "MUY BUEN ESTADO",
     ocasion: "CASUAL",
     genero: "UNISEX",
     estilos: ["Vintage", "Skater"],
@@ -175,7 +182,7 @@ const productos = [
     color: "amarillo",
     colores: ["amarillo", "blanco"],
     temporada: "PRIMAVERA",
-    estado: "COMO NUEVA",
+    estado: "NUEVA CON ETIQUETA",
     ocasion: "FORMAL",
     genero: "MUJER",
     estilos: ["Old Money", "Preppy"],
@@ -193,7 +200,7 @@ const productos = [
     color: "morado",
     colores: ["morado"],
     temporada: "VERANO",
-    estado: "BUENO",
+    estado: "BUEN ESTADO",
     ocasion: "FIESTA",
     genero: "MUJER",
     estilos: ["Y2K", "Gyaru"],
@@ -211,7 +218,7 @@ const productos = [
     color: "naranja",
     colores: ["naranja"],
     temporada: "INVIERNO",
-    estado: "MUY BUENO",
+    estado: "COMO NUEVA",
     ocasion: "FORMAL",
     genero: "UNISEX",
     estilos: ["Dark Academia", "Old Money"],
@@ -301,6 +308,7 @@ export default function Boutique() {
           </aside>
         )}
       </div>
+      <Carrito/>
     </main>
   );
 }

@@ -14,7 +14,7 @@ const etiquetas = [
   { nombre: "Temporada", valor: "PRIMAVERA" },
   { nombre: "Ocasión", valor: "FORMAL" },
   { nombre: "Género", valor: "UNISEX" },
-  { nombre: "Estado", valor: "NUEVA" },
+  { nombre: "Estado", valor: "NUEVA CON ETIQUETA" },
 ];
 
 export default function CrearPrenda() {

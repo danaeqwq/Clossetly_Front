@@ -45,10 +45,13 @@ export default function CrearPrenda3Intercambio() {
         <div className="Intercambiar__selectores">
           <label className="Intercambiar__selector">
             <span>Estado mínimo aceptado</span>
-            <select defaultValue="USADO" aria-label="Estado mínimo aceptado">
-              <option>USADO</option>
-              <option>Como nuevo</option>
-              <option>Nuevo</option>
+            <select defaultValue="TODOS" aria-label="Estado mínimo aceptado">
+              <option>TODOS</option>
+              <option>NUEVA CON ETIQUETA</option>
+              <option>NUEVA SIN ETIQUETA</option>
+              <option>COMO NUEVA</option>
+              <option>MUY BUEN ESTADO</option>
+              <option>BUEN ESTADO</option>
             </select>
           </label>
           <label className="Intercambiar__selector">

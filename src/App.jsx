@@ -14,6 +14,7 @@ import MiArmario from "./pages/miArmario/MiArmario";
 import PropuestaDeIntercambio from "./pages/propuesta de intercambio/PropuestaDeIntercambio";
 import Terminos from "./pages/terminos/Terminos";
 import PreguntasFrecuentes from "./pages/preguntasFrecuentes/preguntaAbierta/PreguntaAbierta"
+import Registro from "./pages/registro/Registro";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
             <Route path="/propuesta-intercambio" element={<PropuestaDeIntercambio />} />
             <Route path="/terminos-y-condiciones" element={<Terminos />} />
+            <Route path="/registro" element={<Registro />} />
         </Routes>
     </main>
 
