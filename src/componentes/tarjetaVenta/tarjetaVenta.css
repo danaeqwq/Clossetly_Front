@@ -3,9 +3,9 @@
   min-width: 0;
   height: 320px;
   overflow: hidden;
-  border: 0.1px solid color-mix(in srgb, var(--color-rosaTerra) 20%, transparent);
+  border: 0.1px solid color-mix(in srgb, var(--tarjeta-color) 20%, transparent);
   border-radius: 10px;
-  background: var(--color-rosaTerra);
+  background: var(--tarjeta-color);
   box-shadow: 0 4px 8px #342c3042;
 }
 
@@ -23,10 +23,10 @@
   align-items: center;
   gap: 5px;
   padding: 2px 6px;
-  border: 1px solid var(--color-blancaso);
+  border: 1px solid var(--tarjeta-texto, var(--color-blancaso));
   border-radius: 24px;
-  color: var(--color-blancaso);
-  background: color-mix(in srgb, var(--color-rosaTerra) 90%, transparent);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: color-mix(in srgb, var(--tarjeta-color) 90%, transparent);
   font:500 13px var(--font-manrope);
 }
 
@@ -42,10 +42,10 @@
   place-items: center;
   width: 31px;
   height: 31px;
-  border: 1px solid color-mix(in srgb, var(--color-blancaso) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 75%, transparent);
   border-radius: 50%;
-  color: var(--color-blancaso);
-  background: color-mix(in srgb, var(--color-rosaTerra) 60%, transparent);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: color-mix(in srgb, var(--tarjeta-color) 60%, transparent);
   font-size: 18px;
 }
 
@@ -61,11 +61,11 @@
   min-height: 59px;
   width: 80%;
   padding: 0 12px 0 8px;
-  border: 1px solid color-mix(in srgb, var(--color-blancaso) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 50%, transparent);
   border-left: 0;
   border-radius: 0 36px 36px 0;
-  color: var(--color-blancaso);
-  background: var(--color-rosaTerra);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: var(--tarjeta-color);
 }
 
 .TarjetaVenta__datos {
@@ -77,14 +77,14 @@
 
 .TarjetaVenta__nombre {
   overflow: hidden;
-  color: var(--color-blancaso);
+  color: var(--tarjeta-texto, #332D37);
   font: 17px var(--font-Kurale);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .TarjetaVenta__precio {
-  color: color-mix(in srgb, var(--color-blancaso) 68%, transparent);
+  color: color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 68%, transparent);
   font: 16px var(--font-manrope);
 }
 
@@ -94,8 +94,9 @@
   place-items: center;
   width: 33px;
   height: 33px;
+  border: 1px solid color-mix(in srgb, var(--tarjeta-accion-color, var(--tarjeta-color)) 50%, transparent);
   border-radius: 50%;
-  color: var(--color-rosaTerra);
+  color: var(--tarjeta-accion-color, var(--tarjeta-color));
   background: var(--color-blancaso);
   font-size: 25px;
   font-weight: 300;

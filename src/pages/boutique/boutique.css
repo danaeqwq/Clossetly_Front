@@ -1,24 +1,66 @@
 .Boutique {
   min-height: calc(100vh - 230px);
-  padding: 8px 11.5% 46px;
+  padding: 8px 0 46px 11.5%;
 }
 
 .Boutique__filtros { margin-bottom: 26px; }
+
+.Boutique__contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  align-items: start;
+  gap: 0;
+}
 
 .Boutique__productos {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: stretch;
-  gap: 40px 54px;
+  gap: 32px 16px;
 }
 
+.Boutique__categoriasActivas {
+  display: flex;
+  width: 140px;
+  flex-direction: column;
+  gap: 6px;
+  margin:0 5px;
+  padding:10px 5px;
+  border-top: 1px solid var(--color-rosaTerra);
+  font-family: var(--font-manrope);
+}
+
+.Boutique__categoriasActivas h2 { margin: 0 0 2px; color: var(--color-carbon); font-size: 13px; font-weight: 600; }
+
+.Boutique__categoriaActiva {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 2px 5px;
+  border: 1px solid color-mix(in srgb, var(--color-rosaTerra) 55%, transparent);
+  border-radius: 14px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  font: 12px/1.2 var(--font-manrope);
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.Boutique__categoriaActiva span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.Boutique__categoriaActiva span:last-child { flex: 0 0 auto; }
+
 @media (max-width: 1100px) {
-  .Boutique { padding-inline: 8%; }
+  .Boutique { padding-inline: 8% 0; }
 
   .Boutique__productos {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px 20px;
+    gap: 20px 8px;
   }
+
+  .Boutique__contenido { grid-template-columns: minmax(0, 1fr) 120px; gap: 0; }
+  .Boutique__categoriasActivas { width: 120px; }
 
 }
 
@@ -36,8 +78,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: center;
     justify-items: center;
-    gap: 15px;
+    gap: 13px;
   }
+
+  .Boutique__contenido { grid-template-columns: 1fr; }
+  .Boutique__categoriasActivas { width: auto; grid-row: 1; flex-direction: row; flex-wrap: wrap; }
+  .Boutique__categoriasActivas h2 { flex: 0 0 100%; }
 
   .Boutique__productos > * {
     width: 100%;

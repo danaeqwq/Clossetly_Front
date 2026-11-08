@@ -3,9 +3,9 @@
   min-width: 0;
   height: 320px;
   overflow: hidden;
-  border: 0.1px solid color-mix(in srgb, var(--color-naranja) 20%, transparent);
+  border: 0.1px solid color-mix(in srgb, var(--tarjeta-color) 20%, transparent);
   border-radius: 10px;
-  background: var(--color-naranja);
+  background: var(--tarjeta-color);
   box-shadow: 0 4px 8px #342c3042;
 }
 
@@ -25,8 +25,8 @@
   padding: 2px 6px;
   border: 1px solid var(--color-blancaso);
   border-radius: 24px;
-  color: var(--color-blancaso);
-  background: var(--color-naranja);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: var(--tarjeta-color);
   font:500 13px var(--font-manrope);
 }
 
@@ -40,10 +40,10 @@
   place-items: center;
   width: 31px;
   height: 31px;
-  border: 1px solid color-mix(in srgb, var(--color-blancaso) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 75%, transparent);
   border-radius: 50%;
-  color: var(--color-blancaso);
-  background: color-mix(in srgb, var(--color-naranja) 60%, transparent);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: color-mix(in srgb, var(--tarjeta-color) 60%, transparent);
   font-size: 18px;
 }
 
@@ -62,8 +62,8 @@
   border: 1px solid color-mix(in srgb, var(--color-blancaso) 50%, transparent);
   border-left: 0;
   border-radius: 0 36px 36px 0;
-  color: var(--color-blancaso);
-  background: var(--color-naranja);
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: var(--tarjeta-color);
 }
 
 .TarjetaIntercambio__datos {
@@ -82,7 +82,7 @@
 }
 
 .TarjetaIntercambio__talle {
-  color: color-mix(in srgb, var(--color-blancaso) 68%, transparent);
+  color: color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 68%, transparent);
   font: 14px var(--font-manrope);
 }
 
@@ -92,8 +92,9 @@
   place-items: center;
   width: 33px;
   height: 33px;
+  border: 1px solid color-mix(in srgb, var(--tarjeta-accion-color, var(--tarjeta-color)) 50%, transparent);
   border-radius: 50%;
-  color: var(--color-naranja);
+  color: var(--tarjeta-accion-color, var(--tarjeta-color));
   background: var(--color-blancaso);
   font-size: 27px;
   font-weight: 300;

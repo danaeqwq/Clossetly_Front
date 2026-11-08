@@ -1,9 +1,15 @@
-
 import "./tarjetaIntercambio.css";
 
-export default function TarjetaIntercambio({ producto }) {
+export default function TarjetaIntercambio({ producto, color, colorTexto, colorAccion }) {
   return (
-    <article className="TarjetaIntercambio">
+    <article
+      className="TarjetaIntercambio"
+      style={{
+        "--tarjeta-color": color,
+        "--tarjeta-texto": colorTexto,
+        "--tarjeta-accion-color": colorAccion || color,
+      }}
+    >
       <img
         className="TarjetaIntercambio__imagen"
         src={producto.imagen}

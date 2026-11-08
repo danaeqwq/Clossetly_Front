@@ -144,3 +144,9 @@
   .FiltrosIntercambio__opcionAceptada { font-size: 11px; }
   .FiltrosIntercambio__estilos { column-gap: 5px; }
 }
+
+.FiltrosTodo .FiltrosIntercambio__grupoEstilos { margin-top: 4px; }
+.FiltrosTodo .FiltrosIntercambio__acciones { padding-top: 12px; }
+
+.FiltrosCompra__campoPrecio { min-height: 43px; margin-top: 7px; }
+.FiltrosCompra__campoPrecio .FiltrosIntercambio__etiqueta { color: var(--color-rosaTerra); }

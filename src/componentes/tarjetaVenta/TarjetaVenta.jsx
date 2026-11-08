@@ -1,9 +1,15 @@
-
 import "./tarjetaVenta.css";
 
-export default function TarjetaVenta({ producto }) {
+export default function TarjetaVenta({ producto, color, colorTexto, colorAccion }) {
   return (
-    <article className="TarjetaVenta">
+    <article
+      className="TarjetaVenta"
+      style={{
+        "--tarjeta-color": color,
+        "--tarjeta-texto": colorTexto,
+        "--tarjeta-accion-color": colorAccion || color,
+      }}
+    >
       <img
         className="TarjetaVenta__imagen"
         src={producto.imagen}
