@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -34,15 +33,7 @@ const coloresTarjeta = {
   blanco: "#FFFFFF",
 };
 
-const nivelEstado = {
-  "NUEVA CON ETIQUETA": 0,
-  "NUEVA SIN ETIQUETA": 1,
-  "COMO NUEVA": 2,
-  "MUY BUEN ESTADO": 3,
-  "BUEN ESTADO": 4,
-};
-
-// Productos de prueba
+// Productos de ejemplo
 const productos = [
   {
     id: 1,
@@ -53,13 +44,15 @@ const productos = [
     color: "naranja",
     colores: ["rojo", "naranja"],
     temporada: "VERANO",
+    estado_id: 4,
     estado: "MUY BUEN ESTADO",
     ocasion: "FIESTA",
     genero: "MUJER",
     estilos: ["Vintage", "Boho Chic"],
     tiposAceptados: ["Remeras", "Pantalones"],
+    estadoMinimoAceptado_id: 3,
     estadoMinimoAceptado: "COMO NUEVA",
-    tallesBuscados: ["S", "M"],
+    talleBuscado: "M",
     imagen:
       "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=700&q=85",
     alt: "Vestido color terracota con estampado floral",
@@ -74,6 +67,7 @@ const productos = [
     color: "rosa",
     colores: ["rosa", "blanco"],
     temporada: "PRIMAVERA",
+    estado_id: 1,
     estado: "NUEVA CON ETIQUETA",
     ocasion: "CASUAL",
     genero: "MUJER",
@@ -92,6 +86,7 @@ const productos = [
     color: "blanco",
     colores: ["blanco"],
     temporada: "VERANO",
+    estado_id: 2,
     estado: "NUEVA SIN ETIQUETA",
     ocasion: "CASUAL",
     genero: "UNISEX",
@@ -110,6 +105,7 @@ const productos = [
     color: "negro",
     colores: ["negro"],
     temporada: "INVIERNO",
+    estado_id: 3,
     estado: "COMO NUEVA",
     ocasion: "CASUAL",
     genero: "MUJER",
@@ -128,6 +124,7 @@ const productos = [
     color: "rojo",
     colores: ["rojo"],
     temporada: "INVIERNO",
+    estado_id: 5,
     estado: "BUEN ESTADO",
     ocasion: "CASUAL",
     genero: "UNISEX",
@@ -145,13 +142,15 @@ const productos = [
     color: "verde1",
     colores: ["verde", "amarillo"],
     temporada: "PRIMAVERA",
+    estado_id: 3,
     estado: "COMO NUEVA",
     ocasion: "CASUAL",
     genero: "MUJER",
     estilos: ["Cottagecore", "Boho Chic"],
     tiposAceptados: ["Accesorios"],
+    estadoMinimoAceptado_id: 2,
     estadoMinimoAceptado: "NUEVA SIN ETIQUETA",
-    tallesBuscados: ["S", "M"],
+    talleBuscado: "S",
     imagen:
       "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=700&q=85",
     alt: "Pollera floral",
@@ -166,6 +165,7 @@ const productos = [
     color: "azul",
     colores: ["azul"],
     temporada: "OTOÑO",
+    estado_id: 4,
     estado: "MUY BUEN ESTADO",
     ocasion: "CASUAL",
     genero: "UNISEX",
@@ -184,6 +184,7 @@ const productos = [
     color: "amarillo",
     colores: ["amarillo", "blanco"],
     temporada: "PRIMAVERA",
+    estado_id: 1,
     estado: "NUEVA CON ETIQUETA",
     ocasion: "FORMAL",
     genero: "MUJER",
@@ -202,6 +203,7 @@ const productos = [
     color: "morado",
     colores: ["morado"],
     temporada: "VERANO",
+    estado_id: 5,
     estado: "BUEN ESTADO",
     ocasion: "FIESTA",
     genero: "MUJER",
@@ -220,6 +222,7 @@ const productos = [
     color: "naranja",
     colores: ["naranja"],
     temporada: "INVIERNO",
+    estado_id: 3,
     estado: "COMO NUEVA",
     ocasion: "FORMAL",
     genero: "UNISEX",
@@ -229,92 +232,110 @@ const productos = [
     alt: "Sweater",
   },
 ];
+
 export default function Boutique({
   carritoAbierto = false,
   onCerrarCarrito,
   filtrosAbiertos = false,
   onCerrarFiltros,
 }) {
-  
   const navigate = useNavigate();
 
   const [filtro, setFiltro] = useState("todos");
   const [categoriasActivas, setCategoriasActivas] = useState([]);
-  const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
+
   const [criterios, setCriterios] = useState({
+    prenda: "",
+    talle: "",
+    temporada: "",
+    estado: "",
+    ocasion: "",
+    genero: "",
     colores: [],
     tiposAceptados: [],
+    estadoMinimoAceptado: "",
+    talleBuscado: "",
     ordenPrecio: "MAYOR MENOR",
   });
+  const campos = [
+    ["prenda", criterios.prenda],
+    ["talle", criterios.talle],
+    ["temporada", criterios.temporada],
+    ["estado", criterios.estado],
+    ["ocasion", criterios.ocasion],
+    ["genero", criterios.genero],
+    [
+      "talleBuscado",
+      filtro === "intercambio" ? criterios.talleBuscado : "",
+    ],
+  ];
 
+  // Aplicar filtros a los productos
   const productosFiltrados = productos
     .filter((producto) => filtro === "todos" || producto.tipo === filtro)
     .filter((producto) => {
-      const campos = [
-        ["prenda", criterios.prenda],
-        ["talle", criterios.talle],
-        ["temporada", criterios.temporada],
-        ["estado", criterios.estado],
-        ["ocasion", criterios.ocasion],
-        ["genero", criterios.genero],
-      ];
+      // Comprobar los campos generales
+      const coincideCampos = campos.every(([campo, valor]) => {
+        if (!valor) return true;
 
-      const coincideCampos = campos.every(
-        ([campo, valor]) => !valor || producto[campo] === valor
-      );
+        return producto[campo] === valor;
+      });
 
-      const coincideColor =
-        !criterios.colores?.length ||
-        criterios.colores.some((color) => producto.colores?.includes(color));
+      // Comprobar colores
+      const coincideColor = criterios.colores.length === 0 ||
+      criterios.colores.some(color => producto.colores.includes(color));
 
+      // Comprobar estilos
       const coincideEstilo =
-        !categoriasActivas.length ||
-        categoriasActivas.some((estilo) => producto.estilos?.includes(estilo));
+      categoriasActivas.length === 0 ||
+      categoriasActivas.some(estilo => producto.estilos.includes(estilo));
 
+      // Comprobar tipos de prendas aceptados para intercambio
       const coincideTiposAceptados =
-        filtro !== "intercambio" ||
-        !criterios.tiposAceptados?.length ||
-        criterios.tiposAceptados.some((item) =>
-          producto.tiposAceptados?.includes(item)
-        );
+      filtro !== "intercambio" ||
+      criterios.tiposAceptados.length === 0 ||
+      criterios.tiposAceptados.some(tipos => producto.tiposAceptados.includes(tipos));
 
+      // Comprobar estado mínimo aceptado
       const coincideEstadoMinimo =
-        filtro !== "intercambio" ||
-        !criterios.estadoMinimoAceptado ||
-        nivelEstado[producto.estadoMinimoAceptado] <=
-          nivelEstado[criterios.estadoMinimoAceptado];
-
-      const coincideTalleBuscado =
-        filtro !== "intercambio" ||
-        !criterios.talleBuscado ||
-        producto.tallesBuscados?.includes(criterios.talleBuscado);
-
+      filtro !== "intercambio" ||
+      !criterios.estadoMinimoAceptado ||
+      producto.estado_id <= criterios.estadoMinimoAceptado;
       return (
         coincideCampos &&
         coincideColor &&
         coincideEstilo &&
         coincideTiposAceptados &&
-        coincideEstadoMinimo &&
-        coincideTalleBuscado
+        coincideEstadoMinimo
       );
     })
-    .sort((a, b) =>
-      filtro !== "compra"
-        ? 0
-        : criterios.ordenPrecio === "MENOR MAYOR"
-          ? (a.precio || 0) - (b.precio || 0)
-          : criterios.ordenPrecio === "MAYOR MENOR"
-            ? (b.precio || 0) - (a.precio || 0)
-            : 0
-    );
+    .sort((a, b) => {
+      if (filtro !== "compra") return 0;
+      if (criterios.ordenPrecio === "MENOR MAYOR") {
+        return a.precio - b.precio;
+      }
+      if (criterios.ordenPrecio === "MAYOR MENOR") {
+        return b.precio - a.precio;
+      }
+      return 0;
+    });
 
+    const abrirDetalle = (producto) => {
+      const ruta =
+        producto.tipo === "intercambio"
+          ? "/detalles/intercambio"
+          : "/detalles/venta";
+
+      navigate(ruta, {
+        state: { producto },
+      });
+    };
   return (
     <main className="Boutique">
       <div className="Boutique__filtros">
         <Select
           opciones={filtrosBoutique}
           seleccionada={filtro}
-          ariaLabel="Filtros de Boutique"
           onChange={setFiltro}
         />
       </div>
@@ -325,8 +346,6 @@ export default function Boutique({
           onChange={setFiltro}
           categoriasActivas={categoriasActivas}
           setCategoriasActivas={setCategoriasActivas}
-          mostrarTodasCategorias={mostrarTodasCategorias}
-          setMostrarTodasCategorias={setMostrarTodasCategorias}
           criterios={criterios}
           setCriterios={setCriterios}
           onCerrar={onCerrarFiltros}
@@ -345,18 +364,6 @@ export default function Boutique({
             const colorAccion =
               producto.color === "blanco" ? "#332D37" : color;
 
-            const abrirDetalle = () => {
-              if (producto.tipo === "intercambio") {
-                navigate("/detalles/intercambio", {
-                  state: { producto },
-                });
-              } else {
-                navigate("/detalles/venta", {
-                  state: { producto },
-                });
-              }
-            };
-
             return producto.tipo === "intercambio" ? (
               <TarjetaIntercambio
                 key={producto.id}
@@ -364,25 +371,24 @@ export default function Boutique({
                 color={color}
                 colorTexto={colorTexto}
                 colorAccion={colorAccion}
-                onClick={abrirDetalle}
+                onClick={() => abrirDetalle(producto)}
               />
-            ) : (
-              <TarjetaVenta
-                key={producto.id}
-                producto={producto}
-                color={color}
-                colorTexto={colorTexto}
-                colorAccion={colorAccion}
-                onClick={abrirDetalle}
-              />
-            );
-          })}
+              ) : (
+                <TarjetaVenta
+                  key={producto.id}
+                  producto={producto}
+                  color={color}
+                  colorTexto={colorTexto}
+                  colorAccion={colorAccion}
+                  onClick={() => abrirDetalle(producto)}
+                />
+              );
+              })}
         </section>
 
         {categoriasActivas.length > 0 && (
           <aside
             className="Boutique__categoriasActivas"
-            aria-label="Categorías seleccionadas"
           >
             <h2>ESTILOS</h2>
 
@@ -391,21 +397,19 @@ export default function Boutique({
                 className="Boutique__categoriaActiva"
                 type="button"
                 key={categoria}
-                aria-label={`Quitar ${categoria}`}
-                onClick={() =>
-                  setCategoriasActivas((actuales) =>
-                    actuales.filter((activa) => activa !== categoria)
-                  )
-                }
+                
               >
                 <span>{categoria}</span>
-                <span aria-hidden="true">×</span>
+                <span aria-hidden="true" onClick={() =>
+                  setCategoriasActivas((actuales) =>
+                    actuales.filter((activa) => activa !== categoria)
+                  )}
+                  >×</span>
               </button>
             ))}
           </aside>
         )}
       </div>
-
       {carritoAbierto && <Carrito onCerrar={onCerrarCarrito} />}
     </main>
   );

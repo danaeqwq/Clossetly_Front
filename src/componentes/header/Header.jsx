@@ -21,7 +21,11 @@ const nombresSeccion = {
     "/detalles/intercambio": "Detalle de intercambio",
 };
 
-export default function Header({ seccion = "Explorar", carritoAbierto, onAbrirFiltros, onAlternarCarrito }) {
+export default function Header({
+    seccion = "Tu Armario virtual",
+    onAbrirFiltros,
+    onAlternarCarrito
+}) {
     const { pathname } = useLocation();
     const esBoutique = pathname === "/boutique";
     const nombreSeccion = nombresSeccion[pathname] || seccion;
@@ -79,20 +83,19 @@ export default function Header({ seccion = "Explorar", carritoAbierto, onAbrirFi
                     <button
                         className="Header__icono"
                         type="button"
-                        aria-label={carritoAbierto ? "Cerrar carrito" : "Abrir carrito"}
                         onClick={onAlternarCarrito}
                     >
                         <span className="material-symbols-outlined" aria-hidden="true">
                             shopping_cart
                         </span>
                     </button>
+                    
                 )}
 
                 {esBoutique && (
                     <button
                         className="Header__icono"
                         type="button"
-                        aria-label="Abrir filtros de Boutique"
                         onClick={onAbrirFiltros}
                     >
                         <span className="material-symbols-outlined" aria-hidden="true">

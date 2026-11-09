@@ -1,10 +1,13 @@
+
+import { useState } from "react";
+
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import Select from "../select/Select";
 import Boton from "../Boton/Boton";
 
 import "./filtros.css";
 
-// Opciones de prendas (se reutilizan en los filtros de prenda e intercambio)
+// Opciones de prendas
 const opcionesPrenda = [
   "TODAS",
   "Remeras",
@@ -13,6 +16,16 @@ const opcionesPrenda = [
   "Camperas",
   "Accesorios",
   "Zapatos",
+];
+
+// Estados disponibles: ID y nombre
+const estados = [
+  { id: 1, nombre: "NUEVA CON ETIQUETA" },
+  { id: 2, nombre: "NUEVA SIN ETIQUETA" },
+  { id: 3, nombre: "COMO NUEVA" },
+  { id: 4, nombre: "MUY BUEN ESTADO" },
+  { id: 5, nombre: "BUEN ESTADO" },
+  { id: 6, nombre: "USADA" },
 ];
 
 // Todos los campos de filtros
@@ -35,7 +48,8 @@ const campos = [
   {
     clave: "estado",
     etiqueta: "Estado",
-    opciones: ["TODAS", "NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"],
+    opciones: estados,
+    tipo: "estado",
   },
   {
     clave: "ocasion",
@@ -91,12 +105,12 @@ export default function Filtros({
   onChange,
   categoriasActivas = [],
   setCategoriasActivas,
-  mostrarTodasCategorias = false,
-  setMostrarTodasCategorias,
   criterios = {},
   setCriterios,
   onCerrar,
 }) {
+  const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
+
   const claseTipo = {
     todos: "FiltrosTodo",
     compra: "FiltrosCompra",
@@ -104,16 +118,16 @@ export default function Filtros({
   }[tipo] || "FiltrosTodo";
 
   // Actualizar un criterio de filtro
-  const actualizarCriterio = (clave, valor, valorInicial) => {
-    setCriterios?.((actuales) => ({
+  const actualizarCriterio = (clave, valor) => {
+    setCriterios((actuales) => ({
       ...actuales,
-      [clave]: valor === valorInicial ? "" : valor,
+      [clave]: valor,
     }));
   };
 
   // Seleccionar o deseleccionar un elemento de una lista
   const alternarElemento = (setter, elemento) => {
-    setter?.((actuales) =>
+    setter((actuales) =>
       actuales.includes(elemento)
         ? actuales.filter((item) => item !== elemento)
         : [...actuales, elemento]
@@ -124,7 +138,7 @@ export default function Filtros({
   const alternarColor = (nombre) => {
     alternarElemento(
       (actualizar) =>
-        setCriterios?.((actuales) => ({
+        setCriterios((actuales) => ({
           ...actuales,
           colores: actualizar(actuales.colores || []),
         })),
@@ -134,12 +148,14 @@ export default function Filtros({
 
   // Alternar tipos de prendas aceptadas
   const alternarPrendaAceptada = (prenda) => {
-    setCriterios?.((actuales) => ({
-      ...actuales,
-      tiposAceptados: actuales.tiposAceptados?.includes(prenda)
-        ? actuales.tiposAceptados.filter((item) => item !== prenda)
-        : [...(actuales.tiposAceptados || []), prenda],
-    }));
+    alternarElemento(
+      (actualizar) =>
+        setCriterios((actuales) => ({
+          ...actuales,
+          tiposAceptados: actualizar(actuales.tiposAceptados || []),
+        })),
+      prenda
+    );
   };
 
   // Seleccionar o deseleccionar estilos
@@ -148,7 +164,10 @@ export default function Filtros({
   };
 
   // Campos generales y específicos de intercambio
-  const camposGenerales = campos.filter((campo) => !campo.tipo);
+  const camposGenerales = campos.filter(
+    (campo) => !campo.tipo || campo.tipo === "estado"
+  );
+
   const camposIntercambio = campos.filter(
     (campo) => campo.tipo === "intercambio"
   );
@@ -178,33 +197,51 @@ export default function Filtros({
             opciones={categorias}
             seleccionada={tipo}
             onChange={onChange}
-            ariaLabel="Tipo de publicaciones para filtrar"
             className="FiltrosIntercambio__categorias"
           />
 
           <div className="FiltrosIntercambio__campos">
-            {camposGenerales.map(({ clave, etiqueta, opciones }) => (
-              <label
-                className="FiltrosIntercambio__campo"
-                key={clave}
-              >
-                <span className="FiltrosIntercambio__etiqueta">
-                  {etiqueta}
-                </span>
-
-                <select
-                  value={criterios[clave] || opciones[0]}
-                  onChange={(evento) =>
-                    actualizarCriterio(clave, evento.target.value, opciones[0])
-                  }
-                  aria-label={etiqueta}
+            {camposGenerales.map(
+              ({ clave, etiqueta, opciones, tipo: tipoCampo }) => (
+                <label
+                  className="FiltrosIntercambio__campo"
+                  key={clave}
                 >
-                  {opciones.map((opcion) => (
-                    <option key={opcion}>{opcion}</option>
-                  ))}
-                </select>
-              </label>
-            ))}
+                  <span className="FiltrosIntercambio__etiqueta">
+                    {etiqueta}
+                  </span>
+
+                  <select
+                    value={criterios[clave] || ""}
+                    onChange={(evento) =>
+                      actualizarCriterio(clave, evento.target.value)
+                    }
+                    aria-label={etiqueta}
+                  >
+                    {tipoCampo === "estado" ? (
+                      <>
+                        <option value="">TODAS</option>
+
+                        {opciones.map(({ id, nombre }) => (
+                          <option key={id} value={nombre}>
+                            {nombre}
+                          </option>
+                        ))}
+                      </>
+                    ) : (
+                      opciones.map((opcion, indice) => (
+                        <option
+                          key={opcion}
+                          value={indice === 0 ? "" : opcion}
+                        >
+                          {opcion}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                </label>
+              )
+            )}
           </div>
 
           {/* COLORES */}
@@ -225,7 +262,9 @@ export default function Filtros({
                     <input
                       type="checkbox"
                       aria-label={nombre}
-                      checked={criterios.colores?.includes(colorSeleccionado) || false}
+                      checked={
+                        criterios.colores?.includes(colorSeleccionado) || false
+                      }
                       onChange={() => alternarColor(nombre)}
                     />
 
@@ -287,7 +326,7 @@ export default function Filtros({
               type="button"
               aria-expanded={mostrarTodasCategorias}
               onClick={() =>
-                setMostrarTodasCategorias?.((mostrar) => !mostrar)
+                setMostrarTodasCategorias((mostrar) => !mostrar)
               }
             >
               {mostrarTodasCategorias ? "Mostrar menos −" : "Mostrar más +"}
@@ -316,10 +355,7 @@ export default function Filtros({
               <select
                 value={criterios.ordenPrecio || "MAYOR MENOR"}
                 onChange={(evento) =>
-                  setCriterios?.((actuales) => ({
-                    ...actuales,
-                    ordenPrecio: evento.target.value,
-                  }))
+                  actualizarCriterio("ordenPrecio", evento.target.value)
                 }
                 aria-label="Ordenar por precio"
               >
@@ -378,22 +414,21 @@ export default function Filtros({
                 </span>
 
                 <select
-                  value={criterios.estadoMinimoAceptado || "TODOS"}
+                  value={criterios.estadoMinimoAceptado || ""}
                   onChange={(evento) =>
                     actualizarCriterio(
                       "estadoMinimoAceptado",
-                      evento.target.value,
-                      "TODOS"
+                      Number(evento.target.value) || ""
                     )
                   }
-                  aria-label="Estado mínimo aceptado"
                 >
-                  <option>TODOS</option>
-                  <option>NUEVA CON ETIQUETA</option>
-                  <option>NUEVA SIN ETIQUETA</option>
-                  <option>COMO NUEVA</option>
-                  <option>MUY BUEN ESTADO</option>
-                  <option>BUEN ESTADO</option>
+                  <option value="">TODOS</option>
+
+                  {estados.map(({ id, nombre }) => (
+                    <option key={id} value={id}>
+                      {nombre}
+                    </option>
+                  ))}
                 </select>
               </label>
 
@@ -403,17 +438,13 @@ export default function Filtros({
                 </span>
 
                 <select
-                  value={criterios.talleBuscado || "TODOS"}
+                  value={criterios.talleBuscado || ""}
                   onChange={(evento) =>
-                    actualizarCriterio(
-                      "talleBuscado",
-                      evento.target.value,
-                      "TODOS"
-                    )
+                    actualizarCriterio("talleBuscado", evento.target.value)
                   }
                   aria-label="Talle que busca"
                 >
-                  <option>TODOS</option>
+                  <option value="">TODOS</option>
                   <option>XS</option>
                   <option>S</option>
                   <option>M</option>
