@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate } from "react-router";
-
+import axios from "axios";
 import "./boutique.css";
 import "../../styles/variables.css";
 import "../../styles/global.css";
@@ -232,7 +232,17 @@ const productos = [
     alt: "Sweater",
   },
 ];
+const [productos, setProductos] = useState([]);
 
+useEffect(() => {
+    axios.get("http://localhost:3000/api/boutique/publicaciones")
+        .then((respuesta) => {
+            setProductos(respuesta.data.publicaciones);
+        })
+        .catch((error) => {
+            console.error("Error al obtener las publicaciones:", error);
+        });
+}, []);
 export default function Boutique({
   carritoAbierto = false,
   onCerrarCarrito,
@@ -327,7 +337,7 @@ export default function Boutique({
           : "/detalles/venta";
 
       navigate(ruta, {
-        state: { producto },
+        state: { producto, productos },
       });
     };
   return (

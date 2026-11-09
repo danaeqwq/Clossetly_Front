@@ -15,8 +15,8 @@ export default function DetalleInter() {
     const { state } = useLocation();
     const navigate = useNavigate();
 
-    const producto = state?.producto;
-    const productos = state?.productos || [];
+    const producto = state.producto;
+    const productos = state.productos || [];
 
     if (!producto) {
         return (
@@ -92,7 +92,7 @@ export default function DetalleInter() {
                                     Estilos:
                                 </dt>
                                 <dd>
-                                    {producto.estilos?.map((estilo) => (
+                                    {producto.estilos.map((estilo) => (
                                         <span key={estilo}>{estilo.toUpperCase()}</span>
                                     ))}
                                 </dd>
@@ -125,7 +125,7 @@ export default function DetalleInter() {
                     <div className="DetalleInter__acepta">
                         <h3>Prendas que acepta:</h3>
                         <div>
-                            {producto.tiposAceptados?.map((tipo) => (
+                            {producto.tiposAceptados.map((tipo) => (
                                 <span key={tipo}>{tipo.toUpperCase()}</span>
                             ))}
                         </div>
@@ -141,7 +141,7 @@ export default function DetalleInter() {
                     <fieldset className="DetalleInter__colores">
                         <legend>Colores:</legend>
 
-                        {producto.colores?.map((color) => (
+                        {producto.colores.map((color) => (
                             <span
                                 key={color}
                                 className="DetalleInter__muestraColor DetalleInter__muestraColor--seleccionado"
@@ -167,7 +167,17 @@ export default function DetalleInter() {
                         ))}
                     </fieldset>
 
-                    <Boton texto="Proponer intercambio" variante="principal" type="button" />
+                    <button
+                        className="Boton principal"
+                        type="button"
+                        onClick={() =>
+                            navigate("/propuesta-intercambio", {
+                                state: { producto },
+                            })
+                        }
+                    >
+                        Proponer intercambio
+                    </button>
                     <Boton texto="Agregar a favoritos" variante="secundario" iconoGoogle="favorite_border" type="button" />
                 </aside>
             </section>
