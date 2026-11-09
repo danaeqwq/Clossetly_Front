@@ -61,16 +61,10 @@ const campos = [
     etiqueta: "Género",
     opciones: ["TODOS", "MUJER", "HOMBRE", "UNISEX"],
   },
-  {
-    clave: "tiposAceptados",
-    etiqueta: "TIPOS DE PRENDAS QUE ACEPTA",
-    opciones: opcionesPrenda.slice(1),
-    tipo: "intercambio",
-  },
 ];
 
 // Colores disponibles
-const colores = [
+const opcionesColores = [
   { nombre: "Rojo", color: "var(--color-rojo)" },
   { nombre: "Amarillo", color: "var(--color-amarillo)" },
   { nombre: "Rosa", color: "var(--color-rosa)" },
@@ -108,6 +102,10 @@ export default function Filtros({
   criterios = {},
   setCriterios,
   onCerrar,
+  colores = [],
+  setColores,
+  tiposAceptados = [],
+  setTiposAceptados,
 }) {
   const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
 
@@ -133,45 +131,17 @@ export default function Filtros({
         : [...actuales, elemento]
     );
   };
-
-  // Alternar colores seleccionados
   const alternarColor = (nombre) => {
-    alternarElemento(
-      (actualizar) =>
-        setCriterios((actuales) => ({
-          ...actuales,
-          colores: actualizar(actuales.colores || []),
-        })),
-      nombre.toLowerCase()
-    );
+    alternarElemento(setColores, nombre.toLowerCase());
   };
 
-  // Alternar tipos de prendas aceptadas
   const alternarPrendaAceptada = (prenda) => {
-    alternarElemento(
-      (actualizar) =>
-        setCriterios((actuales) => ({
-          ...actuales,
-          tiposAceptados: actualizar(actuales.tiposAceptados || []),
-        })),
-      prenda
-    );
+    alternarElemento(setTiposAceptados, prenda);
   };
 
-  // Seleccionar o deseleccionar estilos
   const alternarCategoria = (estilo) => {
     alternarElemento(setCategoriasActivas, estilo);
   };
-
-  // Campos generales y específicos de intercambio
-  const camposGenerales = campos.filter(
-    (campo) => !campo.tipo || campo.tipo === "estado"
-  );
-
-  const camposIntercambio = campos.filter(
-    (campo) => campo.tipo === "intercambio"
-  );
-
   return (
     <PanelDesplegable
       titulo="Filtros"
@@ -180,11 +150,9 @@ export default function Filtros({
       onClose={onCerrar}
     >
       <div className="FiltrosIntercambio__contenido">
-
         {/* FILTROS GENERALES */}
         <section
           className="FiltrosIntercambio__generales"
-          aria-labelledby="FiltrosBoutique-generales"
         >
           <h3
             className="FiltrosIntercambio__subtitulo"
@@ -201,57 +169,54 @@ export default function Filtros({
           />
 
           <div className="FiltrosIntercambio__campos">
-            {camposGenerales.map(
-              ({ clave, etiqueta, opciones, tipo: tipoCampo }) => (
-                <label
-                  className="FiltrosIntercambio__campo"
-                  key={clave}
+            {campos.map(
+            ({ clave, etiqueta, opciones, tipo: tipoCampo }) => (
+              <label
+                className="FiltrosIntercambio__campo"
+                key={clave}
+              >
+                <span className="FiltrosIntercambio__etiqueta">
+                  {etiqueta}
+                </span>
+                <select
+                  value={criterios[clave] || ""}
+                  onChange={(evento) =>
+                    actualizarCriterio(clave, evento.target.value)
+                  }
                 >
-                  <span className="FiltrosIntercambio__etiqueta">
-                    {etiqueta}
-                  </span>
-
-                  <select
-                    value={criterios[clave] || ""}
-                    onChange={(evento) =>
-                      actualizarCriterio(clave, evento.target.value)
-                    }
-                    aria-label={etiqueta}
-                  >
-                    {tipoCampo === "estado" ? (
-                      <>
-                        <option value="">TODAS</option>
-
-                        {opciones.map(({ id, nombre }) => (
-                          <option key={id} value={nombre}>
-                            {nombre}
-                          </option>
-                        ))}
-                      </>
-                    ) : (
-                      opciones.map((opcion, indice) => (
-                        <option
-                          key={opcion}
-                          value={indice === 0 ? "" : opcion}
-                        >
-                          {opcion}
+                  {tipoCampo === "estado" ? (
+                    <>
+                      <option value="">TODAS</option>
+                      {opciones.map(({ id, nombre }) => (
+                        <option key={id} value={nombre}>
+                          {nombre}
                         </option>
-                      ))
-                    )}
-                  </select>
-                </label>
-              )
-            )}
+                      ))}
+                    </>
+                  ) : (
+                    opciones.map((opcion, indice) => (
+                      <option
+                        key={opcion}
+                        value={indice === 0 ? "" : opcion}
+                      >
+                        {opcion}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </label>
+            )
+          )}
           </div>
 
           {/* COLORES */}
-          <fieldset className="FiltrosIntercambio__grupoColores">
-            <legend className="FiltrosIntercambio__tituloGrupo">
+          <section className="FiltrosIntercambio__grupoColores">
+            <h3 className="FiltrosIntercambio__tituloGrupo">
               COLORES
-            </legend>
+            </h3>
 
             <div className="FiltrosIntercambio__colores">
-              {colores.map(({ nombre, color, borde }) => {
+              {opcionesColores.map(({ nombre, color, borde }) => {
                 const colorSeleccionado = nombre.toLowerCase();
 
                 return (
@@ -261,7 +226,6 @@ export default function Filtros({
                   >
                     <input
                       type="checkbox"
-                      aria-label={nombre}
                       checked={
                         criterios.colores?.includes(colorSeleccionado) || false
                       }
@@ -281,12 +245,11 @@ export default function Filtros({
                 );
               })}
             </div>
-          </fieldset>
+          </section>
 
           {/* ESTILOS */}
           <section
             className="FiltrosIntercambio__grupoEstilos"
-            aria-labelledby="FiltrosBoutique-estilos"
           >
             <h3
               className="FiltrosIntercambio__tituloGrupo"
@@ -338,7 +301,6 @@ export default function Filtros({
         {tipo === "compra" && (
           <section
             className="FiltrosIntercambio__especificos"
-            aria-labelledby="FiltrosBoutique-especificos"
           >
             <h3
               className="FiltrosIntercambio__subtitulo FiltrosIntercambio__subtitulo--italica"
@@ -357,7 +319,6 @@ export default function Filtros({
                 onChange={(evento) =>
                   actualizarCriterio("ordenPrecio", evento.target.value)
                 }
-                aria-label="Ordenar por precio"
               >
                 <option>MAYOR MENOR</option>
                 <option>MENOR MAYOR</option>
@@ -365,12 +326,10 @@ export default function Filtros({
             </label>
           </section>
         )}
-
         {/* FILTROS ESPECÍFICOS DE INTERCAMBIO */}
         {tipo === "intercambio" && (
           <section
             className="FiltrosIntercambio__especificos"
-            aria-labelledby="FiltrosBoutique-especificos"
           >
             <h3
               className="FiltrosIntercambio__subtitulo FiltrosIntercambio__subtitulo--italica"
@@ -379,34 +338,31 @@ export default function Filtros({
               Filtros específicos
             </h3>
 
-            {camposIntercambio.map(({ clave, etiqueta, opciones }) => (
-              <fieldset
-                className="FiltrosIntercambio__grupoAcepta"
-                key={clave}
-              >
-                <legend className="FiltrosIntercambio__tituloGrupo">
-                  {etiqueta}
-                </legend>
+            {/* TIPOS DE PRENDAS ACEPTADAS */}
+            <section className="FiltrosIntercambio__grupoAcepta">
+              <h3 className="FiltrosIntercambio__tituloGrupo">
+                TIPOS DE PRENDAS QUE ACEPTA
+              </h3>
 
-                <div className="FiltrosIntercambio__tiposAceptados">
-                  {opciones.map((prenda) => (
-                    <label
-                      className="FiltrosIntercambio__opcionAceptada"
-                      key={prenda}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={criterios[clave]?.includes(prenda) || false}
-                        onChange={() => alternarPrendaAceptada(prenda)}
-                      />
+              <div className="FiltrosIntercambio__tiposAceptados">
+                {opcionesPrenda.slice(1).map((prenda) => (
+                  <label
+                    className="FiltrosIntercambio__opcionAceptada"
+                    key={prenda}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={tiposAceptados.includes(prenda)}
+                      onChange={() => alternarPrendaAceptada(prenda)}
+                    />
 
-                      <span>{prenda}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-            ))}
+                    <span>{prenda}</span>
+                  </label>
+                ))}
+              </div>
+            </section>
 
+            {/* ESTADO MÍNIMO ACEPTADO */}
             <div className="FiltrosIntercambio__campos FiltrosIntercambio__campos--especificos">
               <label className="FiltrosIntercambio__campo">
                 <span className="FiltrosIntercambio__etiqueta">
@@ -432,6 +388,7 @@ export default function Filtros({
                 </select>
               </label>
 
+              {/* TALLE QUE BUSCA */}
               <label className="FiltrosIntercambio__campo">
                 <span className="FiltrosIntercambio__etiqueta">
                   Talle que busca
@@ -442,7 +399,6 @@ export default function Filtros({
                   onChange={(evento) =>
                     actualizarCriterio("talleBuscado", evento.target.value)
                   }
-                  aria-label="Talle que busca"
                 >
                   <option value="">TODOS</option>
                   <option>XS</option>

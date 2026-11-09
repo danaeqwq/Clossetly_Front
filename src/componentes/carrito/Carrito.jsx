@@ -68,21 +68,14 @@ const contactarWhatsapp = (pedido, subtotal) => {
         )}`
     )
     .join("\n");
-
-  const mensaje = `¡Hola! Estoy interesado/a en coordinar el siguiente pedido de Clossetly:
-
-${productos}
-
-Subtotal: ${formatearPrecio(subtotal)}
-
-Usuario: ${pedido.usuario}
-
-¿Podemos coordinar el pago y la entrega?`;
-
-  const url = `https://wa.me/${pedido.telefono}?text=${encodeURIComponent(
+    const mensaje = `¡Hola! Estoy interesado/a en coordinar el siguiente pedido de Clossetly:
+    ${productos}
+    Subtotal: ${formatearPrecio(subtotal)}
+    Usuario: ${pedido.usuario}
+    ¿Podemos coordinar el pago y la entrega?`;
+    const url = `https://wa.me/${pedido.telefono}?text=${encodeURIComponent(
     mensaje
   )}`;
-
   window.open(url, "_blank");
 };
 
@@ -185,7 +178,7 @@ export default function Carrito({ onCerrar }) {
           ¿Cómo funcionan los estados del pedido?
         </Link>
 
-        <div className="Carrito__pedidos" aria-label="Pedidos en el carrito">
+        <div className="Carrito__pedidos">
           {pedidos.length > 0 ? (
             pedidos.map((pedido) => {
               const subtotal = calcularSubtotal(pedido.productos);
@@ -232,9 +225,6 @@ export default function Carrito({ onCerrar }) {
                     <button
                       className="Carrito__botonDesplegar"
                       type="button"
-                      aria-label={`${
-                        pedido.expandido ? "Contraer" : "Expandir"
-                      } pedido de ${pedido.usuario}`}
                       aria-expanded={pedido.expandido}
                       onClick={() => alternarPedido(pedido.usuario)}
                     >
@@ -297,7 +287,6 @@ export default function Carrito({ onCerrar }) {
                         <button
                           className="Carrito__eliminarPedido"
                           type="button"
-                          aria-label={`Eliminar todo el pedido de ${pedido.usuario}`}
                           title="Eliminar pedido"
                           onClick={() => eliminarPedido(pedido.usuario)}
                         >

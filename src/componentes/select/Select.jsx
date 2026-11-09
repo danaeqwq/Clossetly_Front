@@ -5,7 +5,6 @@ import "../../styles/variables.css";
 export default function Select({
   opciones = [],
   seleccionada,
-  ariaLabel = "Categorías",
   className = "",
   onChange,
 }) {
@@ -13,7 +12,6 @@ export default function Select({
     <div
       className={`Select ${className}`.trim()}
       role="group"
-      aria-label={ariaLabel}
     >
       {opciones.map((opcion) => {
         const activa =

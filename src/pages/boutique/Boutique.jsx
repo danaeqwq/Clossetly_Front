@@ -243,6 +243,8 @@ export default function Boutique({
 
   const [filtro, setFiltro] = useState("todos");
   const [categoriasActivas, setCategoriasActivas] = useState([]);
+  const [colores, setColores] = useState([]);
+  const [tiposAceptados, setTiposAceptados] = useState([]);
 
   const [criterios, setCriterios] = useState({
     prenda: "",
@@ -251,8 +253,6 @@ export default function Boutique({
     estado: "",
     ocasion: "",
     genero: "",
-    colores: [],
-    tiposAceptados: [],
     estadoMinimoAceptado: "",
     talleBuscado: "",
     ordenPrecio: "MAYOR MENOR",
@@ -270,7 +270,6 @@ export default function Boutique({
     ],
   ];
 
-  // Aplicar filtros a los productos
   const productosFiltrados = productos
     .filter((producto) => filtro === "todos" || producto.tipo === filtro)
     .filter((producto) => {
@@ -282,8 +281,9 @@ export default function Boutique({
       });
 
       // Comprobar colores
-      const coincideColor = criterios.colores.length === 0 ||
-      criterios.colores.some(color => producto.colores.includes(color));
+      const coincideColor =
+      colores.length === 0 ||
+      colores.some((color) => producto.colores.includes(color));
 
       // Comprobar estilos
       const coincideEstilo =
@@ -293,8 +293,8 @@ export default function Boutique({
       // Comprobar tipos de prendas aceptados para intercambio
       const coincideTiposAceptados =
       filtro !== "intercambio" ||
-      criterios.tiposAceptados.length === 0 ||
-      criterios.tiposAceptados.some(tipos => producto.tiposAceptados.includes(tipos));
+      tiposAceptados.length === 0 ||
+      tiposAceptados.some((tipo) => producto.tiposAceptados.includes(tipo));
 
       // Comprobar estado mínimo aceptado
       const coincideEstadoMinimo =
@@ -346,6 +346,10 @@ export default function Boutique({
           onChange={setFiltro}
           categoriasActivas={categoriasActivas}
           setCategoriasActivas={setCategoriasActivas}
+          colores={colores}
+          setColores={setColores}
+          tiposAceptados={tiposAceptados}
+          setTiposAceptados={setTiposAceptados}
           criterios={criterios}
           setCriterios={setCriterios}
           onCerrar={onCerrarFiltros}
