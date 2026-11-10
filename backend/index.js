@@ -4,6 +4,8 @@ const cors = require("cors");
 const { PORT } = process.env;
 const apiRouter = require("./api/main");
 const app = express();
+
+app.use("/uploads", express.static("uploads"));
 app.use(cors());
 app.use(express.json());
 app.use("/api", apiRouter);

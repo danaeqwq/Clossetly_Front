@@ -1,5 +1,6 @@
 
-const {obtenerPublicaciones: obtenerPublicacionesModel} = require("../models/boutiqueModel");
+const { obtenerPublicaciones: obtenerPublicacionesModel } =
+    require("../model/boutiqueModel");
 
 const obtenerPublicaciones = (req, res) => {
     obtenerPublicacionesModel()

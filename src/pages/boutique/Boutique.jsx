@@ -33,216 +33,7 @@ const coloresTarjeta = {
   blanco: "#FFFFFF",
 };
 
-// Productos de ejemplo
-const productos = [
-  {
-    id: 1,
-    tipo: "intercambio",
-    nombre: "Vestido art",
-    prenda: "Cortos",
-    talle: "M",
-    color: "naranja",
-    colores: ["rojo", "naranja"],
-    temporada: "VERANO",
-    estado_id: 4,
-    estado: "MUY BUEN ESTADO",
-    ocasion: "FIESTA",
-    genero: "MUJER",
-    estilos: ["Vintage", "Boho Chic"],
-    tiposAceptados: ["Remeras", "Pantalones"],
-    estadoMinimoAceptado_id: 3,
-    estadoMinimoAceptado: "COMO NUEVA",
-    talleBuscado: "M",
-    imagen:
-      "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?auto=format&fit=crop&w=700&q=85",
-    alt: "Vestido color terracota con estampado floral",
-  },
-  {
-    id: 2,
-    tipo: "compra",
-    nombre: "Remera rayas",
-    prenda: "Remeras",
-    talle: "S",
-    precio: 10000,
-    color: "rosa",
-    colores: ["rosa", "blanco"],
-    temporada: "PRIMAVERA",
-    estado_id: 1,
-    estado: "NUEVA CON ETIQUETA",
-    ocasion: "CASUAL",
-    genero: "MUJER",
-    estilos: ["Coquette", "Clean Girl"],
-    imagen:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=700&q=85",
-    alt: "Remera a rayas rosa y blanca",
-  },
-  {
-    id: 3,
-    tipo: "compra",
-    nombre: "Remera básica",
-    prenda: "Remeras",
-    talle: "M",
-    precio: 8000,
-    color: "blanco",
-    colores: ["blanco"],
-    temporada: "VERANO",
-    estado_id: 2,
-    estado: "NUEVA SIN ETIQUETA",
-    ocasion: "CASUAL",
-    genero: "UNISEX",
-    estilos: ["Streetwear", "Clean Girl"],
-    imagen:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85",
-    alt: "Remera básica",
-  },
-  {
-    id: 4,
-    tipo: "compra",
-    nombre: "Campera",
-    prenda: "Camperas",
-    talle: "L",
-    precio: 25000,
-    color: "negro",
-    colores: ["negro"],
-    temporada: "INVIERNO",
-    estado_id: 3,
-    estado: "COMO NUEVA",
-    ocasion: "CASUAL",
-    genero: "MUJER",
-    estilos: ["Darkwear", "Goth"],
-    imagen:
-      "https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=700&q=85",
-    alt: "Campera",
-  },
-  {
-    id: 5,
-    tipo: "compra",
-    nombre: "Buzo",
-    prenda: "Camperas",
-    talle: "M",
-    precio: 18000,
-    color: "rojo",
-    colores: ["rojo"],
-    temporada: "INVIERNO",
-    estado_id: 5,
-    estado: "BUEN ESTADO",
-    ocasion: "CASUAL",
-    genero: "UNISEX",
-    estilos: ["Deportivo", "Streetwear"],
-    imagen:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=85",
-    alt: "Buzo",
-  },
-  {
-    id: 6,
-    tipo: "intercambio",
-    nombre: "Pollera floral",
-    prenda: "Cortos",
-    talle: "S",
-    color: "verde1",
-    colores: ["verde", "amarillo"],
-    temporada: "PRIMAVERA",
-    estado_id: 3,
-    estado: "COMO NUEVA",
-    ocasion: "CASUAL",
-    genero: "MUJER",
-    estilos: ["Cottagecore", "Boho Chic"],
-    tiposAceptados: ["Accesorios"],
-    estadoMinimoAceptado_id: 2,
-    estadoMinimoAceptado: "NUEVA SIN ETIQUETA",
-    talleBuscado: "S",
-    imagen:
-      "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=700&q=85",
-    alt: "Pollera floral",
-  },
-  {
-    id: 7,
-    tipo: "compra",
-    nombre: "Jeans",
-    prenda: "Pantalones",
-    talle: "M",
-    precio: 22000,
-    color: "azul",
-    colores: ["azul"],
-    temporada: "OTOÑO",
-    estado_id: 4,
-    estado: "MUY BUEN ESTADO",
-    ocasion: "CASUAL",
-    genero: "UNISEX",
-    estilos: ["Vintage", "Skater"],
-    imagen:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=700&q=85",
-    alt: "Jeans",
-  },
-  {
-    id: 8,
-    tipo: "compra",
-    nombre: "Camisa",
-    prenda: "Remeras",
-    talle: "M",
-    precio: 15000,
-    color: "amarillo",
-    colores: ["amarillo", "blanco"],
-    temporada: "PRIMAVERA",
-    estado_id: 1,
-    estado: "NUEVA CON ETIQUETA",
-    ocasion: "FORMAL",
-    genero: "MUJER",
-    estilos: ["Old Money", "Preppy"],
-    imagen:
-      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=700&q=85",
-    alt: "Camisa",
-  },
-  {
-    id: 9,
-    tipo: "compra",
-    nombre: "Top",
-    prenda: "Remeras",
-    talle: "S",
-    precio: 7000,
-    color: "morado",
-    colores: ["morado"],
-    temporada: "VERANO",
-    estado_id: 5,
-    estado: "BUEN ESTADO",
-    ocasion: "FIESTA",
-    genero: "MUJER",
-    estilos: ["Y2K", "Gyaru"],
-    imagen:
-      "https://images.unsplash.com/photo-1564257577-1c6f7f8f8e2e?auto=format&fit=crop&w=700&q=85",
-    alt: "Top",
-  },
-  {
-    id: 10,
-    tipo: "compra",
-    nombre: "Sweater",
-    prenda: "Camperas",
-    talle: "L",
-    precio: 19000,
-    color: "naranja",
-    colores: ["naranja"],
-    temporada: "INVIERNO",
-    estado_id: 3,
-    estado: "COMO NUEVA",
-    ocasion: "FORMAL",
-    genero: "UNISEX",
-    estilos: ["Dark Academia", "Old Money"],
-    imagen:
-      "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=700&q=85",
-    alt: "Sweater",
-  },
-];
-const [productos, setProductos] = useState([]);
 
-useEffect(() => {
-    axios.get("http://localhost:3000/api/boutique/publicaciones")
-        .then((respuesta) => {
-            setProductos(respuesta.data.publicaciones);
-        })
-        .catch((error) => {
-            console.error("Error al obtener las publicaciones:", error);
-        });
-}, []);
 export default function Boutique({
   carritoAbierto = false,
   onCerrarCarrito,
@@ -255,6 +46,41 @@ export default function Boutique({
   const [categoriasActivas, setCategoriasActivas] = useState([]);
   const [colores, setColores] = useState([]);
   const [tiposAceptados, setTiposAceptados] = useState([]);
+  
+  const [productos, setProductos] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/boutique/publicaciones")
+        .then((respuesta) => {
+            const publicaciones = respuesta.data.publicaciones.map((producto) => ({
+                ...producto,
+
+                // Normalizar tipo
+                tipo: producto.tipo.toLowerCase(),
+
+                // Normalizar color
+                color: ({
+                    "ROJO OSCURO": "rojo1",
+                    "VERDE CLARO": "verde1",
+                }[producto.color] || producto.color.toLowerCase()),
+
+                // Adaptar datos para los filtros
+                prenda: producto.categoria,
+
+                // Datos que todavía no vienen de la API
+                colores: [],
+                estilos: [],
+                tiposAceptados: [],
+
+                // Ruta completa de la imagen
+                imagen: `http://localhost:3000${producto.imagen}`,
+            }));
+
+            setProductos(publicaciones);
+        })
+        .catch((error) => {
+            console.error("Error al obtener las publicaciones:", error);
+        });
+}, []);
 
   const [criterios, setCriterios] = useState({
     prenda: "",
@@ -291,9 +117,7 @@ export default function Boutique({
       });
 
       // Comprobar colores
-      const coincideColor =
-      colores.length === 0 ||
-      colores.some((color) => producto.colores.includes(color));
+      const coincideColor = colores.length === 0 ||colores.includes(producto.color);
 
       // Comprobar estilos
       const coincideEstilo =
@@ -331,14 +155,12 @@ export default function Boutique({
     });
 
     const abrirDetalle = (producto) => {
-      const ruta =
-        producto.tipo === "intercambio"
-          ? "/detalles/intercambio"
-          : "/detalles/venta";
+        const ruta =
+            producto.tipo === "intercambio"
+                ? `/detalles/intercambio/${producto.id}`
+                : `/detalles/venta/${producto.id}`;
 
-      navigate(ruta, {
-        state: { producto, productos },
-      });
+        navigate(ruta);
     };
   return (
     <main className="Boutique">
