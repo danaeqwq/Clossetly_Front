@@ -1,6 +1,7 @@
 const db = require("../config/db");
 
-const obtenerPublicaciones = async () => {
+const obtenerPublicaciones = () => {
+
     const consulta = `
         SELECT
             pub.ID AS id,
@@ -8,75 +9,45 @@ const obtenerPublicaciones = async () => {
             pub.Precio AS precio,
             pub.Talle_buscado AS talleBuscado,
 
-            pr.ID AS prenda_id,
             pr.Nombre AS nombre,
             pr.Talla AS talle,
             pr.Estado AS estado,
             pr.Stock AS stock,
-            pr.Ocasión AS ocasion,
 
-            u.ID AS usuario_id,
             u.Nombre AS usuario,
 
             g.Genero AS genero,
             c.Categoria AS categoria,
             col.Color AS color,
-            t.Temporada AS temporada,
-
-            e.Estado AS estadoNombre,
-
-            (
-                SELECT pi.Imagen
-                FROM Prenda_Img pi
-                WHERE pi.Id_prenda = pr.ID
-                ORDER BY pi.ID ASC
-                LIMIT 1
-            ) AS imagen,
-
-            (
-                SELECT GROUP_CONCAT(DISTINCT es.Estilos)
-                FROM Prenda_Estilo pe
-                INNER JOIN Estilo es
-                    ON es.ID = pe.ID_estilo
-                WHERE pe.ID_prenda = pr.ID
-            ) AS estilos,
-
-            (
-                SELECT GROUP_CONCAT(DISTINCT ta.tiposAceptamos)
-                FROM Publicación_tiposA pta
-                INNER JOIN TiposAceptamos ta
-                    ON ta.ID = pta.Id_tipoA
-                WHERE pta.Id_publicación = pub.ID
-            ) AS tiposAceptados
+            t.Temporada AS temporada
 
         FROM Publicación pub
 
         INNER JOIN Prenda pr
-            ON pr.ID = pub.ID_prenda
+            ON pub.ID_prenda = pr.ID
 
         INNER JOIN Usuario u
-            ON u.ID = pub.ID_usuario
+            ON pub.ID_usuario = u.ID
 
         LEFT JOIN Géneros g
-            ON g.ID = pr.ID_genero
+            ON pr.ID_genero = g.ID
 
         LEFT JOIN Categorías c
-            ON c.ID = pr.ID_categoria
+            ON pr.ID_categoria = c.ID
 
         LEFT JOIN Color col
-            ON col.ID = pr.ID_color
+            ON pr.ID_color = col.ID
 
         LEFT JOIN Temporadas t
-            ON t.ID = pr.ID_temporada
-
-        LEFT JOIN Estado e
-            ON e.ID = pr.ID_estado
+            ON pr.ID_temporada = t.ID
 
         ORDER BY pub.ID DESC;
     `;
 
-    const [publicaciones] = await db.query(consulta);
-    return publicaciones;
+    return db.query(consulta)
+        .then(([publicaciones]) => {
+            return publicaciones;
+        });
 };
 
 module.exports = {
