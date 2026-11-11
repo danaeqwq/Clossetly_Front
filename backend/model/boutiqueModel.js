@@ -1,4 +1,3 @@
-
 const db = require("../config/db");
 
 const obtenerPublicaciones = () => {
@@ -9,6 +8,15 @@ const obtenerPublicaciones = () => {
             pub.tipo AS tipo,
             pub.precio AS precio,
             pub.talle_buscado AS talleBuscado,
+            pub.estadoMA AS estadoMinimoAceptado,
+
+            (
+                SELECT JSON_ARRAYAGG(ca_categoria.categoria)
+                FROM categorias_aceptadas ca
+                INNER JOIN categoria ca_categoria
+                    ON ca.categoria_id = ca_categoria.id_categoria
+                WHERE ca.id_publicacion = pub.\`id_publicación\`
+            ) AS tiposAceptados,
 
             pr.id_prenda AS idPrenda,
             pr.nombre AS nombre,
@@ -25,7 +33,15 @@ const obtenerPublicaciones = () => {
             c.categoria AS categoria,
             col.color AS color,
             col.codigo AS codigoColor,
-            t.temporada AS temporada
+            t.temporada AS temporada,
+            pr.ocacion AS ocasion,
+
+            (
+                SELECT JSON_ARRAYAGG(LOWER(e.estilo))
+                FROM prenda_estilo pe
+                INNER JOIN estilo e ON pe.id_estilo = e.id_estilo
+                WHERE pe.id_prenda = pr.id_prenda
+            ) AS estilo
 
         FROM \`publicación\` pub
 

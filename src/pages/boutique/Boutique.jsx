@@ -10,7 +10,14 @@ import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaInte
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import Filtros from "../../componentes/filtros/Filtros";
 import Carrito from "../../componentes/carrito/Carrito";
-
+const ordenEstados = {
+    "Nueva con etiqueta": 1,
+    "Nueva sin etiqueta": 2,
+    "Como nueva": 3,
+    "Muy buen estado": 4,
+    "Buen estado": 5,
+    "Usada": 6,
+};
 // Filtros de Boutique
 const filtrosBoutique = [
   { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" },
@@ -53,7 +60,6 @@ export default function Boutique({
         .then((respuesta) => {
             const publicaciones = respuesta.data.publicaciones.map((producto) => ({
                 ...producto,
-
                 // Normalizar tipo
                 tipo: producto.tipo.toLowerCase(),
 
@@ -65,11 +71,13 @@ export default function Boutique({
 
                 // Adaptar datos para los filtros
                 prenda: producto.categoria,
-
+                talle: String(producto.talle ?? ""),
+                talleBuscado: String(producto.talleBuscado ?? ""),
                 // Datos que todavía no vienen de la API
                 colores: [],
-                estilos: [],
-                tiposAceptados: [],
+                estilos: producto.estilo || [],
+                tiposAceptados: producto.tiposAceptados || [],
+                estadoMinimoAceptado: producto.estadoMinimoAceptado || "",
 
                 // Ruta completa de la imagen
                 imagen: `http://localhost:3000${producto.imagen}`,
@@ -131,10 +139,13 @@ export default function Boutique({
       tiposAceptados.some((tipo) => producto.tiposAceptados.includes(tipo));
 
       // Comprobar estado mínimo aceptado
-      const coincideEstadoMinimo =
-      filtro !== "intercambio" ||
-      !criterios.estadoMinimoAceptado ||
-      producto.estado_id <= criterios.estadoMinimoAceptado;
+      const estadoProducto = ordenEstados[producto.estado];
+const estadoMinimo = ordenEstados[producto.estadoMinimoAceptado];
+
+const coincideEstadoMinimo =
+    filtro !== "intercambio" ||
+    !criterios.estadoMinimoAceptado ||
+    estadoProducto <= Number(criterios.estadoMinimoAceptado);
       return (
         coincideCampos &&
         coincideColor &&

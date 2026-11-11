@@ -12,20 +12,23 @@ const opcionesPrenda = [
   "TODAS",
   "Remeras",
   "Pantalones",
-  "Cortos",
+  "Buzos",
   "Camperas",
-  "Accesorios",
+  "Abrigos",
+  "Vestidos",
+  "Faldas",
+  "Shorts",
   "Zapatos",
+  "Accesorios",
 ];
 
-// Estados disponibles: ID y nombre
 const estados = [
-  { id: 1, nombre: "NUEVA CON ETIQUETA" },
-  { id: 2, nombre: "NUEVA SIN ETIQUETA" },
-  { id: 3, nombre: "COMO NUEVA" },
-  { id: 4, nombre: "MUY BUEN ESTADO" },
-  { id: 5, nombre: "BUEN ESTADO" },
-  { id: 6, nombre: "USADA" },
+  { id: 1, nombre: "Nueva con etiqueta" },
+  { id: 2, nombre: "Nueva sin etiqueta" },
+  { id: 3, nombre: "Como nueva" },
+  { id: 4, nombre: "Muy buen estado" },
+  { id: 5, nombre: "Buen estado" },
+  { id: 6, nombre: "Usada" },
 ];
 
 // Todos los campos de filtros
@@ -38,7 +41,14 @@ const campos = [
   {
     clave: "talle",
     etiqueta: "Talle",
-    opciones: ["TODOS", "XS", "S", "M", "L", "XL"],
+    opciones: [
+      "TODOS",
+      "XS", "S", "M", "L", "XL",
+      "28", "29", "30", "31", "32",
+      "33", "34", "35", "36", "37",
+      "38", "39", "40", "41", "42",
+      "43", "44", "45",
+    ],
   },
   {
     clave: "temporada",
@@ -59,7 +69,7 @@ const campos = [
   {
     clave: "genero",
     etiqueta: "Género",
-    opciones: ["TODOS", "MUJER", "HOMBRE", "UNISEX"],
+    opciones: ["TODOS", "Mujer", "Hombre", "Unisex"]
   },
 ];
 
@@ -78,15 +88,14 @@ const opcionesColores = [
 
 // Estilos disponibles
 const estilos = [
-  "Art Hoe", "Athleisure", "Balletcore", "Boho Chic", "Clean Girl",
-  "Coquette", "Cottagecore", "Cyberpunk", "Dark Academia", "Darkwear",
-  "Deportivo", "Formal", "Goth", "Gothic Lolita", "Gorpcore", "Gyaru",
-  "Hippie", "Indie Sleaze", "Kawaii", "Light Academia", "Lolita",
-  "McBling", "Mob Wife", "Old Money", "Preppy", "Punk", "Quiet Luxury",
-  "Skater", "Soft Girl", "Soft Grunge", "Streetwear", "Techwear",
-  "Vintage", "Western", "Y2K",
+  "art hoe", "athleisure", "balletcore", "boho chic", "clean girl",
+  "coquette", "cottagecore", "cyberpunk", "dark academia", "darkwear",
+  "deportivo", "formal", "goth", "gothic lolita", "gorpcore", "gyaru",
+  "hippie", "indie sleaze", "kawaii", "light academia", "lolita",
+  "mcbling", "mob wife", "old money", "preppy", "punk", "quiet luxury",
+  "skater", "soft girl", "soft grunge", "streetwear", "techwear",
+  "vintage", "western", "y2k",
 ];
-
 // Categorías de Boutique
 const categorias = [
   { valor: "todos", texto: "TODOS" },
@@ -226,9 +235,7 @@ export default function Filtros({
                   >
                     <input
                       type="checkbox"
-                      checked={
-                        criterios.colores?.includes(colorSeleccionado) || false
-                      }
+                      checked={colores.includes(colorSeleccionado)}
                       onChange={() => alternarColor(nombre)}
                     />
 
