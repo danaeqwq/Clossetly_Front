@@ -1,11 +1,9 @@
-const express = require("express");
-const router = express.Router();
 
-const {
-    obtenerPublicaciones
-} = require("../controllers/boutiqueController");
+const router = require("express").Router();
 
-// Obtener todas las publicaciones
-router.get("/publicaciones", obtenerPublicaciones);
+const boutiqueController = require("../controllers/boutiqueController");
+
+// Obtener publicaciones de Boutique
+router.get("/publicaciones", boutiqueController.obtenerPublicaciones);
 
 module.exports = router;
