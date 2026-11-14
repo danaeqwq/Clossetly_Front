@@ -58,11 +58,10 @@ export default function App() {
                         <Route path="/propuesta-intercambio" element={<PropuestaDeIntercambio />} />
                         <Route path="/terminos-y-condiciones" element={<Terminos />} />
                         <Route path="/registro" element={<Registro />} />
-
-                        <Route path="/detalles/prenda/:id" element={<DetallePrenda />} />
-                        <Route path="/detalles/outfit/:id" element={<DetalleOutfit />} />
-                        <Route path="/detalles/venta/:id" element={<DetalleVenta />} />
-                        <Route path="/detalles/intercambio/:id" element={<DetalleInter />} />
+                        <Route path="/detalles/prenda" element={<DetallePrenda />} />
+                        <Route path="/detalles/outfit" element={<DetalleOutfit />} />
+                        <Route path="/detalles/venta" element={<DetalleVenta />} />
+                        <Route path="/detalles/intercambio" element={<DetalleInter />} />
                     </Routes>
                 </main>
 

@@ -6,6 +6,29 @@
   color: #754344;
   font-family: var(--font-manrope);
 }
+.Intercambiar__volver {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  cursor: pointer;
+}
+.Intercambiar__volver .material-symbols-outlined { font-size: 24px; }
+.Intercambiar__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
+.Modal.Modal--intercambio .Modal__ventana { position: relative; }
+.Modal.Modal--intercambio .Modal__acciones {
+  box-sizing: border-box;
+  justify-content: flex-start;
+  padding-left: 64px;
+}
 
 .Intercambiar__datos,
 .Intercambiar__selectores {
@@ -59,19 +82,6 @@
 .Intercambiar__entrada--stock input { width: auto; flex: 1 1 auto; }
 .Intercambiar__entrada--stock > span { border-right: 0; border-left: 1px solid #e2cdca; }
 .Intercambiar__entrada--stock > span:first-child { border-right: 1px solid #e2cdca; border-left: 0; }
-
-.Modal.Modal--intercambio .Modal__acciones::before {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  flex: 0 0 38px;
-  place-items: center;
-  border-radius: 6px;
-  color: var(--color-blancaso);
-  background: var(--color-bordoVino);
-  content: "chevron_left";
-  font: 200 24px "Material Symbols Outlined";
-}
 
 .Intercambiar__tipos {
   min-width: 0;
@@ -166,6 +176,8 @@
   .Intercambiar__datos,
   .Intercambiar__selectores { grid-template-columns: minmax(0, 1fr); gap: 11px; }
   .Intercambiar__opciones { gap: 10px 15px; }
+  .Intercambiar__volver { bottom: max(22px, env(safe-area-inset-bottom)); left: 18px; }
+  .Modal.Modal--intercambio .Modal__acciones { padding-left: 64px; }
   .Intercambiar__acciones {
     flex-wrap: wrap;
     gap: 8px;
@@ -175,14 +187,15 @@
   .Intercambiar__acciones .Intercambiar__volver { order: 0; }
   .Intercambiar__acciones .Intercambiar__guardar { flex: 1 1 140px; min-width: 0; }
   .Intercambiar__acciones .Intercambiar__salir { flex: 1 1 100%; }
-  .Modal.Modal--intercambio .Modal__acciones { display: grid; grid-template-columns: 42px minmax(0, 1fr); align-items: center; }
-  .Modal.Modal--intercambio .Modal__acciones::before { grid-column: 1; grid-row: 1; }
-  .Modal.Modal--intercambio .Modal__accion--confirmar { grid-column: 2; grid-row: 1; }
-  .Modal.Modal--intercambio .Modal__accion--cancelar { grid-column: 1 / -1; grid-row: 2; }
 }
 
 @media (max-width: 360px) {
   .Intercambiar__acciones { margin-right: -14px; margin-left: -14px; padding-right: 14px; padding-left: 14px; }
   .Intercambiar__opciones { gap: 9px 11px; }
   .Intercambiar__opcion { font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  .Modal.Modal--intercambio .Modal__acciones { flex-direction: row; }
+  .Modal.Modal--intercambio .Modal__accion { width: auto; flex: 1 1 145px; }
 }

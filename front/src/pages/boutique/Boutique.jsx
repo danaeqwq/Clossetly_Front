@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import "./boutique.css";
@@ -11,12 +11,12 @@ import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import Filtros from "../../componentes/filtros/Filtros";
 import Carrito from "../../componentes/carrito/Carrito";
 const ordenEstados = {
-    "Nueva con etiqueta": 1,
-    "Nueva sin etiqueta": 2,
-    "Como nueva": 3,
-    "Muy buen estado": 4,
-    "Buen estado": 5,
-    "Usada": 6,
+  "Nueva con etiqueta": 1,
+  "Nueva sin etiqueta": 2,
+  "Como nueva": 3,
+  "Muy buen estado": 4,
+  "Buen estado": 5,
+  "Usada": 6,
 };
 // Filtros de Boutique
 const filtrosBoutique = [
@@ -53,42 +53,42 @@ export default function Boutique({
   const [categoriasActivas, setCategoriasActivas] = useState([]);
   const [colores, setColores] = useState([]);
   const [tiposAceptados, setTiposAceptados] = useState([]);
-  
+
   const [productos, setProductos] = useState([]);
   useEffect(() => {
     axios.get("http://localhost:3000/api/boutique/publicaciones")
-        .then((respuesta) => {
-            const publicaciones = respuesta.data.publicaciones.map((producto) => ({
-                ...producto,
-                // Normalizar tipo
-                tipo: producto.tipo.toLowerCase(),
+      .then((respuesta) => {
+        const publicaciones = respuesta.data.publicaciones.map((producto) => ({
+          ...producto,
+          // Normalizar tipo
+          tipo: producto.tipo.toLowerCase(),
 
-                // Normalizar color
-                color: ({
-                    "ROJO OSCURO": "rojo1",
-                    "VERDE CLARO": "verde1",
-                }[producto.color] || producto.color.toLowerCase()),
+          // Normalizar color
+          color: ({
+            "ROJO OSCURO": "rojo1",
+            "VERDE CLARO": "verde1",
+          }[producto.color] || producto.color.toLowerCase()),
 
-                // Adaptar datos para los filtros
-                prenda: producto.categoria,
-                talle: String(producto.talle ?? ""),
-                talleBuscado: String(producto.talleBuscado ?? ""),
-                // Datos que todavía no vienen de la API
-                colores: [],
-                estilos: producto.estilo || [],
-                tiposAceptados: producto.tiposAceptados || [],
-                estadoMinimoAceptado: producto.estadoMinimoAceptado || "",
+          // Adaptar datos para los filtros
+          prenda: producto.categoria,
+          talle: String(producto.talle ?? ""),
+          talleBuscado: String(producto.talleBuscado ?? ""),
+          // Datos que todavía no vienen de la API
+          colores: [],
+          estilos: producto.estilo || [],
+          tiposAceptados: producto.tiposAceptados || [],
+          estadoMinimoAceptado: producto.estadoMinimoAceptado || "",
 
-                // Ruta completa de la imagen
-                imagen: `http://localhost:3000${producto.imagen}`,
-            }));
+          // Ruta completa de la imagen
+          imagen: `http://localhost:3000${producto.imagen}`,
+        }));
 
-            setProductos(publicaciones);
-        })
-        .catch((error) => {
-            console.error("Error al obtener las publicaciones:", error);
-        });
-}, []);
+        setProductos(publicaciones);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las publicaciones:", error);
+      });
+  }, []);
 
   const [criterios, setCriterios] = useState({
     prenda: "",
@@ -125,27 +125,27 @@ export default function Boutique({
       });
 
       // Comprobar colores
-      const coincideColor = colores.length === 0 ||colores.includes(producto.color);
+      const coincideColor = colores.length === 0 || colores.includes(producto.color);
 
       // Comprobar estilos
       const coincideEstilo =
-      categoriasActivas.length === 0 ||
-      categoriasActivas.some(estilo => producto.estilos.includes(estilo));
+        categoriasActivas.length === 0 ||
+        categoriasActivas.some(estilo => producto.estilos.includes(estilo));
 
       // Comprobar tipos de prendas aceptados para intercambio
       const coincideTiposAceptados =
-      filtro !== "intercambio" ||
-      tiposAceptados.length === 0 ||
-      tiposAceptados.some((tipo) => producto.tiposAceptados.includes(tipo));
+        filtro !== "intercambio" ||
+        tiposAceptados.length === 0 ||
+        tiposAceptados.some((tipo) => producto.tiposAceptados.includes(tipo));
 
       // Comprobar estado mínimo aceptado
       const estadoProducto = ordenEstados[producto.estado];
-const estadoMinimo = ordenEstados[producto.estadoMinimoAceptado];
+      const estadoMinimo = ordenEstados[producto.estadoMinimoAceptado];
 
-const coincideEstadoMinimo =
-    filtro !== "intercambio" ||
-    !criterios.estadoMinimoAceptado ||
-    estadoProducto <= Number(criterios.estadoMinimoAceptado);
+      const coincideEstadoMinimo =
+        filtro !== "intercambio" ||
+        !criterios.estadoMinimoAceptado ||
+        estadoProducto <= Number(criterios.estadoMinimoAceptado);
       return (
         coincideCampos &&
         coincideColor &&
@@ -165,14 +165,14 @@ const coincideEstadoMinimo =
       return 0;
     });
 
-    const abrirDetalle = (producto) => {
-        const ruta =
-            producto.tipo === "intercambio"
-                ? `/detalles/intercambio/${producto.id}`
-                : `/detalles/venta/${producto.id}`;
+  const abrirDetalle = (producto) => {
+    const ruta =
+      producto.tipo === "intercambio"
+        ? `/detalles/intercambio/${producto.id}`
+        : `/detalles/venta/${producto.id}`;
 
-        navigate(ruta);
-    };
+    navigate(ruta);
+  };
   return (
     <main className="Boutique">
       <div className="Boutique__filtros">
@@ -220,17 +220,17 @@ const coincideEstadoMinimo =
                 colorAccion={colorAccion}
                 onClick={() => abrirDetalle(producto)}
               />
-              ) : (
-                <TarjetaVenta
-                  key={producto.id}
-                  producto={producto}
-                  color={color}
-                  colorTexto={colorTexto}
-                  colorAccion={colorAccion}
-                  onClick={() => abrirDetalle(producto)}
-                />
-              );
-              })}
+            ) : (
+              <TarjetaVenta
+                key={producto.id}
+                producto={producto}
+                color={color}
+                colorTexto={colorTexto}
+                colorAccion={colorAccion}
+                onClick={() => abrirDetalle(producto)}
+              />
+            );
+          })}
         </section>
 
         {categoriasActivas.length > 0 && (
@@ -244,14 +244,14 @@ const coincideEstadoMinimo =
                 className="Boutique__categoriaActiva"
                 type="button"
                 key={categoria}
-                
+
               >
                 <span>{categoria}</span>
                 <span aria-hidden="true" onClick={() =>
                   setCategoriasActivas((actuales) =>
                     actuales.filter((activa) => activa !== categoria)
                   )}
-                  >×</span>
+                >×</span>
               </button>
             ))}
           </aside>

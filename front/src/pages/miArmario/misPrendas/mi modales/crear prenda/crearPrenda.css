@@ -53,7 +53,9 @@
 }
 
 .AgregarPrenda__foto {
+  position: relative;
   display: flex;
+  min-height: 325px;
   max-height: 325px;
   flex-direction: column;
   align-items: center;
@@ -65,9 +67,13 @@
   background-color: rgba(246, 238, 235, 1);
   font-size: 13px;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .AgregarPrenda__foto .material-symbols-outlined { color: var(--color-bordoVino); font-size: 36px; }
+.AgregarPrenda__foto input { display: none; }
+.AgregarPrenda__foto img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+.AgregarPrenda__quitarFoto { margin-top: 6px; border: 0; color: var(--color-rosaTerra); background: transparent; font: 11px var(--font-manrope); cursor: pointer; }
 
 .AgregarPrenda__formulario {
   display: flex;
@@ -118,11 +124,15 @@
   align-items: center;
   justify-content: flex-end;
   padding: 2px;
+  border: 0;
   border-radius: 20px;
   background: var(--color-bordoVino);
+  cursor: pointer;
 }
 
 .AgregarPrenda__switch span { width: 14px; height: 14px; border-radius: 50%; background: var(--color-blancaso); }
+.AgregarPrenda__switch:not(.AgregarPrenda__switch--activa) { justify-content: flex-start; }
+.AgregarPrenda__switch:not(.AgregarPrenda__switch--activa) { background: var(--color-carbon); }
 
 .AgregarPrenda__etiquetas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 
@@ -140,9 +150,20 @@
 }
 
 .AgregarPrenda__etiqueta span { color: var(--color-carbon); font-size: 13px; font-weight: 300;}
-.AgregarPrenda__etiqueta b { overflow: hidden; font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.AgregarPrenda__etiqueta i { position: absolute; top: 50%; right: 7px; transform: translateY(-50%); font-size: 17px; }
+.AgregarPrenda__etiqueta select {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.AgregarPrenda__etiqueta b { overflow: hidden; color: var(--color-carbon); font-size: 14px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; }
+.AgregarPrenda__etiqueta:focus-within { border-color: var(--color-bordoVino); box-shadow: 0 0 0 2px rgb(117 67 68 / 12%); }
+.AgregarPrenda__etiqueta i { position: absolute; top: 50%; right: 7px; transform: translateY(-50%); font-size: 17px; pointer-events: none; }
 .AgregarPrenda__ayuda { align-self: flex-end; color: rgba(136, 87, 83, 1); font: 700 italic 15px var(--font-CormUpri); text-decoration: underline; }
+.AgregarPrenda__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
 
 @media (max-width: 600px) {
   .Modal:has(.AgregarPrenda) { position: fixed; inset: 0; display: block; width: 100%; height: 100%; height: 100dvh; overflow: hidden; padding: 0; background: var(--color-cremita); }

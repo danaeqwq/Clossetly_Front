@@ -5,6 +5,23 @@
   color: #754344;
   font-family: var(--font-manrope);
 }
+.Venta__volver {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  cursor: pointer;
+}
+.Venta__volver .material-symbols-outlined { font-size: 24px; }
+.Venta__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
 
 .Venta__campos {
   display: grid;
@@ -60,18 +77,13 @@
   .Venta__campos { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 }
 
-.Modal:has(.Venta) .Modal__acciones { align-items: center; gap: 10px; }
-.Modal:has(.Venta) .Modal__acciones::before {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  place-items: center;
-  border-radius: 7px;
-  color: #fff;
-  background: #754344;
-  content: "chevron_left";
-  font: 24px "Material Symbols Outlined";
+.Modal:has(.Venta) .Modal__ventana { position: relative; }
+.Modal:has(.Venta) .Modal__acciones {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 64px;
 }
 .Modal:has(.Venta) .Modal__accion--confirmar { min-width: 180px; }
 .Modal:has(.Venta) .Modal__accion--confirmar::after {
@@ -80,8 +92,13 @@
 }
 .Modal:has(.Venta) .Modal__accion--cancelar { border-color: #b34f55; color: #a7464d; }
 @media (max-width: 600px) {
-  .Modal:has(.Venta) .Modal__acciones { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 7px; }
-  .Modal:has(.Venta) .Modal__acciones::before { width: 34px; height: 36px; flex-basis: 34px; }
-  .Modal:has(.Venta) .Modal__accion--confirmar { grid-column: 2; grid-row: 1; min-width: 0; }
-  .Modal:has(.Venta) .Modal__accion--cancelar { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
+  .Modal:has(.Venta) .Modal__accion--confirmar,
+  .Modal:has(.Venta) .Modal__accion--cancelar { min-width: 0; }
+  .Venta__volver { bottom: max(22px, env(safe-area-inset-bottom)); left: 18px; }
+  .Modal:has(.Venta) .Modal__acciones { padding-left: 64px; }
+}
+
+@media (max-width: 380px) {
+  .Modal:has(.Venta) .Modal__acciones { flex-direction: row; }
+  .Modal:has(.Venta) .Modal__accion { width: auto; flex: 1 1 145px; }
 }

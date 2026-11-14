@@ -20,7 +20,8 @@
 
 .CrearPrenda2__listaEstilos ul { display: grid; align-content: start; gap: 5px; min-width: 0; }
 .CrearPrenda2__listaEstilos li { overflow: hidden; color: var(--color-carbon); font-size: 14px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
-.CrearPrenda2__listaEstilos .CrearPrenda2__estilo--destacado { color: var(--color-rojo); font-weight: 700; }
+.CrearPrenda2__listaEstilos li button { padding: 0; border: 0; color: inherit; background: transparent; font: inherit; text-align: left; cursor: pointer; }
+.CrearPrenda2__listaEstilos li button.CrearPrenda2__estilo--seleccionado { color: var(--color-rojo); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 
 .CrearPrenda2__seccion--colores { padding-top: 2px; }
 .CrearPrenda2__listaColores {
@@ -38,24 +39,43 @@
   color: var(--color-carbon);
   font-size: 12px;
   white-space: nowrap;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .CrearPrenda2__casilla { flex: 0 0 12px; width: 12px; height: 12px; border: 1px solid var(--color-rosaTerra); border-radius: 2px; background: var(--color-blancaso); }
 .CrearPrenda2__muestra { flex: 0 0 15px; width: 15px; height: 15px; border-radius: 50%; background: var(--color-muestra); }
 .CrearPrenda2__muestra--borde { border: 1px solid var(--color-rosaEmpol); }
+.CrearPrenda2__color[aria-pressed="true"] .CrearPrenda2__casilla { background: var(--color-bordoVino); box-shadow: inset 0 0 0 3px var(--color-blancaso); }
 
-.Modal:has(.CrearPrenda2) .Modal__acciones { flex: 0 0 auto; align-items: center; gap: 10px; }
-.Modal:has(.CrearPrenda2) .Modal__acciones::before {
+.CrearPrenda2__volver {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
   display: grid;
   width: 38px;
   height: 38px;
-  flex: 0 0 38px;
   place-items: center;
+  padding: 0;
+  border: 0;
   border-radius: 6px;
   color: var(--color-blancaso);
   background: var(--color-bordoVino);
-  content: "chevron_left";
-  font: 200 24px "Material Symbols Outlined";
+  cursor: pointer;
+}
+.CrearPrenda2__volver .material-symbols-outlined { font-size: 24px; }
+.CrearPrenda2__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
+
+.Modal:has(.CrearPrenda2) .Modal__ventana { position: relative; }
+.Modal:has(.CrearPrenda2) .Modal__acciones {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 64px;
 }
 
 .Modal:has(.CrearPrenda2) .Modal__accion { min-height: 40px; border-radius: 7px; font-size: 14px; }
@@ -81,7 +101,6 @@
     border-radius: 0;
   }
 
-  .Modal:has(.CrearPrenda2) .Modal__contenido { flex: 1 1 auto; overflow-y: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
   .Modal:has(.CrearPrenda2) .Modal__titulo { font-size: 23px; }
   .Modal:has(.CrearPrenda2) .Modal__descripcion { max-width: 34ch; font-size: 12px; }
   .CrearPrenda2 { gap: 18px; }
@@ -90,17 +109,16 @@
   .CrearPrenda2__listaEstilos li { font-size: 13px; }
   .CrearPrenda2__listaColores { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 8px; }
   .CrearPrenda2__color { font-size: 12px; }
-  .Modal:has(.CrearPrenda2) .Modal__acciones { display: grid; grid-template-columns: 36px minmax(0, 1fr); flex: 0 0 auto; gap: 7px; margin: 12px -16px calc(-1 * max(14px, env(safe-area-inset-bottom))); padding: 12px 16px max(14px, env(safe-area-inset-bottom)); background: var(--color-cremita); }
-  .Modal:has(.CrearPrenda2) .Modal__acciones::before { grid-column: 1; grid-row: 1; width: 36px; height: 36px; flex-basis: auto; margin: 0; font-size: 24px; }
+  .CrearPrenda2__volver { bottom: max(14px, env(safe-area-inset-bottom)); left: 16px; }
+  .Modal:has(.CrearPrenda2) .Modal__acciones { display: flex; justify-content: fle; gap: 7px; margin: 12px -16px calc(-1 * max(14px, env(safe-area-inset-bottom))); padding: 12px 16px max(14px, env(safe-area-inset-bottom)); background: var(--color-cremita); }
   .Modal:has(.CrearPrenda2) .Modal__accion { min-width: 0; min-height: 38px; padding-inline: 8px; font-size: 12px; white-space: nowrap; }
-  .Modal:has(.CrearPrenda2) .Modal__accion--confirmar { grid-column: 2; grid-row: 1; width: 100%; }
-  .Modal:has(.CrearPrenda2) .Modal__accion--cancelar { grid-column: 1 / -1; grid-row: 2; width: 100%; }
 }
 
 @media (max-width: 380px) {
-  .Modal:has(.CrearPrenda2) .Modal__acciones { grid-template-columns: 32px minmax(0, 1fr); gap: 5px; }
-  .Modal:has(.CrearPrenda2) .Modal__acciones::before { width: 32px; height: 34px; }
-  .Modal:has(.CrearPrenda2) .Modal__accion { padding-inline: 6px; font-size: 14px; }
+  .Modal:has(.CrearPrenda2) .Modal__acciones { flex-direction: row; gap: 5px; }
+  .CrearPrenda2__volver { width: 32px; height: 34px; }
+  .Modal:has(.CrearPrenda2) .Modal__acciones { padding-left: 56px; }
+  .Modal:has(.CrearPrenda2) .Modal__accion { width: auto; flex: 1 1 145px; padding-inline: 6px; font-size: 14px; }
 }
 
 .Modal:has(.CrearPrenda2) .Modal__ventana { display: flex; min-height: 0; flex-direction: column; overflow: hidden; }

@@ -43,9 +43,20 @@ export default function TarjetaPrenda({
 
           {menuAbierto && (
             <ul className="TarjetaPrenda__menu">
-              <li>edit Modificar</li>
-              <li>checkroom Armar outfit</li>
-              <li>delete_outline Eliminar</li>
+              <li>
+                <span className="material-symbols-outlined">edit</span>
+                Modificar
+              </li>
+
+              <li>
+                <span className="material-symbols-outlined">checkroom</span>
+                Armar outfit
+              </li>
+
+              <li>
+                <span className="material-symbols-outlined">delete_outline</span>
+                Eliminar
+              </li>
             </ul>
           )}
         </>

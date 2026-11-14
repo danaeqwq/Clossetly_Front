@@ -6,12 +6,10 @@ import "./crearPrenda2.css";
 const columnasEstilos = [
   ["Art Hoe", "Coquette", "Deportivo", "Goth", "Indie Sleaze", "Mob Wife", "Skater", "Vintage"],
   ["Avant-Garde", "Cottage Core", "Formal", "Gothic Lolita", "Hawai", "Old Money", "Soft Girl", "Western"],
-  ["Athleisure", "Cyberpunk", "Goth", "Gorpcore", "Light Academia", "Preppy", "Soft Grunge", "Y2K"],
+  ["Athleisure", "Cyberpunk", "Gorpcore", "Light Academia", "Preppy", "Soft Grunge", "Y2K"],
   ["Balletcore", "Dark Academia", "Gothic Lolita", "Gyaru", "Lolita", "Punk", "Streetwear"],
   ["Boho Chic", "Darkwear", "Gorpcore", "Hippie", "McBling", "Quiet Luxury", "Techwear"],
 ];
-
-const estilosDestacados = new Set(["Art Hoe", "Coquette", "Cottage Core", "Cyberpunk", "Deportivo"]);
 
 const colores = [
   { nombre: "Rojo", tono: "#a24e5a" },
@@ -25,15 +23,33 @@ const colores = [
   { nombre: "Amarillo", tono: "#efbd73" },
 ];
 
-export default function CrearPrenda2() {
+export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguiente, onVolver, onClose }) {
+  const alternarEstilo = (estilo) => {
+    const seleccionados = datos.estilos.includes(estilo)
+      ? datos.estilos.filter((actual) => actual !== estilo)
+      : [...datos.estilos, estilo];
+    onCambiar("estilos", seleccionados);
+  };
+
+  const alternarColor = (color) => {
+    const seleccionados = datos.colores.includes(color)
+      ? datos.colores.filter((actual) => actual !== color)
+      : [...datos.colores, color];
+    onCambiar("colores", seleccionados);
+  };
+
   return (
     <Modal
       titulo="Agregar Prenda"
       descripcion="Completá la información para agregar una prenda a tu armario"
-      confirmar={{ texto: <>siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></> }}
-      cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
+      confirmar={{ texto: <>siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></>, onClick: onSiguiente }}
+      cancelar={{ texto: "Salir sin guardar", icono: "logout", onClick: onClose }}
+      onClose={onClose}
     >
       <div className="CrearPrenda2">
+        <button className="CrearPrenda2__volver" type="button" onClick={onVolver} aria-label="Volver al paso anterior">
+          <span className="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+        </button>
         <section className="CrearPrenda2__seccion" aria-labelledby="crear-prenda-estilos">
           <h3 id="crear-prenda-estilos">Estilos</h3>
           <p>Elegí uno o más categorías</p>
@@ -41,8 +57,13 @@ export default function CrearPrenda2() {
             {columnasEstilos.map((columna, indice) => (
               <ul key={`columna-${indice}`}>
                 {columna.map((estilo) => (
-                  <li className={estilosDestacados.has(estilo) ? "CrearPrenda2__estilo--destacado" : ""} key={estilo}>
-                    {estilo}
+                  <li key={`${indice}-${estilo}`}>
+                    <button
+                      className={datos.estilos.includes(estilo) ? "CrearPrenda2__estilo--seleccionado" : ""}
+                      type="button"
+                      aria-pressed={datos.estilos.includes(estilo)}
+                      onClick={() => alternarEstilo(estilo)}
+                    >{estilo}</button>
                   </li>
                 ))}
               </ul>
@@ -54,7 +75,13 @@ export default function CrearPrenda2() {
           <h3 id="crear-prenda-colores">Colores</h3>
           <div className="CrearPrenda2__listaColores">
             {colores.map((color) => (
-              <span className="CrearPrenda2__color" key={color.nombre}>
+              <button
+                className="CrearPrenda2__color"
+                key={color.nombre}
+                type="button"
+                aria-pressed={datos.colores.includes(color.nombre)}
+                onClick={() => alternarColor(color.nombre)}
+              >
                 <span className="CrearPrenda2__casilla" aria-hidden="true" />
                 <span
                   className={`CrearPrenda2__muestra${color.borde ? " CrearPrenda2__muestra--borde" : ""}`}
@@ -62,10 +89,11 @@ export default function CrearPrenda2() {
                   aria-hidden="true"
                 />
                 {color.nombre}
-              </span>
+              </button>
             ))}
           </div>
         </section>
+        {mensajeError && <p className="CrearPrenda2__error" role="alert">{mensajeError}</p>}
       </div>
     </Modal>
   );

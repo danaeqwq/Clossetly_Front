@@ -12,13 +12,14 @@ const prendasSeleccionadas = [
   },
 ];
 
-export default function CrearOutfit() {
+export default function CrearOutfit({ onClose }) {
   return (
     <Modal
       titulo="Crear Outfit"
       descripcion="Combiná tus prendas y creá tu look."
-      confirmar={{ texto: "Guardar  →" }}
-      cancelar={{ texto: "Salir sin guardar", icono: "logout" }}
+      confirmar={{ texto: "Guardar  →", onClick: onClose }}
+      cancelar={{ texto: "Salir sin guardar", icono: "logout", onClick: onClose }}
+      onClose={onClose}
     >
       <div className="CrearOutfit">
         <div className="CrearOutfit__composicion" aria-label="Vista previa del outfit">

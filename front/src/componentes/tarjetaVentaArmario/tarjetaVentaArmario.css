@@ -47,6 +47,18 @@
 .TarjetaVentaArmario__stock,
 .TarjetaVentaArmario__enlace { color: var(--color-rosaTerra); }
 .TarjetaVentaArmario__enlace { text-decoration: underline; }
+.TarjetaVentaArmario__metricas button,
+.TarjetaVentaArmario__acciones button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.TarjetaVentaArmario__metricas button { color: var(--color-rosaTerra); text-decoration: underline; }
 
 .TarjetaVentaArmario__metricas b {
   display: inline-grid;
@@ -71,6 +83,7 @@
   gap: 3px;
   white-space: nowrap;
 }
+.TarjetaVentaArmario__acciones button { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
 
 .TarjetaVentaArmario__acciones i { font-size: 14px; }
 .TarjetaVentaArmario__eliminar { color: #C95151; }

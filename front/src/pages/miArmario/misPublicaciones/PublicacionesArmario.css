@@ -44,6 +44,31 @@
   align-content: start;
 }
 
+.MiArmario__formularioEdicion {
+  display: grid;
+  gap: 12px;
+  color: var(--color-bordoVino);
+  font: 13px var(--font-manrope);
+}
+
+.MiArmario__formularioEdicion label {
+  display: grid;
+  gap: 5px;
+}
+
+.MiArmario__formularioEdicion input,
+.MiArmario__formularioEdicion select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 7px;
+  color: var(--color-carbon);
+  background: var(--color-cremita);
+  font: inherit;
+}
+
 @media (max-width: 960px) {
   .MiArmario__publicaciones { grid-template-columns: minmax(0, 1fr); gap: 14px; }
   .MiArmario__panelPublicaciones { height: auto; border-radius: 9px; }

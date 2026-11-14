@@ -6,6 +6,7 @@ export default function Modal({
   confirmar,
   cancelar,
   className = "",
+  onClose,
 }) {
 
   return (
@@ -22,7 +23,7 @@ export default function Modal({
             {descripcion && <p className="Modal__descripcion">{descripcion}</p>}
           </div>
           <button className="Modal__cerrar" type="button" aria-label="Cerrar">
-            <span className="material-symbols-outlined" aria-hidden="true">close</span>
+            <span className="material-symbols-outlined" aria-hidden="true" onClick={onClose}>close</span>
           </button>
         </header>
         <div className="Modal__contenido">{children}</div>

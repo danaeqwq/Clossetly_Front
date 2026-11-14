@@ -1,0 +1,102 @@
+.EliminarPublicacion .Alert {
+  align-items: start;
+  padding: 16px;
+}
+
+.EliminarPublicacion .Alert__div {
+  width: min(490px, calc(100vw - 32px));
+  max-width: none;
+  max-height: none;
+  min-height: 130px;
+  padding: 18px 22px 20px;
+  border-radius: 12px;
+}
+
+.EliminarPublicacion .Alert__div-h2 {
+  margin-bottom: 14px;
+}
+
+.EliminarPublicacion__icono {
+  margin-right: 10px;
+  color: var(--color-rosaTerra);
+  font-size: 25px;
+}
+
+.EliminarPublicacion .Alert__div-p {
+  max-width: 100%;
+}
+
+.EliminarPublicacion .Alert__div-div {
+  visibility: hidden;
+}
+
+.EliminarPublicacion__acciones {
+  position: fixed;
+  z-index: 1001;
+  inset: 0;
+  display: flex;
+  width: min(400px, calc(100vw - 48px));
+  height: max-content;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: auto;
+  padding-bottom: 60vh;
+  pointer-events: none;
+}
+
+.EliminarPublicacion__boton {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 20px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 8px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  box-shadow: 0 2px 5px var(--color-rosaEmpol);
+  font: 17px var(--font-Kurale);
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.EliminarPublicacion__boton--venta {
+  color: var(--color-blancaso);
+  background: var(--color-rojo1);
+}
+
+.EliminarPublicacion__boton--intercambio {
+  color: var(--color-blancaso);
+  background: var(--color-rojo);
+}
+
+.EliminarPublicacion__boton--cancelar {
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+@media (max-width: 520px) {
+  .EliminarPublicacion .Alert__div {
+    min-height: 220px;
+    padding-inline: 16px;
+  }
+
+  .EliminarPublicacion__acciones {
+    width: min(340px, calc(100vw - 40px));
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 110px;
+  }
+
+  .EliminarPublicacion__boton {
+    min-height: 40px;
+    flex-basis: 44%;
+    font-size: 14px;
+  }
+
+  .EliminarPublicacion__boton--cancelar {
+    flex-basis: 100%;
+  }
+}

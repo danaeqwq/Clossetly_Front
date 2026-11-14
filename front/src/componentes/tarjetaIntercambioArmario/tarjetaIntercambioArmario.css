@@ -57,8 +57,21 @@
 }
 
 .TarjetaIntercambioArmario__enlace { color: var(--color-rosaTerra); text-decoration: underline; }
+.TarjetaIntercambioArmario__metricas button,
+.TarjetaIntercambioArmario__acciones button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.TarjetaIntercambioArmario__metricas button { color: var(--color-rosaTerra); text-decoration: underline; }
 .TarjetaIntercambioArmario__acciones { align-items: flex-start; gap: 8px; font-size: 13px; }
 .TarjetaIntercambioArmario__acciones span { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.TarjetaIntercambioArmario__acciones button { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
 .TarjetaIntercambioArmario__acciones i { font-size: 13px; }
 .TarjetaIntercambioArmario__eliminar { color: #d64545; }
 
