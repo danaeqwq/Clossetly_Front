@@ -56,6 +56,7 @@ export default function Boutique({
 
   const [productos, setProductos] = useState([]);
   useEffect(() => {
+<<<<<<< Updated upstream:front/src/pages/boutique/Boutique.jsx
     axios.get("http://localhost:3000/api/boutique/publicaciones")
       .then((respuesta) => {
         const publicaciones = respuesta.data.publicaciones.map((producto) => ({
@@ -78,6 +79,26 @@ export default function Boutique({
           estilos: producto.estilo || [],
           tiposAceptados: producto.tiposAceptados || [],
           estadoMinimoAceptado: producto.estadoMinimoAceptado || "",
+=======
+    axios.get("http://localhost:3000/api/publicaciones")
+        .then((respuesta) => {
+            const publicaciones = respuesta.data.publicaciones.map((producto) => ({
+                ...producto,
+                tipo: producto.tipo.toLowerCase(),
+                color: ({
+                    "ROJO OSCURO": "rojo1",
+                    "VERDE CLARO": "verde1",
+                }[producto.color] || producto.color.toLowerCase()),
+                prenda: producto.categoria,
+                talle: String(producto.talle ?? ""),
+                talleBuscado: String(producto.talleBuscado ?? ""),
+                colores: [],
+                estilos: producto.estilo || [],
+                tiposAceptados: producto.tiposAceptados || [],
+                estadoMinimoAceptado: producto.estadoMinimoAceptado || "",
+                imagen: `http://localhost:3000${producto.imagen}`,
+            }));
+>>>>>>> Stashed changes:src/pages/boutique/Boutique.jsx
 
           // Ruta completa de la imagen
           imagen: `http://localhost:3000${producto.imagen}`,

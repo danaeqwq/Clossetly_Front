@@ -22,14 +22,14 @@ const opcionesPrenda = [
   "Accesorios",
 ];
 
-const estados = [
-  { id: 1, nombre: "Nueva con etiqueta" },
-  { id: 2, nombre: "Nueva sin etiqueta" },
-  { id: 3, nombre: "Como nueva" },
-  { id: 4, nombre: "Muy buen estado" },
-  { id: 5, nombre: "Buen estado" },
-  { id: 6, nombre: "Usada" },
-];
+  const estados = [
+    { id: 1, nombre: "Nueva con etiqueta" },
+    { id: 2, nombre: "Nueva sin etiqueta" },
+    { id: 3, nombre: "Como nueva" },
+    { id: 4, nombre: "Muy buen estado" },
+    { id: 5, nombre: "Buen estado" },
+    { id: 6, nombre: "Usada" },
+  ];
 
 // Todos los campos de filtros
 const campos = [
