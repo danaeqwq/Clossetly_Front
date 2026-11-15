@@ -1,6 +1,7 @@
 
-import { useLocation, useNavigate } from "react-router";
-
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
 import "./DetalleInter.css";
 import "../../../styles/variables.css";
 import "../../../styles/global.css";
@@ -9,15 +10,56 @@ import LineaM from "../../../componentes/LineaM/LineaM";
 import Boton from "../../../componentes/Boton/Boton";
 import TarjetaIntercambio from "../../../componentes/tarjetaIntercambio/TarjetaIntercambio";
 import Etiqueta from "../../../assets/etiqueta.svg";
-import iconoCuenta from "../../../assets/userfoto.jpg";
 
 export default function DetalleInter() {
-    const { state } = useLocation();
+    const { id } = useParams();
     const navigate = useNavigate();
+    const [productos, setProductos] = useState([]);
 
-    const producto = state.producto;
-    const productos = state.productos || [];
+    const [producto, setProducto] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:3000/api/publicaciones/intercambio/${id}`),
+            axios.get("http://localhost:3000/api/publicaciones/intercambio"),
+        ])
+            .then(([respuestaDetalle, respuestaProductos]) => {
+                setProducto(respuestaDetalle.data.publicacion);
+                setProductos(respuestaProductos.data.publicaciones);
+            })
+            .catch((error) => {
+                console.error("Error al obtener los intercambios:", error);
+                setProducto(null);
+            })
+            .finally(() => {
+                setCargando(false);
+            });
+    }, [id]);
 
+    if (cargando) {
+        return <main className="DetalleInter"><p>Cargando publicación...</p></main>;
+    }
+    if (!producto) {
+        return <main className="DetalleInter"><p>No se encontró la publicación.</p></main>;
+    }
+    const productosRelacionados = productos
+    .filter(
+        (item) =>
+            item.tipo === "intercambio" &&
+            item.id !== producto.id
+    )
+    .map((item) => {
+        const coincidencias = (item.estilos || []).filter(
+            (estilo) => (producto.estilos || []).includes(estilo)
+        ).length;
+
+        return {
+            ...item,
+            coincidencias,
+        };
+    })
+    .sort((a, b) => b.coincidencias - a.coincidencias)
+    .slice(0, 5);
     if (!producto) {
         return (
             <main className="DetalleInter">
@@ -26,49 +68,34 @@ export default function DetalleInter() {
         );
     }
 
-    const coloresDisponibles = {
-        morado: "#755f85",
-        negro: "#332D37",
-        verde: "#5C7865",
-        azul: "#6273AA",
-        rojo: "#A14D58",
-        rojo1: "#B91C1C",
-        verde1: "#87947A",
-        rosa: "#C69FAC",
-        naranja: "#D78C6E",
-        amarillo: "#F2C27F",
-        blanco: "#FFFFFF",
-    };
-
-    const productosRelacionados = productos
-        .filter(
-            (item) =>
-                item.tipo === "intercambio" &&
-                item.id !== producto.id
-        )
-        .slice(0, 5);
-
     return (
         <main className="DetalleInter">
             <section className="DetalleInter__principal" aria-label="Detalle del intercambio">
                 <article className="DetalleInter__ficha">
                     <div className="DetalleInter__imagenMarco">
-                        <img src={producto.imagen} alt={producto.alt || producto.nombre} />
+                        <img
+                            src={`http://localhost:3000${producto.imagen}`}
+                            alt={producto.alt || producto.nombre}
+                        />
                     </div>
 
                     <div className="DetalleInter__informacion">
                         <span className="DetalleInter__insignia material-symbols-outlined" aria-label="Publicación de intercambio">
                             swap_horiz <span>INTERCAMBIO</span>
                         </span>
-
                         <h1>{producto.nombre}</h1>
-
                         <div className="DetalleInter__vendedor">
                             <span>Publicado por:</span>
-                            <img src={iconoCuenta} alt="" />
-                            <span>user67</span>
+                            <img
+                                src={
+                                    producto.fotoPerfil
+                                        ? `http://localhost:3000${producto.fotoPerfil}`
+                                        : iconoCuenta
+                                }
+                                alt=""
+                            />
+                            <span>{producto.usuario}</span>
                         </div>
-
                         <dl className="DetalleInter__datos">
                             <div>
                                 <dt>
@@ -140,24 +167,19 @@ export default function DetalleInter() {
 
                     <fieldset className="DetalleInter__colores">
                         <legend>Colores:</legend>
-
-                        {producto.colores.map((color) => (
-                            <span
-                                key={color}
-                                className="DetalleInter__muestraColor DetalleInter__muestraColor--seleccionado"
-                                aria-label={color}
-                                style={{ backgroundColor: coloresDisponibles[color] || color }}
-                            />
-                        ))}
+                            {producto.colores.map((color) => (
+                                <span
+                                    key={color.color}
+                                    className="DetalleInter__muestraColor DetalleInter__muestraColor--seleccionado"
+                                    aria-label={color.color}
+                                    style={{ backgroundColor: color.codigoColor }}
+                                />
+                            ))}
                     </fieldset>
 
                     <fieldset className="DetalleInter__talles">
                         <legend>Talles:</legend>
-
-                        {(producto.tallesBuscados?.length
-                            ? producto.tallesBuscados
-                            : [producto.talle]
-                        ).filter(Boolean).map((talle) => (
+                        {producto.tallesBuscados.map((talle) => (
                             <span
                                 key={talle}
                                 className="DetalleInter__muestraTalle DetalleInter__muestraTalle--seleccionado"
@@ -181,26 +203,30 @@ export default function DetalleInter() {
                     <Boton texto="Agregar a favoritos" variante="secundario" iconoGoogle="favorite_border" type="button" />
                 </aside>
             </section>
-
-            <section className="DetalleInter__relacionados" aria-labelledby="DetalleInter__tituloRelacionados">
+            <section
+                className="DetalleInter__relacionados"
+                aria-labelledby="DetalleInter__tituloRelacionados"
+            >
                 <div className="DetalleInter__linea" aria-hidden="true">
                     <LineaM lado="izquierdo" />
                 </div>
 
-                <h2 id="DetalleInter__tituloRelacionados">Productos que te podrían gustar</h2>
+                <h2 id="DetalleInter__tituloRelacionados">
+                    Productos que te podrían gustar
+                </h2>
 
                 <div className="DetalleInter__grilla">
                     {productosRelacionados.map((item) => (
                         <TarjetaIntercambio
-                            key={item.id}
-                            producto={item}
-                            onClick={() =>
-                                navigate("/detalles/intercambio", {
-                                    state: { producto: item, productos },
-                                })
-                            }
+                        key={item.id}
+                        producto={item}
+                        color={item.codigoColor || "#A87975"}
+                        colorTexto={item.color?.toLowerCase() === "blanco" ? "#332D37" : "#FFFFFF"}
+                        colorAccion={item.codigoColor || "#A87975"}
+                        onClick={() => navigate(`/detalles/intercambio/${item.id}`)}
                         />
                     ))}
+                    
                 </div>
             </section>
         </main>

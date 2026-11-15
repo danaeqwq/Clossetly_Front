@@ -1,5 +1,6 @@
-
-import { useLocation, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
 
 import "./DetalleVenta.css";
 import "../../../styles/variables.css";
@@ -12,11 +13,38 @@ import Etiqueta from "../../../assets/etiqueta.svg";
 import iconoCuenta from "../../../assets/userfoto.jpg";
 
 export default function DetalleVenta() {
-    const { state } = useLocation();
+    const { id } = useParams();
     const navigate = useNavigate();
 
-    const producto = state?.producto;
-    const productos = state?.productos || [];
+    const [producto, setProducto] = useState(null);
+    const [productos, setProductos] = useState([]);
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:3000/api/publicaciones/compra/${id}`),
+            axios.get("http://localhost:3000/api/publicaciones/compra"),
+        ])
+            .then(([respuestaDetalle, respuestaProductos]) => {
+                setProducto(respuestaDetalle.data.publicacion);
+                setProductos(respuestaProductos.data.publicaciones);
+            })
+            .catch((error) => {
+                console.error("Error al obtener la publicación:", error);
+                setProducto(null);
+            })
+            .finally(() => {
+                setCargando(false);
+            });
+    }, [id]);
+
+    if (cargando) {
+        return (
+            <main className="DetalleVenta">
+                <p>Cargando publicación...</p>
+            </main>
+        );
+    }
 
     if (!producto) {
         return (
@@ -26,26 +54,16 @@ export default function DetalleVenta() {
         );
     }
 
-    const coloresDisponibles = {
-        morado: "#755f85",
-        negro: "#332D37",
-        verde: "#5C7865",
-        azul: "#6273AA",
-        rojo: "#A14D58",
-        rojo1: "#B91C1C",
-        verde1: "#87947A",
-        rosa: "#C69FAC",
-        naranja: "#D78C6E",
-        amarillo: "#F2C27F",
-        blanco: "#FFFFFF",
-    };
-
     const productosRelacionados = productos
-        .filter(
-            (item) =>
-                item.tipo === "compra" &&
-                item.id !== producto.id
-        )
+        .filter((item) => item.id !== producto.id)
+        .map((item) => {
+            const coincidencias = (item.estilos || []).filter(
+                (estilo) => (producto.estilos || []).includes(estilo)
+            ).length;
+
+            return { ...item, coincidencias };
+        })
+        .sort((a, b) => b.coincidencias - a.coincidencias)
         .slice(0, 5);
 
     return (
@@ -53,7 +71,10 @@ export default function DetalleVenta() {
             <section className="DetalleVenta__principal" aria-label="Detalle de la venta">
                 <article className="DetalleVenta__ficha">
                     <div className="DetalleVenta__imagenMarco">
-                        <img src={producto.imagen} alt={producto.alt || producto.nombre} />
+                        <img
+                            src={`http://localhost:3000${producto.imagen}`}
+                            alt={producto.alt || producto.nombre}
+                        />
                     </div>
 
                     <div className="DetalleVenta__informacion">
@@ -65,8 +86,15 @@ export default function DetalleVenta() {
 
                         <div className="DetalleVenta__vendedor">
                             <span>Publicado por:</span>
-                            <img src={iconoCuenta} alt="" />
-                            <span>user67</span>
+                            <img
+                                src={
+                                    producto.fotoPerfil
+                                        ? `http://localhost:3000${producto.fotoPerfil}`
+                                        : iconoCuenta
+                                }
+                                alt=""
+                            />
+                            <span>{producto.usuario}</span>
                         </div>
 
                         <div className="DetalleVenta__precio">
@@ -132,10 +160,10 @@ export default function DetalleVenta() {
 
                         {producto.colores?.map((color) => (
                             <span
-                                key={color}
+                                key={color.color}
                                 className="DetalleVenta__muestraColor"
-                                aria-label={color}
-                                style={{ backgroundColor: coloresDisponibles[color] || color }}
+                                aria-label={color.color}
+                                style={{ backgroundColor: color.codigoColor }}
                             />
                         ))}
                     </fieldset>
@@ -149,7 +177,7 @@ export default function DetalleVenta() {
                     </fieldset>
 
                     <p className="DetalleVenta__stock">
-                        Stock disponible: {producto.stock ?? 10} unidades
+                        Stock disponible: {producto.stock ?? 0} unidades
                     </p>
 
                     <Boton texto="Agregar al carrito" variante="principal" type="button" />
@@ -175,11 +203,10 @@ export default function DetalleVenta() {
                         <TarjetaVenta
                             key={item.id}
                             producto={item}
-                            onClick={() =>
-                                navigate("/detalles/venta", {
-                                    state: { producto: item, productos },
-                                })
-                            }
+                            color={item.codigoColor || "#A87975"}
+                            colorTexto={item.color?.toLowerCase() === "blanco" ? "#332D37" : "#FFFFFF"}
+                            colorAccion={item.codigoColor || "#A87975"}
+                            onClick={() => navigate(`/detalles/venta/${item.id}`)}
                         />
                     ))}
                 </div>
