@@ -1,11 +1,13 @@
-import "./Registro.css"
-import "../../styles/variables.css"
-import CampoFormulario from "../../componentes/CampoFormulario/CampoFormulario"
-import Boton from "../../componentes/Boton/Boton"
+import "./Registro.css";
+import "../../styles/variables.css";
 
-import ilustracion from "../../assets/Ilustracion__registro.svg"
-import iconoGoogle from "../../assets/Icono__google.svg"
+import CampoFormulario from "../../componentes/CampoFormulario/CampoFormulario";
+import Boton from "../../componentes/Boton/Boton";
 
+import ilustracion from "../../assets/Ilustracion__registro.svg";
+import iconoGoogle from "../../assets/Icono__google.svg";
+import Icono__ojo from "../../assets/Icono__ojo-cerrado.svg";
+import Icono__ojo_abierto from "../../assets/Icono__ojo-abierto.svg";
 
 export default function Registro() {
     return (
@@ -14,7 +16,9 @@ export default function Registro() {
 
                 <div className="Registro__section-div">
                     <header className="Registro__section-div-header">
-                        <h1 className="Registro__section-div-header-h1">Crear cuenta</h1>
+                        <h1 className="Registro__section-div-header-h1">
+                            Crear cuenta
+                        </h1>
 
                         <p className="Registro__section-div-header-p">
                             Creá tu espacio y hacé de tu estilo algo propio.
@@ -39,12 +43,23 @@ export default function Registro() {
                         />
 
                         <CampoFormulario
-                            texto="Contraseña"
                             id="registro-password"
+                            texto="Contraseña"
                             iconoMaterial="lock"
-                            iconoFinalMaterial="visibility_off"
+                            iconoFinal={Icono__ojo}
+                            iconoFinalAbierto={Icono__ojo_abierto}
                             tipo="password"
-                            placeholder="ej: contraseña"
+                            placeholder="Ingresá tu contraseña"
+                        />
+
+                        <CampoFormulario
+                            id="registro-repetir-password"
+                            texto="Repetir contraseña"
+                            iconoMaterial="lock"
+                            iconoFinal={Icono__ojo}
+                            iconoFinalAbierto={Icono__ojo_abierto}
+                            tipo="password"
+                            placeholder="Repetí tu contraseña"
                         />
 
                         <CampoFormulario
@@ -55,12 +70,6 @@ export default function Registro() {
                             placeholder="ej: +54 9 11 1234-5678"
                         />
 
-                        <label className="Registro__section-div-form-recordar">
-                            <input className="Registro__section-div-form-recordar-input" type="checkbox"
-                            />
-                            <span>Recordar contraseña</span>
-                        </label>
-
                         <Boton
                             texto="Registro"
                             variante="principal"
@@ -68,8 +77,9 @@ export default function Registro() {
                         />
                     </form>
 
-                    <div className="Login__separador"><span>o continuar con</span></div>
-
+                    <div className="Login__separador">
+                        <span>o continuar con</span>
+                    </div>
 
                     <Boton
                         texto="Google"
@@ -78,15 +88,26 @@ export default function Registro() {
                         type="button"
                     />
 
-                    <p className="Registro__section-div-p"> ¿Tienes cuenta?{" "} <a className="Registro__section-div-p-a" href="/login"> Inicia sesión </a>
+                    <p className="Registro__section-div-p">
+                        ¿Tenés cuenta?{" "}
+                        <a
+                            className="Registro__section-div-p-a"
+                            href="/"
+                        >
+                            Iniciá sesión
+                        </a>
                     </p>
                 </div>
 
                 <div className="Registro__section-div2">
-                    <img className="Registro__section-div2-img" src={ilustracion} alt="" />
+                    <img
+                        className="Registro__section-div2-img"
+                        src={ilustracion}
+                        alt=""
+                    />
                 </div>
 
             </section>
         </main>
-    )
+    );
 }

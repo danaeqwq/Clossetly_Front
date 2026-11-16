@@ -19,53 +19,78 @@ import DetallePrenda from "./pages/detalles/DetallePrenda";
 import DetalleVenta from "./pages/detalles/detalleVenta/DetalleVenta";
 import DetalleInter from "./pages/detalles/detalleInter/DetalleInter";
 import DetalleOutfit from "./pages/detalles/detalleOutfit/DetalleOutfit";
+import Login from "./pages/login/Login";
+import OlvidarContraseña from "./pages/olvidarContraseña/olvidarContraseña";
 export default function App() {
     const [panelActivo, setPanelActivo] = useState(null);
+    const [usuario, setUsuario] = useState(() => {
+        const usuarioGuardado = localStorage.getItem("usuario");
+        const token = localStorage.getItem("token");
+        return usuarioGuardado && token
+            ? JSON.parse(usuarioGuardado)
+            : null;
+    });
     return (
         <BrowserRouter>
             <>
-                <Header
-                    onAbrirFiltros={() =>
-                        setPanelActivo(panelActivo === "filtros" ? null : "filtros")
-                    }
-                    onAlternarCarrito={() =>
-                        setPanelActivo(panelActivo === "carrito" ? null : "carrito")
-                    }
-                />
-                <NavBar />
-                <main>
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/boutique" replace />} />
-
-                        <Route path="/admin" element={<Admin />} />
-
-                        <Route
-                            path="/boutique"
-                            element={
-                                <Boutique
-                                    filtrosAbiertos={panelActivo === "filtros"}
-                                    carritoAbierto={panelActivo === "carrito"}
-                                    onCerrarFiltros={() => setPanelActivo(null)}
-                                    onCerrarCarrito={() => setPanelActivo(null)}
-                                />
+                {usuario && (
+                    <>
+                        <Header
+                            onAbrirFiltros={() =>
+                                setPanelActivo(panelActivo === "filtros" ? null : "filtros")
+                            }
+                            onAlternarCarrito={() =>
+                                setPanelActivo(panelActivo === "carrito" ? null : "carrito")
                             }
                         />
-                        <Route path="/explorar" element={<Explorar />} />
-                        <Route path="/perfil" element={<MiCuenta />} />
-                        <Route path="/guia-talle" element={<GuiaTalle />} />
-                        <Route path="/armario" element={<MiArmario />} />
-                        <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
-                        <Route path="/propuesta-intercambio" element={<PropuestaDeIntercambio />} />
-                        <Route path="/terminos-y-condiciones" element={<Terminos />} />
-                        <Route path="/registro" element={<Registro />} />
-                        <Route path="/detalles/prenda" element={<DetallePrenda />} />
-                        <Route path="/detalles/outfit" element={<DetalleOutfit />} />
-                        <Route path="/detalles/venta/:id" element={<DetalleVenta />}/>
-                        <Route path="/detalles/intercambio/:id" element={<DetalleInter />}/>
+                        <NavBar />
+                    </>
+                )}
+                <main>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                usuario ? <Navigate to="/boutique" replace />: <Login setUsuario={setUsuario} />
+                            }
+                        />
+                        <Route path="/registro" element={usuario? <Navigate to="/boutique" replace />: <Registro />}/>
+                        <Route path="/olvidar-contraseña"element={<OlvidarContraseña />}/>
+                        {usuario ? (
+                            <>
+                                <Route path="/admin" element={<Admin />} />
+                                <Route
+                                    path="/boutique"
+                                    element={
+                                        <Boutique
+                                            filtrosAbiertos={panelActivo === "filtros"}
+                                            carritoAbierto={panelActivo === "carrito"}
+                                            onCerrarFiltros={() => setPanelActivo(null)}
+                                            onCerrarCarrito={() => setPanelActivo(null)}
+                                        />
+                                    }
+                                />
+
+                                <Route path="/explorar" element={<Explorar />} />
+                                <Route path="/perfil" element={<MiCuenta />} />
+                                <Route path="/guia-talle" element={<GuiaTalle />} />
+                                <Route path="/armario" element={<MiArmario />} />
+                                <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
+                                <Route path="/propuesta-intercambio" element={<PropuestaDeIntercambio />} />
+                                <Route path="/terminos-y-condiciones" element={<Terminos />} />
+                                <Route path="/detalles/prenda" element={<DetallePrenda />} />
+                                <Route path="/detalles/outfit" element={<DetalleOutfit />} />
+                                <Route path="/detalles/venta/:id" element={<DetalleVenta />} />
+                                <Route path="/detalles/intercambio/:id" element={<DetalleInter />} />
+                                <Route path="*" element={<Navigate to="/boutique" replace />} />
+                            </>
+                        ) : (
+                            <Route path="*" element={<Navigate to="/" replace />} />
+                        )}
                     </Routes>
                 </main>
 
-                <Footer />
+                {usuario && <Footer />}
             </>
         </BrowserRouter>
     );
