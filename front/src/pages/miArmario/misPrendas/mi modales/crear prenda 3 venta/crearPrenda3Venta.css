@@ -6,12 +6,10 @@
   font-family: var(--font-manrope);
 }
 .Venta__volver {
-  position: absolute;
-  bottom: 18px;
-  left: 18px;
   display: grid;
-  width: 38px;
-  height: 38px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   padding: 0;
   border: 0;
@@ -19,8 +17,9 @@
   color: var(--color-blancaso);
   background: var(--color-bordoVino);
   cursor: pointer;
+  margin-right: 6px;
 }
-.Venta__volver .material-symbols-outlined { font-size: 24px; }
+.Venta__volver .material-symbols-outlined { font-size: 22px; }
 .Venta__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
 
 .Venta__campos {
@@ -81,11 +80,11 @@
 .Modal:has(.Venta) .Modal__acciones {
   box-sizing: border-box;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: 10px;
-  padding-left: 64px;
 }
 .Modal:has(.Venta) .Modal__accion--confirmar { min-width: 180px; }
+.Modal:has(.Venta) .Modal__accion--confirmar { padding-right: 12px; }
 .Modal:has(.Venta) .Modal__accion--confirmar::after {
   content: "arrow_forward";
   font: 18px "Material Symbols Outlined";
@@ -94,8 +93,7 @@
 @media (max-width: 600px) {
   .Modal:has(.Venta) .Modal__accion--confirmar,
   .Modal:has(.Venta) .Modal__accion--cancelar { min-width: 0; }
-  .Venta__volver { bottom: max(22px, env(safe-area-inset-bottom)); left: 18px; }
-  .Modal:has(.Venta) .Modal__acciones { padding-left: 64px; }
+  .Modal:has(.Venta) .Modal__acciones { padding-right: 12px; padding-left: 12px; }
 }
 
 @media (max-width: 380px) {

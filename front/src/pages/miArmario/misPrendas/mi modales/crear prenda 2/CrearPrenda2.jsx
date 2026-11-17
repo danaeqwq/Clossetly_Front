@@ -24,6 +24,8 @@ const colores = [
 ];
 
 export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguiente, onVolver, onClose }) {
+  const estilosAdicionales = datos.estilos.filter((estilo) => !columnasEstilos.flat().includes(estilo));
+  const coloresAdicionales = datos.colores.filter((color) => !colores.some((opcion) => opcion.nombre === color));
   const alternarEstilo = (estilo) => {
     const seleccionados = datos.estilos.includes(estilo)
       ? datos.estilos.filter((actual) => actual !== estilo)
@@ -42,14 +44,9 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
     <Modal
       titulo="Agregar Prenda"
       descripcion="Completá la información para agregar una prenda a tu armario"
-      confirmar={{ texto: <>siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></>, onClick: onSiguiente }}
-      cancelar={{ texto: "Salir sin guardar", icono: "logout", onClick: onClose }}
       onClose={onClose}
     >
       <div className="CrearPrenda2">
-        <button className="CrearPrenda2__volver" type="button" onClick={onVolver} aria-label="Volver al paso anterior">
-          <span className="material-symbols-outlined" aria-hidden="true">chevron_left</span>
-        </button>
         <section className="CrearPrenda2__seccion" aria-labelledby="crear-prenda-estilos">
           <h3 id="crear-prenda-estilos">Estilos</h3>
           <p>Elegí uno o más categorías</p>
@@ -68,6 +65,11 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
                 ))}
               </ul>
             ))}
+            {estilosAdicionales.length > 0 && (
+              <ul>{estilosAdicionales.map((estilo) => (
+                <li key={`guardado-${estilo}`}><button className="CrearPrenda2__estilo--seleccionado" type="button" aria-pressed="true" onClick={() => alternarEstilo(estilo)}>{estilo}</button></li>
+              ))}</ul>
+            )}
           </div>
         </section>
 
@@ -85,15 +87,33 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
                 <span className="CrearPrenda2__casilla" aria-hidden="true" />
                 <span
                   className={`CrearPrenda2__muestra${color.borde ? " CrearPrenda2__muestra--borde" : ""}`}
-                  style={{ "--color-muestra": color.tono }}
+                  data-color={color.nombre}
                   aria-hidden="true"
                 />
                 {color.nombre}
               </button>
             ))}
+            {coloresAdicionales.map((color) => (
+              <button className="CrearPrenda2__color" key={`guardado-${color}`} type="button" aria-pressed="true" onClick={() => alternarColor(color)}>
+                <span className="CrearPrenda2__casilla" aria-hidden="true" />
+                <span className="CrearPrenda2__muestra CrearPrenda2__muestra--borde" data-color="guardado" aria-hidden="true" />
+                {color}
+              </button>
+            ))}
           </div>
         </section>
         {mensajeError && <p className="CrearPrenda2__error" role="alert">{mensajeError}</p>}
+        <footer className="CrearPrenda2__acciones Modal__acciones">
+          <button className="CrearPrenda2__volver Modal__accion" type="button" aria-label="Volver al paso anterior" onClick={onVolver}>
+            <span className="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+          </button>
+          <button className="Modal__accion Modal__accion--confirmar" type="button" onClick={onSiguiente}>
+            Siguiente paso <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </button>
+          <button className="Modal__accion Modal__accion--cancelar" type="button" onClick={onClose}>
+            Salir sin guardar <span className="material-symbols-outlined" aria-hidden="true">logout</span>
+          </button>
+        </footer>
       </div>
     </Modal>
   );

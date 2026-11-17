@@ -9,7 +9,7 @@ const tiposPublicacion = [
 ];
 
 const etiquetas = [
-  { nombre: "Prenda", campo: "categoria", opciones: ["Remeras", "Pantalones", "Cortos", "Camperas", "Accesorios", "Zapatos"] },
+  { nombre: "Prenda", campo: "categoria", opciones: [] },
   { nombre: "Talle", campo: "talle", opciones: ["XS", "S", "M", "L", "XL"] },
   { nombre: "Temporada", campo: "temporada", opciones: ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"] },
   { nombre: "Ocasión", campo: "ocasion", opciones: ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"] },
@@ -78,11 +78,11 @@ export default function CrearPrenda({ datos, mensajeError, onCambiar, onContinua
               <input
                 id="crear-prenda-nombre"
                 value={datos.nombre}
-                maxLength={12}
+                maxLength={40}
                 onChange={(evento) => onCambiar("nombre", evento.target.value)}
                 placeholder="Ej: remera vintage"
               />
-              <span className="AgregarPrenda__contador">{datos.nombre.length}/12</span>
+              <span className="AgregarPrenda__contador">{datos.nombre.length}/40</span>
             </div>
 
             <div className="AgregarPrenda__campo AgregarPrenda__campo--descripcion">

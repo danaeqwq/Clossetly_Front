@@ -16,31 +16,11 @@ export default function CrearPrenda3Intercambio({ datos, mensajeError, onCambiar
       className="Modal--intercambio"
       titulo="Prenda Para Intercambiar"
       descripcion="Completa la información para agregar una prenda a tu armario"
-      confirmar={{ texto: <>Guardar <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></>, onClick: onGuardar }}
+      confirmar={{ texto: <><span className="Intercambiar__volver" role="button" tabIndex={0} aria-label="Volver al paso anterior" onClick={(evento) => { evento.stopPropagation(); onVolver(); }} onKeyDown={(evento) => { if (evento.key === "Enter" || evento.key === " ") { evento.preventDefault(); evento.stopPropagation(); onVolver(); } }}><span className="material-symbols-outlined" aria-hidden="true">chevron_left</span></span>Guardar <span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></>, onClick: onGuardar }}
       cancelar={{ texto: "Salir sin guardar", icono: "logout", onClick: onClose }}
       onClose={onClose}
     >
       <form className="Intercambiar" aria-label="Datos de la prenda para intercambiar">
-        <button className="Intercambiar__volver" type="button" onClick={onVolver} aria-label="Volver al paso anterior">
-          <span className="material-symbols-outlined" aria-hidden="true">chevron_left</span>
-        </button>
-        <div className="Intercambiar__datos">
-          <label className="Intercambiar__campo">
-            <span className="Intercambiar__etiqueta">Precio</span>
-            <span className="Intercambiar__entrada Intercambiar__entrada--precio">
-              <span aria-hidden="true">$</span>
-              <input aria-label="Precio" inputMode="decimal" value={datos.precio} onChange={(evento) => onCambiar("precio", evento.target.value)} placeholder="Ej: 10.000" />
-            </span>
-          </label>
-          <label className="Intercambiar__campo">
-            <span className="Intercambiar__etiqueta">Stock</span>
-            <span className="Intercambiar__entrada Intercambiar__entrada--stock">
-              <span aria-hidden="true">Unidades</span>
-              <input aria-label="Cantidad" inputMode="numeric" value={datos.stock} onChange={(evento) => onCambiar("stock", evento.target.value)} placeholder="Ej: 100" />
-            </span>
-          </label>
-        </div>
-
         <fieldset className="Intercambiar__tipos">
           <legend>Tipos de prendas que acepta</legend>
           <div className="Intercambiar__opciones">

@@ -6,14 +6,11 @@ export default function CrearPrenda3Venta({ datos, mensajeError, onCambiar, onGu
     <Modal
       titulo="Prenda Para Vender"
       descripcion="Completa la información para agregar una prenda a tu armario"
-      confirmar={{ texto: "Guardar", onClick: onGuardar }}
+      confirmar={{ texto: <><span className="Venta__volver" role="button" tabIndex={0} aria-label="Volver al paso anterior" onClick={(evento) => { evento.stopPropagation(); onVolver(); }} onKeyDown={(evento) => { if (evento.key === "Enter" || evento.key === " ") { evento.preventDefault(); evento.stopPropagation(); onVolver(); } }}><span className="material-symbols-outlined" aria-hidden="true">chevron_left</span></span>Guardar</>, onClick: onGuardar }}
       cancelar={{ texto: "Salir sin guardar", icono: "logout", onClick: onClose }}
       onClose={onClose}
     >
       <form className="Venta" aria-label="Datos de la prenda para vender">
-        <button className="Venta__volver" type="button" onClick={onVolver} aria-label="Volver al paso anterior">
-          <span className="material-symbols-outlined" aria-hidden="true">chevron_left</span>
-        </button>
         <div className="Venta__campos">
           <label className="Venta__campo">
             <span className="Venta__etiqueta">Precio</span>
