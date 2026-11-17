@@ -8,7 +8,7 @@ const nombresSeccion = {
     "/admin": "Administración",
     "/boutique": "Boutique",
     "/explorar": "Explorar",
-    "/perfil": "Mi cuenta",
+    "/mi-cuenta": "Mi cuenta",
     "/guia-talle": "Guía de talles",
     "/armario": "Mi armario",
     "/preguntas-frecuentes": "Preguntas frecuentes",

@@ -22,7 +22,7 @@ export default function Footer() {
             aria-label="Enlaces del pie de página"
           >
             <Link to="/armario">Mi armario</Link>
-            <Link to="/perfil">Mi cuenta</Link>
+            <Link to="/mi-cuenta">Mi cuenta</Link>
             <Link to="/guia-talle">Guía de estilo</Link>
             <Link to="/boutique">Boutique</Link>
             <Link to="/explorar">Explorar</Link>

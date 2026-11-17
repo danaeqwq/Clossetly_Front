@@ -5,7 +5,6 @@ import iconoWhatsapp from "../../assets/logo wsp mi armario.svg";
 import ProductoCarrito from "./productoCarrito/ProductoCarrito";
 import "./carrito.css";
 
-// Imagen de perfil de los vendedores
 const imagenVendedora =
   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96&q=80";
 

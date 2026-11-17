@@ -21,6 +21,9 @@ import DetalleInter from "./pages/detalles/detalleInter/DetalleInter";
 import DetalleOutfit from "./pages/detalles/detalleOutfit/DetalleOutfit";
 import Login from "./pages/login/Login";
 import OlvidarContraseña from "./pages/olvidarContraseña/olvidarContraseña";
+import VerificarCodigo from "./pages/verificarCode/verificarCode";
+import testInicial from "./pages/testInicial/testInicial";
+import admin from "./pages/admin/Admin";
 export default function App() {
     const [panelActivo, setPanelActivo] = useState(null);
     const [usuario, setUsuario] = useState(() => {
@@ -56,6 +59,8 @@ export default function App() {
                         />
                         <Route path="/registro" element={usuario? <Navigate to="/boutique" replace />: <Registro />}/>
                         <Route path="/olvidar-contraseña"element={<OlvidarContraseña />}/>
+                        <Route path="/verificar-codigo"element={<VerificarCodigo />}/>
+                        <Route path="/test-preferencias"element={<testInicial />}/>
                         {usuario ? (
                             <>
                                 <Route path="/admin" element={<Admin />} />
@@ -72,7 +77,7 @@ export default function App() {
                                 />
 
                                 <Route path="/explorar" element={<Explorar />} />
-                                <Route path="/perfil" element={<MiCuenta />} />
+                                <Route path="/mi-cuenta" element={<MiCuenta />} />
                                 <Route path="/guia-talle" element={<GuiaTalle />} />
                                 <Route path="/armario" element={<MiArmario />} />
                                 <Route path="/preguntas-frecuentes" element={<PreguntasFrecuentes />} />
