@@ -27,7 +27,13 @@ export default function TarjetaPrenda({
     >
       <img
         className="TarjetaPrenda__imagen"
-        src={prenda.imagen}
+        src={
+          prenda.imagen?.startsWith("data:") ||
+            prenda.imagen?.startsWith("blob:") ||
+            prenda.imagen?.startsWith("http")
+            ? prenda.imagen
+            : `http://localhost:3000${prenda.imagen}`
+        }
         alt={prenda.alt}
       />
 

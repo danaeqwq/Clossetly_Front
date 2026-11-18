@@ -3,7 +3,7 @@ import Modal from "../../../../../componentes/modal/Modal";
 import "./crearOutfit.css";
 
 const temporadas = ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"];
-const ocasiones = ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"];
+const ocasiones = ["CASUAL", "FORMAL", "FIESTA"];
 const generos = ["UNISEX", "MUJER", "HOMBRE"];
 
 const clavePrenda = (prenda) => prenda.claveArmario || prenda.id;
