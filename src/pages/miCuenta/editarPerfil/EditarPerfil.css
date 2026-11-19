@@ -369,3 +369,25 @@
   .EditarPerfil__campo textarea { min-height: 44px; }
   .EditarPerfil__acciones .Boton { min-height: 28px; }
 }
+.EditarPerfil__contrasena {
+    margin-top: 35px;
+}
+
+.EditarPerfil__contrasena h2 {
+    margin-bottom: 20px;
+}
+
+.EditarPerfil__olvidar {
+    margin-top: 12px;
+    text-align: right;
+}
+
+.EditarPerfil__olvidar button {
+    border: none;
+    background: none;
+    color: var(--bordoVino);
+    font-family: inherit;
+    font-size: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

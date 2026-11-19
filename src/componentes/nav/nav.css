@@ -286,5 +286,9 @@
   .Nav__enlace:not(.Nav__enlace--logo)::before {
     display: none;
   }
+
+  .Nav__enlace.Nav__enlace--admin::after {
+    content: none;
+  }
 }
 

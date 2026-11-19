@@ -15,13 +15,18 @@ export default function DetalleInter() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [productos, setProductos] = useState([]);
-
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
         Promise.all([
-            axios.get(`http://localhost:3000/api/publicaciones/intercambio/${id}`),
-            axios.get("http://localhost:3000/api/publicaciones/intercambio"),
+            axios.get(`http://localhost:3000/api/publicaciones/intercambio/${id}`, config),
+            axios.get("http://localhost:3000/api/publicaciones/intercambio", config),
         ])
             .then(([respuestaDetalle, respuestaProductos]) => {
                 setProducto(respuestaDetalle.data.publicacion);
@@ -35,7 +40,7 @@ export default function DetalleInter() {
                 setCargando(false);
             });
     }, [id]);
-
+    
     if (cargando) {
         return <main className="DetalleInter"><p>Cargando publicación...</p></main>;
     }

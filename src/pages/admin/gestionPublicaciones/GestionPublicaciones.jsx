@@ -34,10 +34,13 @@ function TarjetaPublicacion({ publicacion }) {
       {publicacion.tipo === "OUTFIT" && <TarjetaOutfit />}
       {publicacion.tipo === "PRENDA" && (
         <TarjetaPrenda
-          nombre={publicacion.nombre}
-          imagen={publicacion.imagen}
-          descripcionImagen={publicacion.nombre}
+          prenda={{
+            nombre: publicacion.nombre,
+            imagen: publicacion.imagen,
+            alt: publicacion.nombre,
+          }}
           color={publicacion.tono === "terracota" ? "var(--color-naranja)" : "var(--color-azul)"}
+          clickable={false}
         />
       )}
       {publicacion.tipo === "CONSEJO" && <TarjetaConsejo />}

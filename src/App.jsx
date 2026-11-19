@@ -8,7 +8,7 @@ import NavBar from "./componentes/nav/Nav";
 import Admin from "./pages/admin/Admin";
 import Boutique from "./pages/boutique/Boutique";
 import Explorar from "./pages/explorar/Explorar";
-import MiCuenta from "./pages/miCuenta/MiCuenta";
+import MiCuenta from "./pages/miCuenta/Micuenta";
 import GuiaTalle from "./pages/guiaTalle/GuiaTalle";
 import MiArmario from "./pages/miArmario/MiArmario";
 import PropuestaDeIntercambio from "./pages/propuesta de intercambio/PropuestaDeIntercambio";
@@ -24,6 +24,12 @@ import OlvidarContraseña from "./pages/olvidarContraseña/olvidarContraseña";
 import VerificarCodigo from "./pages/verificarCode/verificarCode";
 import testInicial from "./pages/testInicial/testInicial";
 import admin from "./pages/admin/Admin";
+import GestionDeUsuario from "./pages/admin/gestionDeUsuario/GestionDeUsuario";
+import GestionPublicaciones from "./pages/admin/gestionPublicaciones/GestionPublicaciones";
+import GestionSeccionPendiente from "./pages/admin/GestionSeccionPendiente";
+import EditarPerfil from "./pages/miCuenta/editarPerfil/EditarPerfil";
+import EditarEstilos from "./pages/miCuenta/editarEstilos/EditarEstilos";
+
 export default function App() {
     const [panelActivo, setPanelActivo] = useState(null);
     const [usuario, setUsuario] = useState(() => {
@@ -61,9 +67,13 @@ export default function App() {
                         <Route path="/olvidar-contraseña"element={<OlvidarContraseña />}/>
                         <Route path="/verificar-codigo"element={<VerificarCodigo />}/>
                         <Route path="/test-preferencias"element={<testInicial />}/>
+
                         {usuario ? (
                             <>
                                 <Route path="/admin" element={<Admin />} />
+                                <Route path="/admin/usuarios" element={<GestionDeUsuario />} />
+                                <Route path="/admin/gestion-publicaciones" element={<GestionPublicaciones />} />
+                                <Route path="/admin/:seccion" element={<GestionSeccionPendiente />} />
                                 <Route
                                     path="/boutique"
                                     element={
@@ -87,6 +97,8 @@ export default function App() {
                                 <Route path="/detalles/outfit" element={<DetalleOutfit />} />
                                 <Route path="/detalles/venta/:id" element={<DetalleVenta />} />
                                 <Route path="/detalles/intercambio/:id" element={<DetalleInter />} />
+                                <Route path="/editar-perfil" element={<EditarPerfil setUsuario={setUsuario} />}/>
+                                <Route path="/editar-estilos" element={<EditarEstilos />} />
                                 <Route path="*" element={<Navigate to="/boutique" replace />} />
                             </>
                         ) : (
@@ -94,7 +106,6 @@ export default function App() {
                         )}
                     </Routes>
                 </main>
-
                 {usuario && <Footer />}
             </>
         </BrowserRouter>

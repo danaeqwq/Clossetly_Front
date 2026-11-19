@@ -21,9 +21,19 @@ export default function DetalleVenta() {
     const [cargando, setCargando] = useState(true);
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+
         Promise.all([
-            axios.get(`http://localhost:3000/api/publicaciones/compra/${id}`),
-            axios.get("http://localhost:3000/api/publicaciones/compra"),
+            axios.get(`http://localhost:3000/api/publicaciones/compra/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }),
+            axios.get("http://localhost:3000/api/publicaciones/compra", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }),
         ])
             .then(([respuestaDetalle, respuestaProductos]) => {
                 setProducto(respuestaDetalle.data.publicacion);

@@ -1,7 +1,19 @@
 import "./Alert.css";
 import Boton from "../Boton/Boton";
 
-export default function Alert({ titulo, mensaje, icono, textoBoton, onClick }) {
+export default function Alert({
+    titulo,
+    mensaje,
+    icono,
+    textoBoton,
+    onClick,
+    tipoInput,
+    valorInput,
+    onChangeInput,
+    placeholderInput,
+    textoBotonSecundario,
+    onClickSecundario
+}) {
     return (
         <div className="Alert">
             <div className="Alert__div">
@@ -21,13 +33,34 @@ export default function Alert({ titulo, mensaje, icono, textoBoton, onClick }) {
                     {mensaje}
                 </p>
 
+                {tipoInput && (
+                    <input
+                        className="Alert__input"
+                        type={tipoInput}
+                        value={valorInput}
+                        onChange={onChangeInput}
+                        placeholder={placeholderInput}
+                    />
+                )}
+
                 <div className="Alert__div-div">
+
+                    {textoBotonSecundario && (
+                        <Boton
+                            texto={textoBotonSecundario}
+                            variante="secundario"
+                            type="button"
+                            onClick={onClickSecundario}
+                        />
+                    )}
+
                     <Boton
                         texto={textoBoton}
                         variante="principal"
                         type="button"
                         onClick={onClick}
                     />
+
                 </div>
 
             </div>
