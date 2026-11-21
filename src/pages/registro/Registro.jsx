@@ -12,9 +12,10 @@ import ilustracion from "../../assets/Ilustracion__registro.svg";
 import iconoGoogle from "../../assets/Icono__google.svg";
 import Icono__ojo from "../../assets/Icono__ojo-cerrado.svg";
 import Icono__ojo_abierto from "../../assets/Icono__ojo-abierto.svg";
+import { useNavigate } from "react-router";
 
 export default function Registro() {
-
+    const navigate = useNavigate();
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
     const [pass, setPass] = useState("");
@@ -106,6 +107,7 @@ export default function Registro() {
             telefono: telefono.trim()
         })
         .then((respuesta) => {
+            localStorage.setItem("idUsuario", respuesta.data.id);
             setNombre("");
             setCorreo("");
             setPass("");
@@ -241,7 +243,6 @@ export default function Registro() {
                 </div>
 
             </section>
-
             {alerta && (
                 <Alert
                     titulo={alerta.titulo}
@@ -253,7 +254,7 @@ export default function Registro() {
                         setAlerta(null);
 
                         if (registroExitoso) {
-                            window.location.href = "/";
+                            navigate("/test-preferencias");
                         }
                     }}
                 />

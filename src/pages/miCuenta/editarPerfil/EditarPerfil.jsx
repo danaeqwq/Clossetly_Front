@@ -2,7 +2,7 @@ import "./EditarPerfil.css";
 import "../../../styles/global.css";
 import "../../../styles/variables.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
@@ -16,7 +16,9 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
 
     const [usuario, setUsuario] = useState(null);
     const [eliminandoCuenta, setEliminandoCuenta] = useState(false);
-
+    const inputFoto = useRef(null);
+    const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
+    const [fotoPreview, setFotoPreview] = useState(null);
     const cerrarSesion = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
@@ -24,6 +26,24 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
         navigate("/");
     };
 
+    const seleccionarFoto = (e) => {
+        const archivo = e.target.files[0];
+
+        if (!archivo) return;
+
+        if (!archivo.type.startsWith("image/")) {
+            setAlerta({
+                titulo: "Archivo no válido",
+                mensaje: "Seleccioná una imagen para tu foto de perfil.",
+                textoBoton: "Aceptar"
+            });
+
+            return;
+        }
+
+        setFotoSeleccionada(archivo);
+        setFotoPreview(URL.createObjectURL(archivo));
+    };
     const [formulario, setFormulario] = useState({
         nombre: "",
         telefono: "",
@@ -106,28 +126,43 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
     const guardarCambios = () => {
         const token = localStorage.getItem("token");
 
+console.log("Token:", token);
+        const datos = new FormData();
+
+        datos.append("nombre", formulario.nombre);
+        datos.append("telefono", formulario.telefono);
+        datos.append("descripcion", formulario.descripcion);
+
+        if (fotoSeleccionada) {
+            datos.append("fotoPerfil", fotoSeleccionada);
+        }
+
         setGuardando(true);
 
-        axios.put("http://localhost:3000/api/usuarios/mi-cuenta", {
-            nombre: formulario.nombre,
-            telefono: formulario.telefono,
-            descripcion: formulario.descripcion
-        }, {
-            headers: {
-                Authorization: `Bearer ${token}`
+        axios.put(
+            
+            "http://localhost:3000/api/usuarios/mi-cuenta",
+            datos,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        })
-        .then(() => {
+        )
+        .then((respuesta) => {
             setUsuario({
                 ...usuario,
                 nombre: formulario.nombre,
                 telefono: formulario.telefono,
-                descripcion: formulario.descripcion
+                descripcion: formulario.descripcion,
+                foto_perfil: respuesta.data.foto_perfil || usuario.foto_perfil
             });
+
+            setFotoSeleccionada(null);
 
             setAlerta({
                 titulo: "¡Perfil actualizado!",
-                mensaje: "Tus datos personales se guardaron correctamente.",
+                mensaje: "Tus datos personales y tu foto se guardaron correctamente.",
                 textoBoton: "Aceptar"
             });
         })
@@ -296,21 +331,37 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
     return (
         <main className="EditarPerfil">
             <section className="EditarPerfil__panel">
-
                 <header className="EditarPerfil__cabecera">
-
                     <div className="EditarPerfil__foto">
                         <img
-                            src={fotoPerfil}
+                            src={
+                                fotoPreview ||
+                                (usuario.foto_perfil
+                                    ? `http://localhost:3000${usuario.foto_perfil}`
+                                    : Avatar)
+                            }
                             alt={`Foto de perfil de ${usuario.nombre}`}
                             onError={(e) => {
                                 e.currentTarget.src = Avatar;
                             }}
                         />
 
-                        <span className="EditarPerfil__editarFoto material-symbols-outlined">
+                        <button
+                            type="button"
+                            className="EditarPerfil__editarFoto material-symbols-outlined"
+                            onClick={() => inputFoto.current.click()}
+                        >
                             edit
-                        </span>
+                        </button>
+
+                        <input
+                            type="file"
+                            accept="image/*"
+                            ref={inputFoto}
+                            onChange={seleccionarFoto}
+                            hidden
+                        />
+
                     </div>
 
                     <div className="EditarPerfil__identidad">
@@ -334,32 +385,15 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
                             </span>
                         </div>
                     </div>
-
-                    <div className="EditarPerfil__accionesCabecera">
-                        <Boton
-                            texto="Editar perfil"
-                            variante="principal"
-                            type="button"
-                        />
-
-                        <Boton
-                            texto="Editar mis estilos"
-                            variante="principal"
-                            type="button"
-                        />
-                    </div>
-
                 </header>
 
                 <div className="EditarPerfil__contenido">
 
                     {/* COLUMNA IZQUIERDA */}
                     <section className="EditarPerfil__formulario">
-
                         <h2 id="EditarPerfil__tituloDatos">
                             Datos personales
                         </h2>
-
                         <div className="EditarPerfil__campo">
                             <label htmlFor="editar-perfil-usuario">
                                 User

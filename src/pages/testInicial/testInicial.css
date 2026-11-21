@@ -103,6 +103,7 @@
   background: var(--color-cremita);
   box-shadow: 0 1px 4px var(--color-rosaEmpol);
   color: var(--color-carbon);
+  transition: background-color 320ms ease, border-color 320ms ease, color 320ms ease;
 }
 
 .TestInicial__tarjeta--destacada {
@@ -143,6 +144,7 @@
   font-family: var(--font-Kurale);
   font-size: 14px;
   line-height: 1;
+  transition: background-color 320ms ease, color 320ms ease;
 }
 
 .TestInicial__tarjeta--destacada .TestInicial__numero {
@@ -202,12 +204,21 @@
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
+  transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease;
 }
 
 .TestInicial__casilla--seleccionada {
   border-color: var(--color-blancaso);
   background: var(--color-blancaso);
   color: var(--color-bordoVino);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .TestInicial__tarjeta,
+  .TestInicial__numero,
+  .TestInicial__casilla {
+    transition-duration: 0.01ms;
+  }
 }
 
 .TestInicial__muestraColor {

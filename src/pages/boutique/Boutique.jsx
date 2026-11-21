@@ -103,8 +103,15 @@ useEffect(() => {
             ]);
         })
         .catch((error) => {
-            console.error("Error al obtener publicaciones:", error);
-        });
+          if (error.response?.status === 401) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("idUsuario");
+              navigate("/login");
+              return;
+          }
+
+          console.error("Error al obtener publicaciones:", error);
+      });
 
 }, [filtro, criterios, colores, categoriasActivas, tiposAceptados]);
 

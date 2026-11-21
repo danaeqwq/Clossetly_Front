@@ -22,7 +22,7 @@ import DetalleOutfit from "./pages/detalles/detalleOutfit/DetalleOutfit";
 import Login from "./pages/login/Login";
 import OlvidarContraseña from "./pages/olvidarContraseña/olvidarContraseña";
 import VerificarCodigo from "./pages/verificarCode/verificarCode";
-import testInicial from "./pages/testInicial/testInicial";
+import TestInicial from "./pages/testInicial/testInicial";
 import admin from "./pages/admin/Admin";
 import GestionDeUsuario from "./pages/admin/gestionDeUsuario/GestionDeUsuario";
 import GestionPublicaciones from "./pages/admin/gestionPublicaciones/GestionPublicaciones";
@@ -66,7 +66,7 @@ export default function App() {
                         <Route path="/registro" element={usuario? <Navigate to="/boutique" replace />: <Registro />}/>
                         <Route path="/olvidar-contraseña"element={<OlvidarContraseña />}/>
                         <Route path="/verificar-codigo"element={<VerificarCodigo />}/>
-                        <Route path="/test-preferencias"element={<testInicial />}/>
+                        <Route path="/test-preferencias" element={<TestInicial />} />
 
                         {usuario ? (
                             <>
