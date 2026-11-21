@@ -1,0 +1,123 @@
+.TarjetaIntercambio {
+  position: relative;
+  min-width: 0;
+  height: 320px;
+  overflow: hidden;
+  border: 0.1px solid color-mix(in srgb, var(--tarjeta-color) 20%, transparent);
+  border-radius: 10px;
+  background: var(--tarjeta-color);
+  box-shadow: 0 4px 8px #342c3042;
+}
+
+.TarjetaIntercambio__imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.TarjetaIntercambio__tipo {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-blancaso);
+  border-radius: 24px;
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: var(--tarjeta-color);
+  font:500 13px var(--font-manrope);
+}
+
+.TarjetaIntercambio__tipo .material-symbols-outlined { font-size: 19px; }
+
+.TarjetaIntercambio__favorito {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 75%, transparent);
+  border-radius: 50%;
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: color-mix(in srgb, var(--tarjeta-color) 60%, transparent);
+  font-size: 18px;
+}
+
+.TarjetaIntercambio__pie {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  left: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 59px;
+  width: 80%;
+  padding: 0px 12px 0px 8px;
+  border: 1px solid color-mix(in srgb, var(--color-blancaso) 50%, transparent);
+  border-left: 0;
+  border-radius: 0 36px 36px 0;
+  color: var(--tarjeta-texto, var(--color-blancaso));
+  background: var(--tarjeta-color);
+}
+
+.TarjetaIntercambio__datos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.TarjetaIntercambio__nombre {
+  overflow: hidden;
+  color: var(--color-blancaso);
+  font: 17px var(--font-Kurale);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.TarjetaIntercambio__talle {
+  color: color-mix(in srgb, var(--tarjeta-texto, var(--color-blancaso)) 68%, transparent);
+  font: 14px var(--font-manrope);
+}
+
+.TarjetaIntercambio__accion {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border: 1px solid color-mix(in srgb, var(--tarjeta-accion-color, var(--tarjeta-color)) 50%, transparent);
+  border-radius: 50%;
+  color: var(--tarjeta-accion-color, var(--tarjeta-color));
+  background: var(--color-blancaso);
+  font-size: 27px;
+  font-weight: 300;
+}
+
+@media (max-width: 1100px) {
+  .TarjetaIntercambio { height: clamp(240px, 27vw, 297px); }
+  .TarjetaIntercambio__tipo { gap: 3px; padding: 2px 5px; font-size: 10px; }
+  .TarjetaIntercambio__tipo .material-symbols-outlined { font-size: 15px; }
+  .TarjetaIntercambio__favorito { width: 30px; height: 30px; font-size: 17px; }
+  .TarjetaIntercambio__pie { width: 72%; min-height: 50px; padding: 0 8px 0 6px; }
+  .TarjetaIntercambio__nombre { font-size: 14px; }
+  .TarjetaIntercambio__talle { font-size: 12px; }
+  .TarjetaIntercambio__accion { width: 29px; height: 29px; font-size: 21px; }
+}
+
+@media (max-width: 760px) {
+  .TarjetaIntercambio { height: clamp(210px, 65vw, 250px); }
+  .TarjetaIntercambio__tipo { top: 6px; left: 5px; gap: 2px; padding: 2px 5px; font-size: 8px; }
+  .TarjetaIntercambio__tipo .material-symbols-outlined { font-size: 12px; }
+  .TarjetaIntercambio__favorito { top: 5px; right: 5px; width: 27px; height: 27px; font-size: 15px; }
+  .TarjetaIntercambio__pie { bottom: 8px; min-height: 44px; width: 86%; padding: 0 6px 0 5px; }
+  .TarjetaIntercambio__nombre { font-size: 12px; }
+  .TarjetaIntercambio__talle { font-size: 10px; }
+  .TarjetaIntercambio__accion { width: 26px; height: 26px; font-size: 18px; }
+}

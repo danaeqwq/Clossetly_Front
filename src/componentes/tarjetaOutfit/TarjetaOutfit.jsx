@@ -2,8 +2,9 @@
 import "./tarjetaOutfit.css";
 import { useNavigate } from "react-router";
 
-export default function TarjetaOutfit() {
+export default function TarjetaOutfit({ outfit = {} }) {
   const navigate = useNavigate();
+  const imagenes = (outfit.fotos?.length ? outfit.fotos : outfit.prendas?.map((prenda) => prenda.imagen).filter(Boolean) || []).slice(0, 3);
   return (
     <article
       className="TarjetaOutfit TarjetaOutfit--clickeable"
@@ -20,15 +21,13 @@ export default function TarjetaOutfit() {
     >
       {/* Collage de imágenes */}
       <div className="TarjetaOutfit__fotos">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=85" alt="Zapatillas negras" />
-        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=85" alt="Pantalón del outfit" />
-        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=85" alt="Prenda del outfit" />
+        {imagenes.map((imagen, indice) => <img key={`${outfit.id}-${indice}`} src={imagen} alt={`${outfit.nombre || "Outfit"} ${indice + 1}`} />)}
 
         {/* Cuadrado translúcido con información */}
         <div className="TarjetaOutfit__overlay">
-          <b>+2<br />PRENDAS</b>
-          <span>CONTRASTE</span>
-          <small>5 Prendas</small>
+          <b>{outfit.nombre || "Outfit"}</b>
+          {outfit.descripcion && <span>{outfit.descripcion}</span>}
+          <small>{outfit.prendas?.length || 0} prendas</small>
         </div>
       </div>
 

@@ -1,0 +1,84 @@
+.MiArmario {
+  min-height: calc(100vh - 230px);
+  padding: 14px 11.5% 44px;
+  color: var(--color-carbon);
+  background: var(--color-cremita);
+}
+
+.MiArmario__barra {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.MiArmario__tabs { flex: 1 1 auto; min-width: 0; margin-bottom: 0; }
+.MiArmario__accionesPrendas {
+  display: flex;
+  flex: 0 0 310px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.MiArmario__accionesPrendas[hidden] { display: none; }
+
+.MiArmario__crearPrenda {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 5px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
+  font: 11px var(--font-manrope);
+  cursor: pointer;
+}
+
+.MiArmario__barraSeleccionOutfit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 5px;
+  color: var(--color-bordoVino);
+  background: var(--color-cremita);
+  font: 11px var(--font-manrope);
+}
+
+.MiArmario__barraSeleccionOutfit > span { padding-left: 9px; white-space: nowrap; }
+
+.MiArmario__barraSeleccionOutfit button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 0;
+  color: var(--color-rosaTerra);
+  background: var(--color-blancaso);
+  font: 11px var(--font-manrope);
+}
+
+.MiArmario__barraSeleccionOutfit .MiArmario__crearOutfit {
+  border-radius: 4px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+@media (max-width: 760px) {
+  .MiArmario { padding: 12px 15px 100px; }
+  .MiArmario__barra { gap: 8px; margin-bottom: 16px; }
+  .MiArmario__accionesPrendas { flex-basis: auto; }
+  .MiArmario__tabs {
+    flex: 1 1 auto;
+    width: auto;
+    justify-content: flex-start;
+  }
+  .MiArmario__tabs .Select__opcion {
+    flex: 0 1 auto;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    padding-inline: 9px;
+    font-size: 9px;
+  }
+  .MiArmario__barraSeleccionOutfit { gap: 2px; font-size: 9px; }
+  .MiArmario__barraSeleccionOutfit > span { padding-left: 5px; }
+  .MiArmario__barraSeleccionOutfit button { min-height: 28px; padding-inline: 6px; font-size: 9px; }
+}

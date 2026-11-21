@@ -1,0 +1,102 @@
+.Venta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #754344;
+  font-family: var(--font-manrope);
+}
+.Venta__volver {
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  cursor: pointer;
+  margin-right: 6px;
+}
+.Venta__volver .material-symbols-outlined { font-size: 22px; }
+.Venta__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
+
+.Venta__campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.Venta__campo { display: grid; min-width: 0; gap: 5px; }
+.Venta__etiqueta {
+  color: var(--color-carbon);
+  font-family: var(--font-CormUpri);
+  font-size: 20px;
+  font-weight: 700;
+}
+.Venta__entrada {
+  display: flex;
+  min-width: 0;
+  height: 44px;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #d6b9b4;
+  border-radius: 8px;
+  background: #fffdfc;
+  color: #8d6967;
+  font-size: 13px;
+}
+.Venta__entrada > span {
+  display: grid;
+  height: 100%;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0 10px;
+  border-right: 1px solid #e2cdca;
+}
+.Venta__entrada input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  outline: 0;
+  color: #754344;
+  background: transparent;
+  font-size: 13px;
+}
+.Venta__entrada input::placeholder { color: #bd9d99; opacity: 1; }
+.Venta__entrada--stock input { width: auto; flex: 1 1 auto; }
+.Venta__entrada--stock > span { border-right: 0; border-left: 1px solid #e2cdca; }
+.Venta__entrada--stock > span:first-child { border-right: 1px solid #e2cdca; border-left: 0; }
+
+@media (max-width: 600px) {
+  .Venta { gap: 16px; }
+  .Venta__campos { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
+.Modal:has(.Venta) .Modal__ventana { position: relative; }
+.Modal:has(.Venta) .Modal__acciones {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.Modal:has(.Venta) .Modal__accion--confirmar { min-width: 180px; }
+.Modal:has(.Venta) .Modal__accion--confirmar { padding-right: 12px; }
+.Modal:has(.Venta) .Modal__accion--confirmar::after {
+  content: "arrow_forward";
+  font: 18px "Material Symbols Outlined";
+}
+.Modal:has(.Venta) .Modal__accion--cancelar { border-color: #b34f55; color: #a7464d; }
+@media (max-width: 600px) {
+  .Modal:has(.Venta) .Modal__accion--confirmar,
+  .Modal:has(.Venta) .Modal__accion--cancelar { min-width: 0; }
+  .Modal:has(.Venta) .Modal__acciones { padding-right: 12px; padding-left: 12px; }
+}
+
+@media (max-width: 380px) {
+  .Modal:has(.Venta) .Modal__acciones { flex-direction: row; }
+  .Modal:has(.Venta) .Modal__accion { width: auto; flex: 1 1 145px; }
+}

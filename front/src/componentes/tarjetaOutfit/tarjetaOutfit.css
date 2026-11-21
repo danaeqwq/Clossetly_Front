@@ -1,0 +1,245 @@
+
+.TarjetaOutfit {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 0.95fr;
+  grid-template-rows: 1fr 1fr;
+  height: 320px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-morado);
+  box-shadow: 0 4px 8px #342c3042;
+}
+
+/* COLLAGE DE IMÁGENES */
+.TarjetaOutfit__fotos {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 6px;
+  padding: 6px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.TarjetaOutfit__fotos img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Imagen 1: superior izquierda */
+.TarjetaOutfit__fotos img:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Imagen 2: inferior izquierda */
+.TarjetaOutfit__fotos img:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Imagen 3: inferior derecha */
+.TarjetaOutfit__fotos img:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* CUADRADO BLANCO AL 50% */
+.TarjetaOutfit__overlay {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: calc(50% - 9px);
+  height: calc(50% - 9px);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.TarjetaOutfit__overlay {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: calc(50% - 9px);
+  height: calc(50% - 9px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  color: var(--color-blancaso);
+  font-family: var(--font-manrope);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.TarjetaOutfit__overlay b {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.TarjetaOutfit__overlay span {
+  font-size: 12px;
+}
+
+.TarjetaOutfit__overlay small {
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .TarjetaOutfit__overlay {
+    top: 4px;
+    right: 4px;
+    width: calc(50% - 6px);
+    height: calc(50% - 6px);
+    padding: 5px;
+    gap: 3px;
+  }
+
+  .TarjetaOutfit__overlay b {
+    font-size: 11px;
+  }
+
+  .TarjetaOutfit__overlay span {
+    font-size: 9px;
+  }
+
+  .TarjetaOutfit__overlay small {
+    font-size: 8px;
+  }
+}
+
+/* ETIQUETA OUTFIT */
+.TarjetaOutfit__tipo {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 20px;
+  border: solid 0.1px var(--color-blancaso);
+  color: var(--color-blancaso);
+  background: var(--color-morado);
+  font: 500 13px var(--font-manrope);
+}
+
+.TarjetaOutfit__tipo .material-symbols-outlined {
+  font-size: 14px;
+}
+
+/* FAVORITOS */
+.TarjetaOutfit__favorito {
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--color-blanco);
+  border-radius: 50%;
+  color: var(--color-blanco);
+  background: color-mix(
+    in srgb,
+    var(--color-morado) 50%,
+    transparent
+  );
+  font-size: 18px;
+}
+
+/* VARIANTE VERDE */
+/* RESPONSIVE: PANTALLAS MEDIANAS */
+@media (max-width: 1100px) {
+  .TarjetaOutfit {
+    height: clamp(240px, 27vw, 297px);
+  }
+
+  .TarjetaOutfit__overlay {
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .TarjetaOutfit__overlay b { font-size: 14px; }
+  .TarjetaOutfit__overlay span { font-size: 10px; }
+  .TarjetaOutfit__overlay small { font-size: 9px; }
+
+  .TarjetaOutfit__favorito {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .TarjetaOutfit__tipo {
+    font-size: 8px;
+  }
+}
+
+/* RESPONSIVE: PANTALLAS PEQUEÑAS */
+@media (max-width: 760px) {
+  .TarjetaOutfit {
+    height: clamp(210px, 65vw, 250px);
+  }
+
+  .TarjetaOutfit__fotos {
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .TarjetaOutfit__overlay {
+    top: 4px;
+    right: 4px;
+    width: calc(50% - 6px);
+    height: calc(50% - 6px);
+    padding: 5px;
+    gap: 3px;
+  }
+
+  .TarjetaOutfit__overlay b {
+    font-size: 11px;
+  }
+
+  .TarjetaOutfit__overlay span {
+    font-size: 9px;
+  }
+
+  .TarjetaOutfit__overlay small {
+    font-size: 8px;
+  }
+
+  .TarjetaOutfit__favorito {
+    top: 4px;
+    right: 4px;
+    width: 27px;
+    height: 27px;
+    font-size: 15px;
+  }
+
+  .TarjetaOutfit__tipo {
+    top: 4px;
+    left: 3px;
+    padding: 2px 4px;
+    font-size: 8px;
+  }
+
+  .TarjetaOutfit__tipo .material-symbols-outlined {
+    font-size: 10px;
+  }
+}

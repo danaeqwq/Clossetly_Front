@@ -1,0 +1,35 @@
+:root {
+   /* ===== PALETA ===== */
+    --color-bordoVino: #754344;
+    --color-rosaTerra: #A87975;
+    --color-rosaEmpol: #D8B7B3;
+    --color-carbon: #342C30;
+    --color-blancaso: #FFFFFF;
+    --color-cremita: #F8F2F0;
+
+    /* ===== PALETA para tarjetas===== */
+    --color-morado: #755f85;
+    --color-negro: #332D37;
+    --color-verde: #5C7865;
+    --color-azul: #6273AA;
+    --color-rojo: #A14D58;
+    --color-rojo1: #B91C1C;
+    --color-verde1: #87947A;
+    --color-rosa: #C69FAC;
+    --color-naranja: #D78C6E;
+    --color-amarillo: #F2C27F;
+    --color-blanco: #FFFFFF;
+  /* ===== TIPOGRAFÍAS ===== */
+    --font-CormGaram: 'Cormorant Garamond', serif;
+    --font-CormUpri: 'Cormorant Upright', serif;
+    --font-Newsreader: 'Newsreader', serif;
+    --font-Kurale: 'Kurale', serif;
+    --font-manrope: 'Manrope', sans-serif;
+    --font-KaushanScript:  "Kaushan Script", cursive;
+
+  /* ===== TAMAÑOS DE TEXTO ===== */
+
+  /* ===== BORDES REDONDEADOS ===== */
+
+  /* ===== SOMBRAS ===== */
+}

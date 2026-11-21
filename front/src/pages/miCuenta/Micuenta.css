@@ -1,0 +1,265 @@
+.Micuenta {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 4.4vw, 84px) 28px;
+  color: var(--color-carbon);
+}
+
+.Micuenta__tarjeta {
+  min-height: 418px;
+  padding: 32px 26px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--color-blancaso) 35%, var(--color-cremita));
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--color-carbon) 16%, transparent);
+}
+
+.Micuenta__perfil {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.Micuenta__avatar {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.Micuenta__identidad { min-width: 0; }
+
+.Micuenta__identidad h1 {
+  color: var(--color-bordoVino);
+  font: 600 28px/1.1 var(--font-CormGaram);
+}
+
+.Micuenta__identidad > p {
+  color: var(--color-rosaTerra);
+  font: 12px/1.4 var(--font-manrope);
+}
+
+.Micuenta__estadisticas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+  margin-top: 8px;
+  color: var(--color-carbon);
+  font: 15px var(--font-manrope);
+}
+
+.Micuenta__estadisticas strong { font-weight: 700; }
+
+.Micuenta__accionesPerfil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.Micuenta__accionesPerfil .Boton {
+  width: auto;
+  min-width: 116px;
+  min-height: 30px;
+  margin: 0;
+  padding: 3px 16px;
+  border-radius: 7px;
+  font: 13px var(--font-CormGaram);
+  white-space: nowrap;
+}
+
+.Micuenta__accionesPerfil .Boton.principal {
+  margin: 0;
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--color-carbon) 20%, transparent);
+}
+
+.Micuenta__preferencias {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
+  min-height: 230px;
+  margin-top: 24px;
+}
+
+.Micuenta__columna {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.Micuenta__grupo {
+  padding: 0 0 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 72%, transparent);
+}
+
+.Micuenta__grupo + .Micuenta__grupo { padding-top: 10px; }
+.Micuenta__grupo:last-child { border-bottom: 0; }
+
+.Micuenta__grupo h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+  color: var(--color-carbon);
+  font: 400 16px/1.35 var(--font-manrope);
+}
+
+.Micuenta .material-symbols-outlined {
+  font-family: "Material Symbols Outlined" !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 19px !important;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  color: var(--color-rosaTerra);
+}
+
+.Micuenta__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.Micuenta__etiquetas span {
+  padding: 3px 10px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 20px;
+  color: var(--color-rosaTerra);
+  font: 11px/1.35 var(--font-manrope);
+  white-space: nowrap;
+}
+
+.Micuenta__paleta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.Micuenta__color {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-bordoVino);
+}
+
+.Micuenta__color--malva { background: var(--color-rojo); }
+.Micuenta__color--azul { background: var(--color-azul); }
+.Micuenta__color--rosa { background: var(--color-rosaEmpol); }
+.Micuenta__color--coral { background: var(--color-naranja); }
+
+.Micuenta__divisor {
+  position: relative;
+  min-height: 100%;
+}
+
+.Micuenta__divisor .LineaM {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: 38px;
+  height: 100%;
+  background-size: 1px calc(100% - 38px);
+}
+
+.Micuenta__divisor .LineaM__mariposa {
+  width: 24px;
+  height: 24px;
+  background: var(--color-cremita);
+}
+
+@media (min-width: 901px) {
+  .Micuenta__identidad h1 { font-size: 30px; }
+  .Micuenta__identidad > p { font-size: 13px; }
+  .Micuenta__estadisticas { flex-wrap: nowrap; font-size: 16px; }
+  .Micuenta__accionesPerfil .Boton { min-width: 122px; min-height: 34px; font-size: 14px; }
+  .Micuenta__preferencias { min-height: 250px; }
+  .Micuenta__grupo h2 { font-size: 17px; }
+  .Micuenta .material-symbols-outlined { font-size: 20px !important; }
+  .Micuenta__etiquetas span { font-size: 12px; }
+}
+
+@media (max-width: 900px) {
+  .Micuenta { padding-inline: 28px; }
+  .Micuenta__preferencias { gap: 24px; }
+}
+
+@media (max-width: 700px) {
+  .Micuenta { padding: 8px 16px 24px; }
+  .Micuenta__tarjeta {
+    min-height: 0;
+    padding: 12px 0 20px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .Micuenta__perfil { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+  .Micuenta__avatar { width: 68px; height: 68px; }
+  .Micuenta__identidad { width: 100%; }
+  .Micuenta__identidad h1 { margin-top: 1px; font-size: 18px; }
+  .Micuenta__identidad > p { font-size: 10px; line-height: 1.3; }
+  .Micuenta__estadisticas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .Micuenta__estadisticas > span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .Micuenta__estadisticas > span + span { border-left: 1px solid var(--color-rosaTerra); }
+  .Micuenta__estadisticas strong { font-size: 16px; line-height: 1.2; }
+  .Micuenta__estadisticas > span { font-size: 10px; }
+  .Micuenta__accionesPerfil {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 9px;
+    margin: 8px 0 0;
+  }
+  .Micuenta__accionesPerfil .Boton { width: 100%; min-width: 0; min-height: 30px; padding: 4px 8px; }
+  .Micuenta__preferencias { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; margin-top: 8px; }
+  .Micuenta__columna { justify-content: flex-start; gap: 0; }
+  .Micuenta__grupo { padding: 9px 0 10px; }
+  .Micuenta__grupo + .Micuenta__grupo { padding-top: 9px; }
+  .Micuenta__columna:first-child .Micuenta__grupo:last-child { border-bottom: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 72%, transparent); }
+  .Micuenta__grupo h2 { gap: 5px; margin-bottom: 6px; font-size: 14px; line-height: 1.3; }
+  .Micuenta .material-symbols-outlined { font-size: 15px !important; }
+  .Micuenta__etiquetas { gap: 5px; }
+  .Micuenta__etiquetas span { padding: 3px 8px; font-size: 9px; }
+  .Micuenta__paleta { gap: 10px; }
+  .Micuenta__color { width: 24px; height: 24px; }
+  .Micuenta__divisor { display: none; }
+}
+
+@media (max-width: 420px) {
+  .Micuenta { padding-inline: 10px; }
+  .Micuenta__tarjeta { padding-inline: 6px; }
+  .Micuenta__perfil { gap: 4px; }
+  .Micuenta__accionesPerfil { gap: 9px; }
+  .Micuenta__accionesPerfil .Boton { min-width: 0; padding-inline: 7px; font-size: 10px; }
+  .Micuenta__preferencias { gap: 0; }
+  .Micuenta__grupo h2 { font-size: 14px; }
+  .Micuenta__etiquetas span { padding-inline: 8px; font-size: 9px; }
+}

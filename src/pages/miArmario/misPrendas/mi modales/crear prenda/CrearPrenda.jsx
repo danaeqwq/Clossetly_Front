@@ -9,7 +9,7 @@ const tiposPublicacion = [
 ];
 
 const etiquetas = [
-  { nombre: "Prenda", campo: "categoria", opciones: ["Remeras", "Pantalones", "Cortos", "Camperas", "Accesorios", "Zapatos"] },
+  { nombre: "Categoria", campo: "categoria", opciones: [] },
   { nombre: "Talle", campo: "talle", opciones: ["XS", "S", "M", "L", "XL"] },
   { nombre: "Temporada", campo: "temporada", opciones: ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"] },
   { nombre: "Ocasión", campo: "ocasion", opciones: ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"] },
@@ -17,18 +17,22 @@ const etiquetas = [
   { nombre: "Estado", campo: "estado", opciones: ["NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"] },
 ];
 
-export default function CrearPrenda({ datos, mensajeError, onCambiar, onContinuar, onClose }) {
+export default function CrearPrenda({ datos, categorias = [], mensajeError, onCambiar, onContinuar, onClose }) {
   const seleccionarImagen = (evento) => {
     const archivo = evento.target.files?.[0];
+
     if (!archivo) return;
+
     if (!archivo.type.startsWith("image/")) {
       evento.target.value = "";
       return;
     }
 
-    const lector = new FileReader();
-    lector.onload = () => onCambiar("imagen", lector.result);
-    lector.readAsDataURL(archivo);
+    const vistaPrevia = URL.createObjectURL(archivo);
+
+    onCambiar("imagen", archivo);
+    onCambiar("vistaPrevia", vistaPrevia);
+
     evento.target.value = "";
   };
 
@@ -55,12 +59,22 @@ export default function CrearPrenda({ datos, mensajeError, onCambiar, onContinua
         <div className="AgregarPrenda__contenido">
           <div className="AgregarPrenda__fotoContenedor">
             <label className="AgregarPrenda__foto" htmlFor="crear-prenda-imagen">
-              <input id="crear-prenda-imagen" type="file" accept="image/*" onChange={seleccionarImagen} />
-              {datos.imagen ? (
-                <img src={datos.imagen} alt="Vista previa de la prenda" />
+              <input
+                id="crear-prenda-imagen"
+                type="file"
+                accept="image/*"
+                onChange={seleccionarImagen}
+              />
+              {datos.vistaPrevia ? (
+                <img
+                  src={datos.vistaPrevia}
+                  alt="Vista previa de la prenda"
+                />
               ) : (
                 <>
-                  <span className="material-symbols-outlined" aria-hidden="true">photo_camera</span>
+                  <span className="material-symbols-outlined" aria-hidden="true">
+                    photo_camera
+                  </span>
                   <span>Agregar foto</span>
                 </>
               )}
@@ -78,11 +92,11 @@ export default function CrearPrenda({ datos, mensajeError, onCambiar, onContinua
               <input
                 id="crear-prenda-nombre"
                 value={datos.nombre}
-                maxLength={12}
+                maxLength={40}
                 onChange={(evento) => onCambiar("nombre", evento.target.value)}
                 placeholder="Ej: remera vintage"
               />
-              <span className="AgregarPrenda__contador">{datos.nombre.length}/12</span>
+              <span className="AgregarPrenda__contador">{datos.nombre.length}/40</span>
             </div>
 
             <div className="AgregarPrenda__campo AgregarPrenda__campo--descripcion">
@@ -116,7 +130,18 @@ export default function CrearPrenda({ datos, mensajeError, onCambiar, onContinua
                     onChange={(evento) => onCambiar(etiqueta.campo, evento.target.value)}
                     aria-label={etiqueta.nombre}
                   >
-                    {etiqueta.opciones.map((opcion) => <option key={opcion} value={opcion}>{opcion}</option>)}
+                    {etiqueta.campo === "categoria" && (
+                      <option value="">Seleccioná una categoría</option>
+                    )}
+
+                    {(etiqueta.campo === "categoria"
+                      ? categorias.map((categoria) => categoria.categoria)
+                      : etiqueta.opciones
+                    ).map((opcion) => (
+                      <option key={opcion} value={opcion}>
+                        {opcion}
+                      </option>
+                    ))}
                   </select>
                   <b aria-hidden="true">{datos[etiqueta.campo]}</b>
                   <i className="material-symbols-outlined" aria-hidden="true">keyboard_arrow_down</i>

@@ -1,21 +1,3 @@
-.MiArmario__crearPrenda {
-  flex: 0 0 auto;
-  min-height: 26px;
-  padding: 0 12px;
-  border: 1px solid var(--color-rosaEmpol);
-  border-radius: 5px;
-  color: var(--color-rosaTerra);
-  background: transparent;
-  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
-  font: 11px var(--font-manrope);
-}
-
-.MiArmario__barraAcciones {
-  display: flex;
-  justify-content: flex-end;
-  margin: -4px 0 12px;
-}
-
 .MiArmario__seccion {
   overflow: hidden;
   border: 1px solid var(--color-rosaEmpol);
