@@ -1,0 +1,73 @@
+.Select {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  gap: 14px ;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  margin: 0;
+  margin-bottom: 1rem;
+  touch-action: pan-x;
+}
+
+.Select__opcion {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  min-width: 130px;
+  padding: 0 15px;
+  border: 1.5px solid color-mix(in srgb, var(--color-rosaEmpol) 50%, transparent);
+  border-radius: 12px;
+  color: var(--color-bordoVino);
+  background: transparent;
+  font: 12px var(--font-manrope);
+  white-space: nowrap;
+}
+
+.Select__opcion .material-symbols-outlined {
+  font-size: 25px;
+  font-weight: 200;
+}
+
+.Select__opcion--activa {
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  font-weight: 300;
+}
+
+@media (max-width: 760px) {
+  .Select {
+    justify-content: flex-start;
+    gap: clamp(10px, 5.4vw, 28px);
+  }
+
+
+  .Select__opcion {
+    flex: 0 0 clamp(78px, 22vw, 112px);
+    flex-direction: column;
+    gap: 0;
+    width: clamp(78px, 22vw, 112px);
+    min-width: 0;
+    max-width: 112px;
+    height: 38px;
+    padding: 4px 5px;
+    border-radius: 17px;
+    font-size: clamp(9px, 2.2vw, 10px);
+    line-height: 1.1;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .Select__opcion .material-symbols-outlined {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}

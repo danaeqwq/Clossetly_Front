@@ -46,6 +46,25 @@
   object-fit: contain;
 }
 
+.Nav__enlace--admin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+}
+
+.Nav__enlace--admin .material-symbols-outlined {
+  font-size: 25px;
+  line-height: 26px;
+}
+
+.Nav__adminEtiqueta {
+  color: var(--color-blancaso);
+  font-family: var(--font-manrope);
+  font-size: 9px;
+  line-height: 10px;
+}
+
 /* Logo provisional */
 .Nav__enlace--logo svg {
   width: 22px;
@@ -93,6 +112,7 @@
     transform 0.3s ease,
     visibility 0.3s ease;
 }
+
 
 /* Expansión sin cambiar el ancho de la barra */
 @media (hover: hover) and (min-width: 769px) {

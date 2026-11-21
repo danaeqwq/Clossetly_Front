@@ -17,11 +17,11 @@ const borradorInicial = {
   descripcion: "",
   imagen: null,
   categoria: "",
-  talle: "M",
-  temporada: "PRIMAVERA",
-  ocasion: "FORMAL",
-  genero: "UNISEX",
-  estado: "NUEVA CON ETIQUETA",
+  talle: "",
+  temporada: "",
+  ocasion: "",
+  genero: "",
+  estado: "",
   privacidad: true,
   estilos: [],
   colores: [],
@@ -176,8 +176,23 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const continuarDesdeDatos = () => {
-    if (!borradorPrenda.nombre.trim() || !borradorPrenda.imagen) {
-      setErrorCreacion("Ingresá un nombre y seleccioná una imagen para continuar.");
+    if (
+      !borradorPrenda.nombre.trim() ||
+      !borradorPrenda.imagen
+    ) {
+      setErrorCreacion("Completá el nombre y seleccioná una imagen.");
+      return;
+    }
+
+    if (
+      !borradorPrenda.categoria ||
+      !borradorPrenda.talle ||
+      !borradorPrenda.temporada ||
+      !borradorPrenda.ocasion ||
+      !borradorPrenda.genero ||
+      !borradorPrenda.estado
+    ) {
+      setErrorCreacion("Completá todas las categorías antes de continuar.");
       return;
     }
 
@@ -186,14 +201,20 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const continuarDesdeEstilos = () => {
-    if (!prendaEnEdicion && borradorPrenda.estilos.length === 0) {
+    if (!borradorPrenda.estilos || borradorPrenda.estilos.length === 0) {
       setErrorCreacion("Seleccioná al menos un estilo para continuar.");
       return;
     }
+
     setErrorCreacion("");
-    if (prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") guardarEdicion();
-    else if (!prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") guardarNuevaPrenda();
-    else setPasoCreacion(3);
+
+    if (prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") {
+      guardarEdicion();
+    } else if (!prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") {
+      guardarNuevaPrenda();
+    } else {
+      setPasoCreacion(3);
+    }
   };
 
   const guardarVenta = () => {
@@ -216,30 +237,49 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const [categorias, setCategorias] = useState([]);
+  const [talles, setTalles] = useState([]);
+  const [temporadas, setTemporadas] = useState([]);
+  const [ocasiones, setOcasiones] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [colores, setColores] = useState([]);
+  const [estilos, setEstilos] = useState([]);
+
 
   useEffect(() => {
-    const obtenerCategorias = async () => {
+    const obtenerFiltros = async () => {
       const token = localStorage.getItem("token");
 
       try {
         const respuesta = await axios.get(
-          "http://localhost:3000/api/categorias",
+          "http://localhost:3000/api/filtros",
           {
             headers: {
-              Authorization: `Bearer ${token}`
-            }
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
         setCategorias(respuesta.data.categorias || []);
+        setTalles(respuesta.data.talles || []);
+        setTemporadas(respuesta.data.temporadas || []);
+        setOcasiones(respuesta.data.ocasiones || []);
+        setGeneros(respuesta.data.generos || []);
+        setEstados(respuesta.data.estados || []);
+        setColores(respuesta.data.colores || []);
+        setEstilos(respuesta.data.estilos || []);
 
       } catch (error) {
-        console.error("Error al obtener las categorías:", error);
+        console.error(
+          "Error al obtener los filtros:",
+          error.response?.data || error
+        );
       }
     };
 
-    obtenerCategorias();
+    obtenerFiltros();
   }, []);
+
 
 
   const guardarTipoPublicacion = (tipoPublicacion) => {
@@ -448,7 +488,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             <section
               className={abierta ? "MiArmario__seccion" : "MiArmario__seccionCerrada"}
               aria-label={nombreCategoria}
-              key={categoria.id_categoria}
+              key={nombreCategoria}
             >
               <div className={abierta ? "MiArmario__seccionEncabezado" : "MiArmario__seccionCerradaEncabezado"}>
                 <h2>{nombreCategoria}</h2>
@@ -503,6 +543,11 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           <CrearPrenda
             datos={borradorPrenda}
             categorias={categorias}
+            talles={talles}
+            temporadas={temporadas}
+            ocasiones={ocasiones}
+            generos={generos}
+            estados={estados}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onContinuar={continuarDesdeDatos}
@@ -511,6 +556,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         ) : pasoCreacion === 2 ? (
           <CrearPrenda2
             datos={borradorPrenda}
+            colores={colores}
+            estilos={estilos}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onVolver={() => { setErrorCreacion(""); setPasoCreacion(1); }}

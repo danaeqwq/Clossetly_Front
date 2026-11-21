@@ -10,7 +10,34 @@ import iconExplorar from "../../assets/componentes/icon Explorar.svg";
 import iconMiArmario from "../../assets/componentes/icon mi armario.svg";
 import iconMiCuenta from "../../assets/componentes/icon Mi cuenta.svg";
 
+function NavAdmin() {
+  return (
+    <NavLink
+      to="/admin"
+      className={({ isActive }) =>
+        `Nav__enlace Nav__enlace--admin ${isActive ? "Nav__enlace--activo" : ""}`
+      }
+      aria-label="Administración"
+    >
+      <span className="material-symbols-outlined" aria-hidden="true">
+        admin_panel_settings
+      </span>
+      <span className="Nav__adminEtiqueta">Admin</span>
+    </NavLink>
+  );
+}
+
 export default function Nav() {
+  let usuario = null;
+  try {
+    usuario = JSON.parse(localStorage.getItem("usuario") || "null");
+  } catch {
+    usuario = null;
+  }
+  const esAdmin = ["admin", "administrador"].includes(
+    String(usuario?.rol || "").trim().toLowerCase()
+  );
+
   return (
     <nav className="Nav" aria-label="Navegación principal">
 
@@ -71,7 +98,7 @@ export default function Nav() {
       </NavLink>
 
       <NavLink
-        to="/perfil"
+        to="/mi-cuenta"
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
@@ -80,6 +107,8 @@ export default function Nav() {
       >
         <img src={iconMiCuenta} alt="" />
       </NavLink>
+
+      {esAdmin && <NavAdmin />}
 
     </nav>
   );

@@ -1,5 +1,5 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import Select from "../select/Select";
@@ -7,96 +7,6 @@ import Boton from "../Boton/Boton";
 
 import "./filtros.css";
 
-// Opciones de prendas
-const opcionesPrenda = [
-  "TODAS",
-  "Remeras",
-  "Pantalones",
-  "Buzos",
-  "Camperas",
-  "Abrigos",
-  "Vestidos",
-  "Faldas",
-  "Shorts",
-  "Zapatos",
-  "Accesorios",
-];
-
-const estados = [
-  { id: 1, nombre: "Nueva con etiqueta" },
-  { id: 2, nombre: "Nueva sin etiqueta" },
-  { id: 3, nombre: "Como nueva" },
-  { id: 4, nombre: "Muy buen estado" },
-  { id: 5, nombre: "Buen estado" },
-  { id: 6, nombre: "Usada" },
-];
-
-// Todos los campos de filtros
-const campos = [
-  {
-    clave: "prenda",
-    etiqueta: "Prenda",
-    opciones: opcionesPrenda,
-  },
-  {
-    clave: "talle",
-    etiqueta: "Talle",
-    opciones: [
-      "TODOS",
-      "XS", "S", "M", "L", "XL",
-      "28", "29", "30", "31", "32",
-      "33", "34", "35", "36", "37",
-      "38", "39", "40", "41", "42",
-      "43", "44", "45",
-    ],
-  },
-  {
-    clave: "temporada",
-    etiqueta: "Temporada",
-    opciones: ["TODAS", "PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"],
-  },
-  {
-    clave: "estado",
-    etiqueta: "Estado",
-    opciones: estados,
-    tipo: "estado",
-  },
-  {
-    clave: "ocasion",
-    etiqueta: "Ocasión",
-    opciones: ["TODOS", "CASUAL", "FORMAL", "FIESTA"],
-  },
-  {
-    clave: "genero",
-    etiqueta: "Género",
-    opciones: ["TODOS", "Mujer", "Hombre", "Unisex"]
-  },
-];
-
-// Colores disponibles
-const opcionesColores = [
-  { nombre: "Rojo", color: "var(--color-rojo)" },
-  { nombre: "Amarillo", color: "var(--color-amarillo)" },
-  { nombre: "Rosa", color: "var(--color-rosa)" },
-  { nombre: "Naranja", color: "var(--color-naranja)" },
-  { nombre: "Verde", color: "var(--color-verde)" },
-  { nombre: "Negro", color: "var(--color-negro)" },
-  { nombre: "Azul", color: "var(--color-azul)" },
-  { nombre: "Morado", color: "var(--color-morado)" },
-  { nombre: "Blanco", color: "var(--color-blancaso)", borde: true },
-];
-
-// Estilos disponibles
-const estilos = [
-  "art hoe", "athleisure", "balletcore", "boho chic", "clean girl",
-  "coquette", "cottagecore", "cyberpunk", "dark academia", "darkwear",
-  "deportivo", "formal", "goth", "gothic lolita", "gorpcore", "gyaru",
-  "hippie", "indie sleaze", "kawaii", "light academia", "lolita",
-  "mcbling", "mob wife", "old money", "preppy", "punk", "quiet luxury",
-  "skater", "soft girl", "soft grunge", "streetwear", "techwear",
-  "vintage", "western", "y2k",
-];
-// Categorías de Boutique
 const categorias = [
   { valor: "todos", texto: "TODOS" },
   { valor: "compra", texto: "COMPRA" },
@@ -115,8 +25,98 @@ export default function Filtros({
   setColores,
   tiposAceptados = [],
   setTiposAceptados,
+  onAplicar,
 }) {
   const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
+
+  // Opciones provenientes de MySQL
+  const [opciones, setOpciones] = useState({
+    categorias: [],
+    talles: [],
+    temporadas: [],
+    estados: [],
+    ocasiones: [],
+    generos: [],
+    colores: [],
+    estilos: [],
+  });
+
+  // Obtener opciones de filtros desde el backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/filtros")
+      .then((respuesta) => {
+        setOpciones(respuesta.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener opciones de filtros:", error);
+      });
+  }, []);
+
+  // Opciones dinámicas
+  const opcionesPrenda = [
+    "TODAS",
+    ...opciones.categorias.map((item) => item.categoria),
+  ];
+
+  const estados = opciones.estados.map((item) => ({
+    id: item.id_estado_prenda,
+    nombre: item.estado_prenda,
+  }));
+
+  const campos = [
+    {
+      clave: "prenda",
+      etiqueta: "Prenda",
+      opciones: opcionesPrenda,
+    },
+    {
+      clave: "talle",
+      etiqueta: "Talle",
+      opciones: [
+        "TODOS",
+        ...opciones.talles.map((item) => item.talla),
+      ],
+    },
+    {
+      clave: "temporada",
+      etiqueta: "Temporada",
+      opciones: [
+        "TODAS",
+        ...opciones.temporadas.map((item) => item.temporada),
+      ],
+    },
+    {
+      clave: "estado",
+      etiqueta: "Estado",
+      opciones: estados,
+      tipo: "estado",
+    },
+    {
+      clave: "ocasion",
+      etiqueta: "Ocasión",
+      opciones: [
+        "TODOS",
+        ...opciones.ocasiones.map((item) => item.ocacion),
+      ],
+    },
+    {
+      clave: "genero",
+      etiqueta: "Género",
+      opciones: [
+        "TODOS",
+        ...opciones.generos.map((item) => item.genero),
+      ],
+    },
+  ];
+
+  const opcionesColores = opciones.colores.map((item) => ({
+    nombre: item.color,
+    color: item.codigo,
+    borde: item.color.toLowerCase() === "blanco",
+  }));
+
+  const estilos = opciones.estilos.map((item) => item.estilo);
 
   const claseTipo = {
     todos: "FiltrosTodo",
@@ -132,7 +132,7 @@ export default function Filtros({
     }));
   };
 
-  // Seleccionar o deseleccionar un elemento de una lista
+  // Seleccionar o deseleccionar elementos
   const alternarElemento = (setter, elemento) => {
     setter((actuales) =>
       actuales.includes(elemento)
@@ -140,9 +140,10 @@ export default function Filtros({
         : [...actuales, elemento]
     );
   };
+
   const alternarColor = (nombre) => {
-    alternarElemento(setColores, nombre.toLowerCase());
-  };
+  alternarElemento(setColores, nombre);
+};
 
   const alternarPrendaAceptada = (prenda) => {
     alternarElemento(setTiposAceptados, prenda);
@@ -151,6 +152,7 @@ export default function Filtros({
   const alternarCategoria = (estilo) => {
     alternarElemento(setCategoriasActivas, estilo);
   };
+
   return (
     <PanelDesplegable
       titulo="Filtros"
@@ -159,10 +161,9 @@ export default function Filtros({
       onClose={onCerrar}
     >
       <div className="FiltrosIntercambio__contenido">
+
         {/* FILTROS GENERALES */}
-        <section
-          className="FiltrosIntercambio__generales"
-        >
+        <section className="FiltrosIntercambio__generales">
           <h3
             className="FiltrosIntercambio__subtitulo"
             id="FiltrosBoutique-generales"
@@ -178,8 +179,7 @@ export default function Filtros({
           />
 
           <div className="FiltrosIntercambio__campos">
-            {campos.map(
-            ({ clave, etiqueta, opciones, tipo: tipoCampo }) => (
+            {campos.map(({ clave, etiqueta, opciones, tipo: tipoCampo }) => (
               <label
                 className="FiltrosIntercambio__campo"
                 key={clave}
@@ -187,6 +187,7 @@ export default function Filtros({
                 <span className="FiltrosIntercambio__etiqueta">
                   {etiqueta}
                 </span>
+
                 <select
                   value={criterios[clave] || ""}
                   onChange={(evento) =>
@@ -196,6 +197,7 @@ export default function Filtros({
                   {tipoCampo === "estado" ? (
                     <>
                       <option value="">TODAS</option>
+
                       {opciones.map(({ id, nombre }) => (
                         <option key={id} value={nombre}>
                           {nombre}
@@ -214,8 +216,7 @@ export default function Filtros({
                   )}
                 </select>
               </label>
-            )
-          )}
+            ))}
           </div>
 
           {/* COLORES */}
@@ -226,7 +227,7 @@ export default function Filtros({
 
             <div className="FiltrosIntercambio__colores">
               {opcionesColores.map(({ nombre, color, borde }) => {
-                const colorSeleccionado = nombre.toLowerCase();
+                const colorSeleccionado = nombre;
 
                 return (
                   <label
@@ -241,7 +242,9 @@ export default function Filtros({
 
                     <span
                       className={`FiltrosIntercambio__muestra${
-                        borde ? " FiltrosIntercambio__muestra--borde" : ""
+                        borde
+                          ? " FiltrosIntercambio__muestra--borde"
+                          : ""
                       }`}
                       style={{ "--muestra-color": color }}
                       aria-hidden="true"
@@ -255,9 +258,7 @@ export default function Filtros({
           </section>
 
           {/* ESTILOS */}
-          <section
-            className="FiltrosIntercambio__grupoEstilos"
-          >
+          <section className="FiltrosIntercambio__grupoEstilos">
             <h3
               className="FiltrosIntercambio__tituloGrupo"
               id="FiltrosBoutique-estilos"
@@ -278,7 +279,9 @@ export default function Filtros({
                   return (
                     <button
                       className={`FiltrosIntercambio__estilo${
-                        activo ? " FiltrosIntercambio__estilo--activo" : ""
+                        activo
+                          ? " FiltrosIntercambio__estilo--activo"
+                          : ""
                       }`}
                       key={estilo}
                       type="button"
@@ -299,16 +302,16 @@ export default function Filtros({
                 setMostrarTodasCategorias((mostrar) => !mostrar)
               }
             >
-              {mostrarTodasCategorias ? "Mostrar menos −" : "Mostrar más +"}
+              {mostrarTodasCategorias
+                ? "Mostrar menos −"
+                : "Mostrar más +"}
             </button>
           </section>
         </section>
 
         {/* FILTROS ESPECÍFICOS DE COMPRA */}
         {tipo === "compra" && (
-          <section
-            className="FiltrosIntercambio__especificos"
-          >
+          <section className="FiltrosIntercambio__especificos">
             <h3
               className="FiltrosIntercambio__subtitulo FiltrosIntercambio__subtitulo--italica"
               id="FiltrosBoutique-especificos"
@@ -333,11 +336,10 @@ export default function Filtros({
             </label>
           </section>
         )}
+
         {/* FILTROS ESPECÍFICOS DE INTERCAMBIO */}
         {tipo === "intercambio" && (
-          <section
-            className="FiltrosIntercambio__especificos"
-          >
+          <section className="FiltrosIntercambio__especificos">
             <h3
               className="FiltrosIntercambio__subtitulo FiltrosIntercambio__subtitulo--italica"
               id="FiltrosBoutique-especificos"
@@ -369,7 +371,7 @@ export default function Filtros({
               </div>
             </section>
 
-            {/* ESTADO MÍNIMO ACEPTADO */}
+            {/* ESTADO MÍNIMO ACEPTADO Y TALLE BUSCADO */}
             <div className="FiltrosIntercambio__campos FiltrosIntercambio__campos--especificos">
               <label className="FiltrosIntercambio__campo">
                 <span className="FiltrosIntercambio__etiqueta">
@@ -408,25 +410,17 @@ export default function Filtros({
                   }
                 >
                   <option value="">TODOS</option>
-                  <option>XS</option>
-                  <option>S</option>
-                  <option>M</option>
-                  <option>L</option>
-                  <option>XL</option>
+
+                  {opciones.talles.map(({ talla }) => (
+                    <option key={talla} value={talla}>
+                      {talla}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
           </section>
         )}
-
-        {/* ACCIONES */}
-        <div className="FiltrosIntercambio__acciones">
-          <Boton
-            texto="Guardar cambios"
-            variante="principal"
-            type="button"
-          />
-        </div>
 
       </div>
     </PanelDesplegable>

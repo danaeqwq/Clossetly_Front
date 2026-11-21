@@ -1,0 +1,156 @@
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__ventana {
+  width: (px, calc(100vw - 96px));
+  height: auto;
+  min-height: min(540px, 30vh);
+  max-height: min(80vh, 650px);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__encabezado { gap: 10px; }
+
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__titulo {
+  font: 500 18px/1.15 var(--font-Kurale);
+}
+
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__descripcion {
+  max-width: 850px;
+  margin-top: 5px;
+  font: 13px/1.4 var(--font-manrope);
+}
+
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__cerrar {
+  flex-basis: 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__cerrar .material-symbols-outlined { font-size: 22px; }
+.Modal:has(.ExpulsarUsuario__contenido) .Modal__contenido { flex: 1; min-height: 0; margin-top: 18px; }
+
+.ExpulsarUsuario__contenido {
+  display: flex;
+  min-width: 0;
+  min-height: min(460px, calc(80vh - 150px));
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ExpulsarUsuario__perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.ExpulsarUsuario__avatar {
+  width: clamp(120px, 15vw, 100px);
+  height: clamp(120px, 15vw, 100px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ExpulsarUsuario__datos { min-width: 0; }
+
+.ExpulsarUsuario__datos dd {
+  overflow-wrap: anywhere;
+  color: var(--color-carbon);
+  font: 13px/1.35 var(--font-manrope);
+}
+
+.ExpulsarUsuario__confirmacion {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.ExpulsarUsuario__confirmacion h3 {
+  color: var(--color-bordoVino);
+  font: 500 16px/1.25 var(--font-Kurale);
+}
+
+.ExpulsarUsuario__confirmacion p {
+  margin-top: 8px;
+  color: var(--color-carbon);
+  font: 12px/1.4 var(--font-manrope);
+}
+
+.ExpulsarUsuario__motivo {
+  margin-top: 5px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 8px;
+  color: var(--color-carbon);
+  font: 13px/1.35 var(--font-manrope);
+}
+
+.ExpulsarUsuario__motivo strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-bordoVino);
+  font: 600 15px/1.2 var(--font-CormGaram);
+}
+
+.ExpulsarUsuario__acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.ExpulsarUsuario__acciones .Boton {
+  width: 170px;
+  min-height: 38px;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font: 14px/1 var(--font-Kurale);
+}
+
+.ExpulsarUsuario__acciones .ExpulsarUsuario__cancelar {
+  border-color: var(--color-rojo1);
+  color: var(--color-rojo1);
+  background: transparent;
+}
+
+.ExpulsarUsuario__acciones .ExpulsarUsuario__confirmar {
+  border-color: var(--color-bordoVino);
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+}
+
+.ExpulsarUsuario__acciones .Boton__img { width: 16px; height: 16px; }
+
+@media (max-width: 600px) {
+  .Modal:has(.ExpulsarUsuario__contenido) {
+    display: grid;
+    place-items: center;
+    overflow: auto;
+    padding: 10px;
+  }
+
+  .Modal:has(.ExpulsarUsuario__contenido) .Modal__ventana {
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    min-height: 0;
+    max-height: calc(100dvh - 20px);
+    padding: max(18px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    border: 1px solid var(--color-rosaEmpol);
+    border-radius: 14px;
+  }
+
+  .Modal:has(.ExpulsarUsuario__contenido) .Modal__contenido { flex: 0 0 auto; margin-top: 16px; }
+  .ExpulsarUsuario__contenido { min-height: 0; gap: 18px; }
+  .ExpulsarUsuario__perfil { gap: 12px; }
+  .ExpulsarUsuario__avatar { width: 100px; height: 100px; }
+  .ExpulsarUsuario__datos { width: 100%; gap: 7px; }
+  .ExpulsarUsuario__datos > div { grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1fr); gap: 8px; }
+  .ExpulsarUsuario__datos dt { font-size: 12px; }
+  .ExpulsarUsuario__datos dd { font-size: 11px; }
+  .ExpulsarUsuario__datos p,
+  .ExpulsarUsuario__confirmacion p,
+  .ExpulsarUsuario__motivo { font-size: 11px; }
+  .ExpulsarUsuario__confirmacion { margin-top: 0; }
+  .ExpulsarUsuario__confirmacion h3 { font-size: 19px; }
+  .ExpulsarUsuario__motivo { margin-top: 0; padding: 10px; }
+  .ExpulsarUsuario__acciones { flex-direction: column-reverse; gap: 8px; padding-top: 0; }
+  .ExpulsarUsuario__acciones .Boton { width: 100%; min-height: 40px; font-size: 14px; }
+}

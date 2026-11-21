@@ -9,15 +9,27 @@ const tiposPublicacion = [
 ];
 
 const etiquetas = [
-  { nombre: "Categoria", campo: "categoria", opciones: [] },
-  { nombre: "Talle", campo: "talle", opciones: ["XS", "S", "M", "L", "XL"] },
-  { nombre: "Temporada", campo: "temporada", opciones: ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"] },
-  { nombre: "Ocasión", campo: "ocasion", opciones: ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"] },
-  { nombre: "Género", campo: "genero", opciones: ["UNISEX", "MUJER", "HOMBRE"] },
-  { nombre: "Estado", campo: "estado", opciones: ["NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"] },
+  { nombre: "Categoría", campo: "categoria", placeholder: "Seleccioná una categoría" },
+  { nombre: "Talle", campo: "talle", placeholder: "Seleccioná un talle" },
+  { nombre: "Temporada", campo: "temporada", placeholder: "Seleccioná una temporada" },
+  { nombre: "Ocasión", campo: "ocasion", placeholder: "Seleccioná una ocasión" },
+  { nombre: "Género", campo: "genero", placeholder: "Seleccioná un género" },
+  { nombre: "Estado", campo: "estado", placeholder: "Seleccioná un estado" },
 ];
 
-export default function CrearPrenda({ datos, categorias = [], mensajeError, onCambiar, onContinuar, onClose }) {
+export default function CrearPrenda({
+  datos,
+  categorias = [],
+  talles = [],
+  temporadas = [],
+  ocasiones = [],
+  generos = [],
+  estados = [],
+  mensajeError,
+  onCambiar,
+  onContinuar,
+  onClose,
+}) {
   const seleccionarImagen = (evento) => {
     const archivo = evento.target.files?.[0];
 
@@ -122,31 +134,62 @@ export default function CrearPrenda({ datos, categorias = [], mensajeError, onCa
             </div>
 
             <div className="AgregarPrenda__etiquetas">
-              {etiquetas.map((etiqueta) => (
-                <label className="AgregarPrenda__etiqueta" key={etiqueta.nombre}>
-                  <span>{etiqueta.nombre}</span>
-                  <select
-                    value={datos[etiqueta.campo]}
-                    onChange={(evento) => onCambiar(etiqueta.campo, evento.target.value)}
-                    aria-label={etiqueta.nombre}
-                  >
-                    {etiqueta.campo === "categoria" && (
-                      <option value="">Seleccioná una categoría</option>
-                    )}
+              {etiquetas.map((etiqueta) => {
+                let opciones = [];
 
-                    {(etiqueta.campo === "categoria"
-                      ? categorias.map((categoria) => categoria.categoria)
-                      : etiqueta.opciones
-                    ).map((opcion) => (
-                      <option key={opcion} value={opcion}>
-                        {opcion}
-                      </option>
-                    ))}
-                  </select>
-                  <b aria-hidden="true">{datos[etiqueta.campo]}</b>
-                  <i className="material-symbols-outlined" aria-hidden="true">keyboard_arrow_down</i>
-                </label>
-              ))}
+                switch (etiqueta.campo) {
+                  case "categoria":
+                    opciones = categorias.map((item) => item.categoria);
+                    break;
+                  case "talle":
+                    opciones = talles.map((item) => item.talla);
+                    break;
+                  case "temporada":
+                    opciones = temporadas.map((item) => item.temporada);
+                    break;
+                  case "ocasion":
+                    opciones = ocasiones.map((item) => item.ocacion);
+                    break;
+                  case "genero":
+                    opciones = generos.map((item) => item.genero);
+                    break;
+                  case "estado":
+                    opciones = estados.map((item) => item.estado_prenda);
+                    break;
+                  default:
+                    opciones = [];
+                }
+
+                return (
+                  <label className="AgregarPrenda__etiqueta" key={etiqueta.campo}>
+                    <span>{etiqueta.nombre}</span>
+
+                    <select
+                      value={datos[etiqueta.campo]}
+                      onChange={(evento) =>
+                        onCambiar(etiqueta.campo, evento.target.value)
+                      }
+                      aria-label={etiqueta.nombre}
+                    >
+                      <option value="">{etiqueta.placeholder}</option>
+
+                      {opciones.map((opcion) => (
+                        <option key={opcion} value={opcion}>
+                          {opcion}
+                        </option>
+                      ))}
+                    </select>
+
+                    <b aria-hidden="true">
+                      {datos[etiqueta.campo] || etiqueta.placeholder}
+                    </b>
+
+                    <i className="material-symbols-outlined" aria-hidden="true">
+                      keyboard_arrow_down
+                    </i>
+                  </label>
+                );
+              })}
             </div>
             <span className="AgregarPrenda__ayuda">¿Qué significa cada estado de una prenda?</span>
             {mensajeError && <p className="AgregarPrenda__error" role="alert">{mensajeError}</p>}

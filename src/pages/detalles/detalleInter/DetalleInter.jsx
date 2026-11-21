@@ -1,0 +1,234 @@
+
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
+import "./DetalleInter.css";
+import "../../../styles/variables.css";
+import "../../../styles/global.css";
+
+import LineaM from "../../../componentes/LineaM/LineaM";
+import Boton from "../../../componentes/Boton/Boton";
+import TarjetaIntercambio from "../../../componentes/tarjetaIntercambio/TarjetaIntercambio";
+import Etiqueta from "../../../assets/etiqueta.svg";
+
+export default function DetalleInter() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [productos, setProductos] = useState([]);
+
+    const [producto, setProducto] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    useEffect(() => {
+        Promise.all([
+            axios.get(`http://localhost:3000/api/publicaciones/intercambio/${id}`),
+            axios.get("http://localhost:3000/api/publicaciones/intercambio"),
+        ])
+            .then(([respuestaDetalle, respuestaProductos]) => {
+                setProducto(respuestaDetalle.data.publicacion);
+                setProductos(respuestaProductos.data.publicaciones);
+            })
+            .catch((error) => {
+                console.error("Error al obtener los intercambios:", error);
+                setProducto(null);
+            })
+            .finally(() => {
+                setCargando(false);
+            });
+    }, [id]);
+
+    if (cargando) {
+        return <main className="DetalleInter"><p>Cargando publicación...</p></main>;
+    }
+    if (!producto) {
+        return <main className="DetalleInter"><p>No se encontró la publicación.</p></main>;
+    }
+    const productosRelacionados = productos
+    .filter(
+        (item) =>
+            item.tipo === "intercambio" &&
+            item.id !== producto.id
+    )
+    .map((item) => {
+        const coincidencias = (item.estilos || []).filter(
+            (estilo) => (producto.estilos || []).includes(estilo)
+        ).length;
+
+        return {
+            ...item,
+            coincidencias,
+        };
+    })
+    .sort((a, b) => b.coincidencias - a.coincidencias)
+    .slice(0, 5);
+    if (!producto) {
+        return (
+            <main className="DetalleInter">
+                <p>No se encontró la publicación.</p>
+            </main>
+        );
+    }
+
+    return (
+        <main className="DetalleInter">
+            <section className="DetalleInter__principal" aria-label="Detalle del intercambio">
+                <article className="DetalleInter__ficha">
+                    <div className="DetalleInter__imagenMarco">
+                        <img
+                            src={`http://localhost:3000${producto.imagen}`}
+                            alt={producto.alt || producto.nombre}
+                        />
+                    </div>
+
+                    <div className="DetalleInter__informacion">
+                        <span className="DetalleInter__insignia material-symbols-outlined" aria-label="Publicación de intercambio">
+                            swap_horiz <span>INTERCAMBIO</span>
+                        </span>
+                        <h1>{producto.nombre}</h1>
+                        <div className="DetalleInter__vendedor">
+                            <span>Publicado por:</span>
+                            <img
+                                src={
+                                    producto.fotoPerfil
+                                        ? `http://localhost:3000${producto.fotoPerfil}`
+                                        : iconoCuenta
+                                }
+                                alt=""
+                            />
+                            <span>{producto.usuario}</span>
+                        </div>
+                        <dl className="DetalleInter__datos">
+                            <div>
+                                <dt>
+                                    <span className="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+                                    Temporada
+                                </dt>
+                                <dd>{producto.temporada || "-"}</dd>
+                            </div>
+
+                            <div>
+                                <dt>
+                                    <span className="material-symbols-outlined" aria-hidden="true">apparel</span>
+                                    Tipo prenda
+                                </dt>
+                                <dd>{producto.prenda || "-"}</dd>
+                            </div>
+
+                            <div className="DetalleInter__estilos">
+                                <dt>
+                                    <img src={Etiqueta} alt="" />
+                                    Estilos:
+                                </dt>
+                                <dd>
+                                    {producto.estilos.map((estilo) => (
+                                        <span key={estilo}>{estilo.toUpperCase()}</span>
+                                    ))}
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt>
+                                    <span className="material-symbols-outlined" aria-hidden="true">volunteer_activism</span>
+                                    Estado
+                                </dt>
+                                <dd>{producto.estado || "-"}</dd>
+                            </div>
+
+                            <div>
+                                <dt>
+                                    <span className="material-symbols-outlined" aria-hidden="true">person</span>
+                                    Género
+                                </dt>
+                                <dd>{producto.genero || "-"}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </article>
+
+                <aside className="DetalleInter__panel" aria-label="Datos del intercambio y de la prenda">
+                    <span className="DetalleInter__reporte material-symbols-outlined" aria-label="Reportar publicación">report</span>
+
+                    <h2>Datos del intercambio</h2>
+
+                    <div className="DetalleInter__acepta">
+                        <h3>Prendas que acepta:</h3>
+                        <div>
+                            {producto.tiposAceptados.map((tipo) => (
+                                <span key={tipo}>{tipo.toUpperCase()}</span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="DetalleInter__estadoAceptado">
+                        <h3>Estado mínimo aceptado</h3>
+                        <span>{producto.estadoMinimoAceptado || "-"}</span>
+                    </div>
+
+                    <h2 className="DetalleInter__tituloPrenda">Datos de prenda</h2>
+
+                    <fieldset className="DetalleInter__colores">
+                        <legend>Colores:</legend>
+                            {producto.colores.map((color) => (
+                                <span
+                                    key={color.color}
+                                    className="DetalleInter__muestraColor DetalleInter__muestraColor--seleccionado"
+                                    aria-label={color.color}
+                                    style={{ backgroundColor: color.codigoColor }}
+                                />
+                            ))}
+                    </fieldset>
+
+                    <fieldset className="DetalleInter__talles">
+                        <legend>Talles:</legend>
+                        {producto.tallesBuscados.map((talle) => (
+                            <span
+                                key={talle}
+                                className="DetalleInter__muestraTalle DetalleInter__muestraTalle--seleccionado"
+                            >
+                                {talle}
+                            </span>
+                        ))}
+                    </fieldset>
+
+                    <button
+                        className="Boton principal"
+                        type="button"
+                        onClick={() =>
+                            navigate("/propuesta-intercambio", {
+                                state: { producto },
+                            })
+                        }
+                    >
+                        Proponer intercambio
+                    </button>
+                    <Boton texto="Agregar a favoritos" variante="secundario" iconoGoogle="favorite_border" type="button" />
+                </aside>
+            </section>
+            <section
+                className="DetalleInter__relacionados"
+                aria-labelledby="DetalleInter__tituloRelacionados"
+            >
+                <div className="DetalleInter__linea" aria-hidden="true">
+                    <LineaM lado="izquierdo" />
+                </div>
+
+                <h2 id="DetalleInter__tituloRelacionados">
+                    Productos que te podrían gustar
+                </h2>
+
+                <div className="DetalleInter__grilla">
+                    {productosRelacionados.map((item) => (
+                        <TarjetaIntercambio
+                        key={item.id}
+                        producto={item}
+                        color={item.codigoColor || "#A87975"}
+                        colorTexto={item.color?.toLowerCase() === "blanco" ? "#332D37" : "#FFFFFF"}
+                        colorAccion={item.codigoColor || "#A87975"}
+                        onClick={() => navigate(`/detalles/intercambio/${item.id}`)}
+                        />
+                    ))}
+                    
+                </div>
+            </section>
+        </main>
+    );
+}

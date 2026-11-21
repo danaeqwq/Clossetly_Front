@@ -1,0 +1,529 @@
+.DetallePrenda {
+  width: min(100%, 1540px);
+  margin: 0 auto;
+  padding: 4px clamp(28px, 9.2vw, 176px) 24px;
+  color: var(--color-bordoVino);
+}
+
+.DetallePrenda__principal {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(280px, 1.1fr);
+  gap: clamp(22px, 2.4vw, 42px);
+  align-items: stretch;
+}
+
+.DetallePrenda__ficha,
+.DetallePrenda__panel {
+  min-width: 0;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--color-blancaso) 35%, var(--color-cremita));
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--color-carbon) 18%, transparent);
+}
+
+.DetallePrenda__ficha {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.85fr) minmax(0, 1.45fr);
+  gap: clamp(18px, 1.8vw, 32px);
+  min-height: 370px;
+  padding: 16px 20px;
+}
+
+.DetallePrenda__imagenMarco {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-rosaEmpol) 24%, var(--color-cremita));
+}
+
+.DetallePrenda__imagenMarco img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+.DetallePrenda__informacion {
+  min-width: 0;
+  padding: 30px 8px 14px 0;
+}
+
+.DetallePrenda__informacion h1 {
+  color: var(--color-carbon);
+  font: 600 clamp(28px, 2.15vw, 40px)/1.1 var(--font-CormGaram);
+}
+
+.DetallePrenda__privacidad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  color: var(--color-rosaTerra);
+  font: 12px var(--font-manrope);
+}
+
+.DetallePrenda__privacidad strong {
+  color: var(--color-carbon);
+  font: 600 15px var(--font-CormGaram);
+}
+
+.DetallePrenda__interruptor {
+  position: relative;
+  width: 46px;
+  height: 23px;
+  border-radius: 20px;
+  background: var(--color-bordoVino);
+}
+
+.DetallePrenda__interruptor::after {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--color-blancaso);
+  content: "";
+}
+
+.DetallePrenda__datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 28px;
+  font-family: var(--font-manrope);
+}
+
+
+.DetallePrenda__datos dt {
+  display: grid;
+  justify-items: start;
+  gap: 3px;
+  color: var(--color-carbon);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.DetallePrenda__datos dt span {
+  color: var(--color-bordoVino);
+  font: 21px/1 var(--font-manrope);
+}
+
+.DetallePrenda__datos dd {
+  margin-top: 2px;
+  color: var(--color-rosaTerra);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.DetallePrenda__estilos dd {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 8px;
+}
+
+.DetallePrenda__datoEstado,
+.DetallePrenda__datoGenero {
+    transform: translateY(-30px);
+}
+
+.DetallePrenda__estilos dd span {
+  padding: 2px 9px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 20px;
+  color: var(--color-rosaTerra);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.DetallePrenda__panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px clamp(16px, 2vw, 34px);
+}
+
+.DetallePrenda .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined'!important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 30px !important;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.DetallePrenda__panel h2 {
+  margin-bottom: 18px;
+  color: var(--color-carbon);
+  font: 600 20px var(--font-CormGaram);
+}
+
+.DetallePrenda__panel fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 0;
+  color: var(--color-carbon);
+  font: 13px var(--font-manrope);
+}
+
+.DetallePrenda__panel legend {
+  width: 100%;
+  margin-bottom: 6px;
+  color: var(--color-rosaTerra);
+  font-size: 12px;
+}
+
+.DetallePrenda__colores {
+  margin-bottom: 14px;
+}
+
+.DetallePrenda__colores label input,
+.DetallePrenda__talles label input {
+  position: absolute;
+  opacity: 0;
+}
+
+.DetallePrenda__colores label span {
+  display: block;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 50%;
+  background: var(--color-blancaso);
+}
+
+.DetallePrenda__colores label:nth-of-type(2) span {
+  background: var(--color-rosaEmpol);
+}
+
+.DetallePrenda__colores input:checked + span {
+  outline: 2px solid var(--color-rosaTerra);
+  outline-offset: 2px;
+}
+
+.DetallePrenda__talles {
+  margin-bottom: 24px;
+}
+
+.DetallePrenda__talles label span {
+  display: grid;
+  width: 86px;
+  height: 38px;
+  place-items: center;
+  border-radius: 20px;
+  color: var(--color-blancaso);
+  background: var(--color-bordoVino);
+  font-family: var(--font-CormGaram);
+  font-size: 18px;
+}
+
+.DetallePrenda__panel .Boton {
+  min-height: 42px;
+  margin: 0 0 10px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.DetallePrenda__panel .Boton.secundario:last-child {
+  border-color: var(--color-rojo1);
+  color: var(--color-rojo1);
+}
+
+.DetallePrenda__iconoGoogle {
+  font-size: 26px;
+  vertical-align: middle;
+}
+
+.Boton .material-symbols-outlined {
+    font-size: 22px !important;
+    line-height: 1;
+}
+
+.Boton.eliminar {
+    color: var(--color-rojo1);
+    border-color: var(--color-rojo1);
+}
+
+.Boton.eliminar .material-symbols-outlined {
+    color: var(--color-rojo1);
+}
+
+@media (max-width: 1100px) {
+  .DetallePrenda {
+    padding: 16px 28px 32px;
+  }
+
+  .DetallePrenda__principal {
+    grid-template-columns: minmax(0, 1.7fr) minmax(230px, 0.9fr);
+    gap: 20px;
+  }
+
+  .DetallePrenda__ficha {
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.2fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .DetallePrenda__informacion {
+    padding: 18px 0;
+  }
+
+  .DetallePrenda__datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+    margin-top: 24px;
+  }
+
+  .DetallePrenda__estilos {
+    grid-column: 1 / -1;
+  }
+
+  .DetallePrenda__datoEstado,
+  .DetallePrenda__datoGenero {
+    transform: none;
+  }
+
+  .DetallePrenda__panel {
+    padding: 24px 18px;
+  }
+}
+
+@media (max-width: 850px) {
+  .DetallePrenda__principal {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .DetallePrenda__ficha {
+    grid-template-columns: minmax(190px, 0.75fr) minmax(0, 1.25fr);
+    min-height: 340px;
+  }
+
+  .DetallePrenda__panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 20px;
+    align-items: center;
+  }
+
+  .DetallePrenda__panel h2 {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .DetallePrenda__colores,
+  .DetallePrenda__talles {
+    margin: 0;
+  }
+
+  .DetallePrenda__panel .Boton {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .DetallePrenda {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 9px 28px;
+    overflow-x: clip;
+  }
+
+  .DetallePrenda__principal {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .DetallePrenda__ficha {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+    min-height: 0;
+    padding: 10px;
+  }
+
+  .DetallePrenda__imagenMarco {
+    justify-self: center;
+    width: min(70vw, 520px);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 0.68;
+  }
+
+  .DetallePrenda__imagenMarco img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .DetallePrenda__informacion {
+    min-width: 0;
+    padding: 3px 0 2px;
+  }
+
+  .DetallePrenda__informacion h1 {
+    font-size: 14px;
+  }
+
+  .DetallePrenda__privacidad {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 7px;
+    margin-top: 5px;
+    font-size: 9px;
+  }
+
+  .DetallePrenda__privacidad strong {
+    font-size: 12px;
+  }
+
+  .DetallePrenda__interruptor {
+    width: 31px;
+    height: 16px;
+  }
+
+  .DetallePrenda__interruptor::after {
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .DetallePrenda__datos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 6px;
+    margin-top: 13px;
+  }
+
+  .DetallePrenda__datos dt {
+    gap: 2px;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .DetallePrenda__datos dt span.material-symbols-outlined {
+    font-size: 14px !important;
+  }
+
+  .DetallePrenda__datos dt img.DetallePrenda__icono {
+    width: 13px;
+    height: 13px;
+    object-fit: contain;
+  }
+
+  .DetallePrenda__datos dd {
+    margin-top: 2px;
+    font-size: 9px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .DetallePrenda__estilos {
+    grid-column: auto;
+    min-width: 0;
+  }
+
+  .DetallePrenda__estilos dd {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .DetallePrenda__estilos dd span {
+    max-width: 100%;
+    padding: 2px 5px;
+    font-size: 8px;
+    line-height: 1.2;
+  }
+
+  .DetallePrenda__datoEstado,
+  .DetallePrenda__datoGenero {
+    transform: none;
+  }
+
+  .DetallePrenda__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 9px;
+  }
+
+  .DetallePrenda__panel h2 {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+
+  .DetallePrenda__panel fieldset {
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .DetallePrenda__panel legend {
+    margin-bottom: 4px;
+    font-size: 10px;
+  }
+
+  .DetallePrenda__colores,
+  .DetallePrenda__talles {
+    margin: 0;
+  }
+
+  .DetallePrenda__colores label span {
+    width: 18px;
+    height: 18px;
+  }
+
+  .DetallePrenda__talles label span {
+    width: 50px;
+    height: 21px;
+    font-size: 11px;
+  }
+
+  .DetallePrenda__panel .Boton {
+    width: 100%;
+    min-height: 25px;
+    margin: 0;
+    border-radius: 9px;
+    font-size: 10px;
+  }
+
+  .Boton .material-symbols-outlined {
+    font-size: 14px !important;
+    line-height: 1;
+}
+}
+
+@media (max-width: 380px) {
+  .DetallePrenda {
+    padding-inline: 9px;
+  }
+
+  .DetallePrenda__ficha {
+    gap: 9px;
+    padding: 9px;
+  }
+
+  .DetallePrenda__imagenMarco {
+    width: min(70vw, 220px);
+  }
+
+  .DetallePrenda__datos {
+    gap: 8px 5px;
+  }
+
+  .DetallePrenda__estilos dd span {
+    padding-inline: 4px;
+    font-size: 7px;
+  }
+}

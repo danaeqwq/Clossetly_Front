@@ -1,7 +1,7 @@
 import "./Alert.css";
 import Boton from "../Boton/Boton";
 
-export default function Alert({ titulo, mensaje, icono, textoBoton }) {
+export default function Alert({ titulo, mensaje, icono, textoBoton, onClick }) {
     return (
         <div className="Alert">
             <div className="Alert__div">
@@ -26,6 +26,7 @@ export default function Alert({ titulo, mensaje, icono, textoBoton }) {
                         texto={textoBoton}
                         variante="principal"
                         type="button"
+                        onClick={onClick}
                     />
                 </div>
 

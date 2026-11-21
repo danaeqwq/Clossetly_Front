@@ -1,8 +1,21 @@
 import "./CampoFormulario.css"
 import "../../styles/variables.css"
-
-
-export default function CampoFormulario({id, texto, icono, iconoMaterial, tipo, placeholder, iconoFinal, iconoFinalMaterial}) {
+import { useState } from "react";
+export default function CampoFormulario({
+    id,
+    texto,
+    icono,
+    iconoMaterial,
+    tipo,
+    placeholder,
+    iconoFinal,
+    iconoFinalAbierto,
+    iconoFinalMaterial,
+    value,
+    onChange
+}) {
+    const [mostrar, setMostrar] = useState(false);
+const tipoInput = tipo === "password" && mostrar ? "text" : tipo;
     return (
         <>
             <label className="Label" htmlFor={id}>
@@ -22,11 +35,13 @@ export default function CampoFormulario({id, texto, icono, iconoMaterial, tipo, 
                     />
                 )}
 
-                <input 
-                id={id} 
-                className="Campo__input" 
-                type={tipo} 
-                placeholder={placeholder}
+                <input
+                    id={id}
+                    className="Campo__input"
+                    type={tipoInput}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
                 />
 
                 {iconoFinalMaterial && (
@@ -37,9 +52,11 @@ export default function CampoFormulario({id, texto, icono, iconoMaterial, tipo, 
 
                 {iconoFinal && !iconoFinalMaterial && (
                     <img
-                        src={iconoFinal}
+                        src={mostrar ? iconoFinalAbierto : iconoFinal}
                         alt=""
                         className="Campo__img-final"
+                        onClick={() => tipo === "password" && setMostrar(!mostrar)}
+                        style={{ cursor: "pointer" }}
                     />
                 )}
             </div>

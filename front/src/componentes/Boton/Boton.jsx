@@ -1,11 +1,12 @@
 import "./Boton.css"
 import "../../styles/variables.css"
 
-export default function Boton({ texto, variante, icono, iconoGoogle, type }) {
+export default function Boton({ texto, variante, icono, iconoGoogle, type, onClick }) {
     return (
         <button
             className={`Boton ${variante}`}
             type={type}
+            onClick={onClick}
         >
             {icono && (
                 <img

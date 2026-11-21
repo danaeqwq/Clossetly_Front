@@ -1,0 +1,115 @@
+.MiArmario__outfits {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px 30px;
+}
+
+.MiArmario__outfit {
+  position: relative;
+  min-width: 0;
+  overflow: visible;
+}
+
+.MiArmario__outfit .TarjetaOutfit__favorito { right: 10px; }
+
+.MiArmario__outfit--menuAbierto::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 70%);
+  content: "";
+  pointer-events: none;
+}
+
+.MiArmario__outfit .TarjetaOutfit__tipo,
+.MiArmario__outfit .TarjetaOutfit__favorito { z-index: 2; }
+
+.MiArmario__outfitMas {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 48px;
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  padding: 0 0 7px;
+  border: 1px solid color-mix(in srgb, var(--color-blanco) 75%, transparent);
+  border-radius: 50%;
+  color: var(--color-blanco);
+  background: var(--color-morado);
+  font: 700 23px/1 Arial, sans-serif;
+}
+
+.MiArmario__outfit--menuAbierto { z-index: 5; }
+.MiArmario__outfit--menuAbierto .MiArmario__outfitMas {
+  background: #817f84;
+}
+
+.MiArmario__outfitMenu {
+  position: absolute;
+  z-index: 6;
+  top: 42px;
+  right: 8px;
+  display: grid;
+  width: min(148px, calc(100% - 16px));
+  padding: 5px 0;
+  border: 1px solid #d7c8c5;
+  border-radius: 6px;
+  color: var(--color-carbon);
+  background: var(--color-blancaso);
+  box-shadow: 0 3px 9px rgb(52 44 48 / 24%);
+  font: 12px var(--font-manrope);
+}
+
+.MiArmario__outfitMenu[hidden] { display: none; }
+.MiArmario__outfitMenu button {
+  display: flex;
+  width: 100%;
+  min-height: 27px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+}
+.MiArmario__outfitMenu button:hover { background: #f7f3f1; }
+.MiArmario__outfitMenu .material-symbols-outlined { font-size: 14px; }
+.MiArmario__outfitMenu .MiArmario__outfitEliminar { color: #d64545; }
+
+.MiArmario__resumen {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 14px;
+  color: var(--color-rosaTerra);
+  font: 14px var(--font-manrope);
+}
+
+.MiArmario__crearOutfit {
+  min-height: 30px;
+  padding: 0 27px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 5px;
+  color: var(--color-rosaTerra);
+  background: transparent;
+  box-shadow: 0 2px 5px rgb(52 44 48 / 12%);
+  font: 14px var(--font-manrope);
+}
+
+@media (max-width: 1100px) {
+  .MiArmario__outfits { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 760px) {
+  .MiArmario__outfits { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .MiArmario__outfit .TarjetaOutfit__favorito { top: 4px; right: 4px; }
+  .MiArmario__outfitMas { top: 4px; right: 37px; width: 27px; height: 27px; padding-bottom: 6px; font-size: 21px; }
+  .MiArmario__outfitMenu { top: 38px; right: 7px; width: min(138px, calc(100% - 14px)); font-size: 11px; }
+}

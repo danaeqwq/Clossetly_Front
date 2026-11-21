@@ -19,8 +19,8 @@ export default function TarjetaIntercambio({
     >
       <img
         className="TarjetaIntercambio__imagen"
-        src={producto.imagen}
-        alt={producto.alt}
+        src={`http://localhost:3000${producto.imagen}`}
+        alt={producto.nombre}
       />
 
       <span className="TarjetaIntercambio__tipo">

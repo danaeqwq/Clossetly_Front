@@ -3,7 +3,6 @@ import "../../styles/variables.css"
 import Boton from "../../componentes/Boton/Boton"
 import ilustracionCodigo from "../../assets/Ilustracion__codigo.svg"
 import Alert from "../../componentes/Alert/Alert"
-import Aprobar from "../../assets/Aprobar.svg"
 
 export default function VerificarCodigo() {
     return (

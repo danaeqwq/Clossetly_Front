@@ -18,11 +18,11 @@ export default function TarjetaVenta({
       }}
       onClick={onClick}
     >
-      <img
-        className="TarjetaVenta__imagen"
-        src={producto.imagen}
-        alt={producto.alt}
-      />
+     <img
+  className="TarjetaVenta__imagen"
+  src={`http://localhost:3000${producto.imagen}`}
+  alt={producto.nombre}
+/>
 
       <span className="TarjetaVenta__tipo">
         <span className="material-symbols-outlined">sell</span>

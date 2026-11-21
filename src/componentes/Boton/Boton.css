@@ -1,0 +1,33 @@
+.Boton {
+    width: 100%;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--color-rosaTerra);
+    border-radius: 10px;
+    font-family: var(--font-Kurale);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.Boton.principal {
+    margin-top: 15px;
+    border-color: var(--color-bordoVino);
+    background: var(--color-bordoVino);
+    color: var(--color-blancaso);
+    box-shadow: 0 2px 5px var(--color-rosaEmpol);
+}
+
+.Boton.secundario {
+    background: transparent;
+    color: var(--color-bordoVino);
+}
+
+.Boton__img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    background: transparent;
+}
