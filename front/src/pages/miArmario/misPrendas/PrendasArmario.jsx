@@ -317,6 +317,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
 
+
   const guardarNuevaPrenda = async (datosAdicionales = {}) => {
     const token = localStorage.getItem("token");
 
@@ -335,6 +336,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
       formulario.append("imagen", borradorPrenda.imagen);
 
+      // 1. Guardar la prenda
       const respuesta = await axios.post(
         "http://localhost:3000/api/prendas",
         formulario,
@@ -345,38 +347,109 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         }
       );
 
-      console.log("Respuesta al crear prenda:", respuesta.data);
+      const idPrenda = respuesta.data.id_prenda;
 
-      if (!respuesta.data.id_prenda) {
-        console.error("No se pudo guardar la prenda:", respuesta.data);
-        return;
+      if (!idPrenda) {
+        throw new Error("No se recibió el ID de la prenda");
       }
 
       const prendaGuardada = {
         ...borradorPrenda,
         ...datosAdicionales,
-        id: respuesta.data.id_prenda,
-        imagen: respuesta.data.imagen,
+        id: idPrenda,
+        imagen: respuesta.data.imagen
+          ? `http://localhost:3000${respuesta.data.imagen}`
+          : "",
       };
 
-      setPrendas((actuales) => [...actuales, prendaGuardada]);
+      // 2. Crear publicación de venta
+      if (datosAdicionales.tipoPublicacion === "venta") {
+        const respuestaPublicacion = await axios.post(
+          "http://localhost:3000/api/publicaciones/compra",
+          {
+            id_prenda: idPrenda,
+            stock: Number(borradorPrenda.stock),
+            precio_unitario: Number(borradorPrenda.precio),
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      setCategoriasAbiertas((actuales) =>
-        actuales.includes(prendaGuardada.categoria)
-          ? actuales
-          : [...actuales, prendaGuardada.categoria]
-      );
+        onPublicacionCreada?.({
+          ...prendaGuardada,
+          id: respuestaPublicacion.data.id,
+          idPrenda,
+        });
+      }
+
+      // 3. Crear publicación de intercambio
+      else if (datosAdicionales.tipoPublicacion === "intercambio") {
+        const categoriaIds = borradorPrenda.tiposAceptados
+          .map((nombre) =>
+            categorias.find((categoria) => categoria.categoria === nombre)
+              ?.id_categoria
+          )
+          .filter((id) => id !== undefined);
+
+        const estadoSeleccionado = estados.find(
+          (estado) => estado.estado_prenda === borradorPrenda.estadoMinimo
+        );
+
+        const talleSeleccionado = talles.find(
+          (talle) => talle.talla === borradorPrenda.talleBuscado
+        );
+
+        if (
+          !categoriaIds.length ||
+          !talleSeleccionado ||
+          (!estadoSeleccionado && borradorPrenda.estadoMinimo !== "TODOS")
+        ) {
+          throw new Error("No se pudieron identificar las opciones del intercambio");
+        }
+
+        const respuestaPublicacion = await axios.post(
+          "http://localhost:3000/api/publicaciones/intercambio",
+          {
+            id_prenda: idPrenda,
+            estado_MA: estadoSeleccionado?.id_estado_prenda ?? null,
+            talle_buscado: talleSeleccionado.id_talla,
+            categoriasAceptadas: categoriaIds,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        onPublicacionCreada?.({
+          ...prendaGuardada,
+          id: respuestaPublicacion.data.id,
+          idPrenda,
+        });
+      }
+
+      // 4. Guardar solamente como prenda normal
+      else {
+        setPrendas((actuales) => [...actuales, prendaGuardada]);
+        setCategoriasAbiertas((actuales) => ({
+          ...actuales,
+          [prendaGuardada.categoria]: true,
+        }));
+      }
 
       cerrarAltaPrenda();
 
     } catch (error) {
       console.error(
-        "Error al crear la prenda:",
-        error.response?.data || error
+        "Error al guardar:",
+        error.response?.data || error.message || error
       );
     }
   };
-
 
 
   const guardarEdicion = async () => {

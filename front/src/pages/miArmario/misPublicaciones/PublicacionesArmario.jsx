@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import "./PublicacionesArmario.css";
@@ -63,9 +64,9 @@ const publicacionesVentaIniciales = [
     imagen: ropaEjemplo,
     stock: 2,
     solicitudes: [
-      { id: "venta-1-1", usuario: "@uwu", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-1-2", usuario: "@lol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-1-3", usuario: "@dani", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
+      { id: "venta-1-1", usuario: "@uwu", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono: "542901535032" },
+      { id: "venta-1-2", usuario: "@lol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono: "542901535032" },
+      { id: "venta-1-3", usuario: "@dani", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono: "542901535032" },
     ],
   },
   {
@@ -74,9 +75,9 @@ const publicacionesVentaIniciales = [
     imagen: ropaUno,
     stock: 2,
     solicitudes: [
-      { id: "venta-2-1", usuario: "@mora", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032"},
-      { id: "venta-2-2", usuario: "@luz", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-2-3", usuario: "@sol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
+      { id: "venta-2-1", usuario: "@mora", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono: "542901535032" },
+      { id: "venta-2-2", usuario: "@luz", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono: "542901535032" },
+      { id: "venta-2-3", usuario: "@sol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono: "542901535032" },
     ],
   },
 ];
@@ -183,14 +184,8 @@ const publicacionesIntercambioIniciales = [
 
 export default function PublicacionesArmario({ publicacionesCreadas = { venta: [], intercambio: [] }, onPublicacionActualizada, onPublicacionConvertida, onPublicacionConvertidaAPrenda }) {
   const navigate = useNavigate();
-  const [publicacionesVenta, setPublicacionesVenta] = useState(() => [
-    ...publicacionesVentaIniciales,
-    ...publicacionesCreadas.venta,
-  ]);
-  const [publicacionesIntercambio, setPublicacionesIntercambio] = useState(() => [
-    ...publicacionesIntercambioIniciales,
-    ...publicacionesCreadas.intercambio,
-  ]);
+  const [publicacionesVenta, setPublicacionesVenta] = useState([]);
+  const [publicacionesIntercambio, setPublicacionesIntercambio] = useState([]);
   const [ventaEnGestion, setVentaEnGestion] = useState(null);
   const [publicacionConPropuestas, setPublicacionConPropuestas] = useState(null);
   const [publicacionEnEdicion, setPublicacionEnEdicion] = useState(null);
@@ -201,6 +196,66 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     ...publicacionesCreadas.venta.map((publicacion) => `venta-${publicacion.id}`),
     ...publicacionesCreadas.intercambio.map((publicacion) => `intercambio-${publicacion.id}`),
   ]));
+
+  useEffect(() => {
+    const cargarPublicaciones = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const [ventasRes, intercambiosRes] = await Promise.all([
+          axios.get(
+            "http://localhost:3000/api/publicaciones/compra/mis",
+            config
+          ),
+          axios.get(
+            "http://localhost:3000/api/publicaciones/intercambio/mis",
+            config
+          ),
+        ]);
+
+        const ventas = (ventasRes.data.publicaciones || []).map((p) => ({
+          ...p,
+          imagen: p.imagen?.startsWith("http")
+            ? p.imagen
+            : `http://localhost:3000${p.imagen}`,
+          solicitudes: [],
+        }));
+
+        const intercambios = (intercambiosRes.data.publicaciones || []).map(
+          (p) => ({
+            ...p,
+            imagen: p.imagen?.startsWith("http")
+              ? p.imagen
+              : `http://localhost:3000${p.imagen}`,
+            propuestas: [],
+            tiposAceptados: Array.isArray(p.tiposAceptados)
+              ? p.tiposAceptados
+              : p.tiposAceptados
+                ? JSON.parse(p.tiposAceptados)
+                : [],
+          })
+        );
+
+        setPublicacionesVenta(ventas);
+        setPublicacionesIntercambio(intercambios);
+      } catch (error) {
+        console.error(
+          "Error al cargar las publicaciones:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    cargarPublicaciones();
+  }, []);
 
   useEffect(() => {
     const nuevasVentas = publicacionesCreadas.venta.filter((publicacion) => (
