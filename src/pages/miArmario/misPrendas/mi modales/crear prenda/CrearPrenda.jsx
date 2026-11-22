@@ -9,17 +9,6 @@ const tiposPublicacion = [
 ];
 
 const etiquetas = [
-<<<<<<< Updated upstream
-  { nombre: "Categoria", campo: "categoria", opciones: [] },
-  { nombre: "Talle", campo: "talle", opciones: ["XS", "S", "M", "L", "XL"] },
-  { nombre: "Temporada", campo: "temporada", opciones: ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"] },
-  { nombre: "Ocasión", campo: "ocasion", opciones: ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"] },
-  { nombre: "Género", campo: "genero", opciones: ["UNISEX", "MUJER", "HOMBRE"] },
-  { nombre: "Estado", campo: "estado", opciones: ["NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"] },
-];
-
-export default function CrearPrenda({ datos, categorias = [], mensajeError, onCambiar, onContinuar, onClose }) {
-=======
   { nombre: "Categoría", campo: "categoria", placeholder: "Seleccioná una categoría" },
   { nombre: "Talle", campo: "talle", placeholder: "Seleccioná un talle" },
   { nombre: "Temporada", campo: "temporada", placeholder: "Seleccioná una temporada" },
@@ -41,7 +30,6 @@ export default function CrearPrenda({
   onContinuar,
   onClose,
 }) {
->>>>>>> Stashed changes
   const seleccionarImagen = (evento) => {
     const archivo = evento.target.files?.[0];
 
@@ -146,33 +134,6 @@ export default function CrearPrenda({
             </div>
 
             <div className="AgregarPrenda__etiquetas">
-<<<<<<< Updated upstream
-              {etiquetas.map((etiqueta) => (
-                <label className="AgregarPrenda__etiqueta" key={etiqueta.nombre}>
-                  <span>{etiqueta.nombre}</span>
-                  <select
-                    value={datos[etiqueta.campo]}
-                    onChange={(evento) => onCambiar(etiqueta.campo, evento.target.value)}
-                    aria-label={etiqueta.nombre}
-                  >
-                    {etiqueta.campo === "categoria" && (
-                      <option value="">Seleccioná una categoría</option>
-                    )}
-
-                    {(etiqueta.campo === "categoria"
-                      ? categorias.map((categoria) => categoria.categoria)
-                      : etiqueta.opciones
-                    ).map((opcion) => (
-                      <option key={opcion} value={opcion}>
-                        {opcion}
-                      </option>
-                    ))}
-                  </select>
-                  <b aria-hidden="true">{datos[etiqueta.campo]}</b>
-                  <i className="material-symbols-outlined" aria-hidden="true">keyboard_arrow_down</i>
-                </label>
-              ))}
-=======
               {etiquetas.map((etiqueta) => {
                 let opciones = [];
 
@@ -229,7 +190,6 @@ export default function CrearPrenda({
                   </label>
                 );
               })}
->>>>>>> Stashed changes
             </div>
             <span className="AgregarPrenda__ayuda">¿Qué significa cada estado de una prenda?</span>
             {mensajeError && <p className="AgregarPrenda__error" role="alert">{mensajeError}</p>}

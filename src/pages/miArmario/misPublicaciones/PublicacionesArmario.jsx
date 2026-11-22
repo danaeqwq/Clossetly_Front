@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-=======
 import axios from "axios";
->>>>>>> Stashed changes
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import "./PublicacionesArmario.css";
@@ -48,168 +45,22 @@ const crearDatosEdicion = (publicacion, tipo) => {
     estado: normalizarOpcion(publicacion.estado, ["NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"], "NUEVA CON ETIQUETA"),
     privacidad: publicacion.privacidad ?? true,
     estilos: publicacion.estilos || [],
-<<<<<<< Updated upstream
-    colores: publicacion.colores || [],
-=======
     colores: publicacion.colores || (publicacion.color ? [publicacion.color] : []),
->>>>>>> Stashed changes
     precio: publicacion.precio == null ? "" : String(publicacion.precio),
     stock: publicacion.stock == null ? "" : String(publicacion.stock),
     tiposAceptados: publicacion.tiposAceptados || [],
     estadoMinimo: normalizarOpcion(publicacion.estadoMinimo || publicacion.estadoMinimoAceptado, ["TODOS", "NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"], "TODOS"),
-<<<<<<< Updated upstream
-    talleBuscado: publicacion.talleBuscado || "M",
-=======
     talleBuscado: publicacion.talleBuscado || publicacion.talle_buscado || "",
->>>>>>> Stashed changes
   };
   return { ...datos, tipo, id: publicacion.id, original: publicacion, valoresIniciales: { ...datos } };
 };
 
 const mismoValor = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-<<<<<<< Updated upstream
-const publicacionesVentaIniciales = [
-  {
-    id: 1,
-    nombre: "Abrigo Nocturne",
-    imagen: ropaEjemplo,
-    stock: 2,
-    solicitudes: [
-      { id: "venta-1-1", usuario: "@uwu", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-1-2", usuario: "@lol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-1-3", usuario: "@dani", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
-    ],
-  },
-  {
-    id: 2,
-    nombre: "Remera rayada",
-    imagen: ropaUno,
-    stock: 2,
-    solicitudes: [
-      { id: "venta-2-1", usuario: "@mora", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032"},
-      { id: "venta-2-2", usuario: "@luz", estado: "CONFIRMADO", avatar: avatarEjemplo, telefono:"542901535032" },
-      { id: "venta-2-3", usuario: "@sol", estado: "EN CONTACTO", avatar: avatarEjemplo, telefono:"542901535032" },
-    ],
-  },
-];
-
-const publicacionesIntercambioIniciales = [
-  {
-    id: 1,
-    tipo: "intercambio",
-    nombre: "Abrigo Nocturne",
-    imagen: ropaEjemplo,
-    talle: "M",
-    temporada: "otoño / invierno",
-    prenda: "Campera",
-    estilos: ["Urbano", "Vintage"],
-    estado: "Muy buen estado",
-    genero: "Mujer",
-    tiposAceptados: ["Remeras", "Camperas"],
-    estadoMinimoAceptado: "Buen estado",
-    colores: ["bordo", "negro"],
-    propuestas: [
-      {
-        id: "propuesta-1-1",
-        usuario: "@mila",
-        estado: "PENDIENTE",
-        imagen: ropaUno,
-        producto: {
-          id: "prenda-propuesta-1",
-          tipo: "intercambio",
-          nombre: "Remera estampada",
-          imagen: ropaUno,
-          temporada: "primavera / verano",
-          prenda: "Remera",
-          estilos: ["Casual", "Vintage"],
-          estado: "Buen estado",
-          genero: "Mujer",
-          tiposAceptados: ["Camperas", "Pantalones"],
-          estadoMinimoAceptado: "Buen estado",
-          colores: ["rosa", "blanco"],
-          talle: "M",
-        },
-      },
-      {
-        id: "propuesta-1-2",
-        usuario: "@sol",
-        estado: "PENDIENTE",
-        imagen: ropaEjemplo,
-        producto: {
-          id: "prenda-propuesta-2",
-          tipo: "intercambio",
-          nombre: "Vestido estampado",
-          imagen: ropaEjemplo,
-          temporada: "verano",
-          prenda: "Vestido",
-          estilos: ["Boho"],
-          estado: "Como nuevo",
-          genero: "Mujer",
-          tiposAceptados: ["Camperas"],
-          estadoMinimoAceptado: "Como nuevo",
-          colores: ["naranja", "verde"],
-          talle: "S",
-        },
-      },
-    ],
-  },
-  {
-    id: 2,
-    tipo: "intercambio",
-    nombre: "Remera rayada",
-    imagen: ropaUno,
-    talle: "S",
-    temporada: "primavera / verano",
-    prenda: "Remera",
-    estilos: ["Casual"],
-    estado: "Buen estado",
-    genero: "Mujer",
-    tiposAceptados: ["Camperas", "Vestidos"],
-    estadoMinimoAceptado: "Buen estado",
-    colores: ["rosa", "blanco"],
-    propuestas: [
-      {
-        id: "propuesta-2-1",
-        usuario: "@dani",
-        estado: "PENDIENTE",
-        imagen: ropaEjemplo,
-        producto: {
-          id: "prenda-propuesta-3",
-          tipo: "intercambio",
-          nombre: "Abrigo estampado",
-          imagen: ropaEjemplo,
-          temporada: "otoño / invierno",
-          prenda: "Abrigo",
-          estilos: ["Urbano"],
-          estado: "Muy buen estado",
-          genero: "Mujer",
-          tiposAceptados: ["Remeras"],
-          estadoMinimoAceptado: "Buen estado",
-          colores: ["bordo"],
-          talle: "M",
-        },
-      },
-    ],
-  },
-];
-
-export default function PublicacionesArmario({ publicacionesCreadas = { venta: [], intercambio: [] }, onPublicacionActualizada, onPublicacionConvertida, onPublicacionConvertidaAPrenda }) {
-  const navigate = useNavigate();
-  const [publicacionesVenta, setPublicacionesVenta] = useState(() => [
-    ...publicacionesVentaIniciales,
-    ...publicacionesCreadas.venta,
-  ]);
-  const [publicacionesIntercambio, setPublicacionesIntercambio] = useState(() => [
-    ...publicacionesIntercambioIniciales,
-    ...publicacionesCreadas.intercambio,
-  ]);
-=======
 export default function PublicacionesArmario({ publicacionesCreadas = { venta: [], intercambio: [] }, onPublicacionActualizada, onPublicacionConvertida, onPublicacionConvertidaAPrenda }) {
   const navigate = useNavigate();
   const [publicacionesVenta, setPublicacionesVenta] = useState([]);
   const [publicacionesIntercambio, setPublicacionesIntercambio] = useState([]);
->>>>>>> Stashed changes
   const [ventaEnGestion, setVentaEnGestion] = useState(null);
   const [publicacionConPropuestas, setPublicacionConPropuestas] = useState(null);
   const [publicacionEnEdicion, setPublicacionEnEdicion] = useState(null);
@@ -221,8 +72,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     ...publicacionesCreadas.intercambio.map((publicacion) => `intercambio-${publicacion.id}`),
   ]));
 
-<<<<<<< Updated upstream
-=======
   const [categorias, setCategorias] = useState([]);
   const [talles, setTalles] = useState([]);
   const [temporadas, setTemporadas] = useState([]);
@@ -295,7 +144,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     cargarPublicaciones();
   }, []);
 
->>>>>>> Stashed changes
   useEffect(() => {
     const nuevasVentas = publicacionesCreadas.venta.filter((publicacion) => (
       !publicacionesRecibidas.current.has(`venta-${publicacion.id}`)
@@ -314,8 +162,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     }
   }, [publicacionesCreadas]);
 
-<<<<<<< Updated upstream
-=======
   useEffect(() => {
     const obtenerFiltros = async () => {
       const token = localStorage.getItem("token");
@@ -350,7 +196,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     obtenerFiltros();
   }, []);
 
->>>>>>> Stashed changes
   const cerrarEdicion = () => {
     setPublicacionEnEdicion(null);
     setPasoEdicion(1);
@@ -358,9 +203,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
   };
 
   const iniciarEdicion = (publicacion, tipo) => {
-<<<<<<< Updated upstream
-    setPublicacionEnEdicion(crearDatosEdicion(publicacion, tipo));
-=======
     const datos = crearDatosEdicion(publicacion, tipo);
 
     if (tipo === "intercambio") {
@@ -373,7 +215,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     }
 
     setPublicacionEnEdicion(datos);
->>>>>>> Stashed changes
     setPasoEdicion(1);
     setErrorEdicion("");
   };
@@ -409,93 +250,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     return publicacionEnEdicion.original[campoOriginal] ?? cambio;
   };
 
-<<<<<<< Updated upstream
-  const guardarEdicion = () => {
-    if (!publicacionEnEdicion) return;
-    const { tipo, original } = publicacionEnEdicion;
-    const claveOrigen = claveRegistro(original, tipo);
-    const categoria = valorGuardado("categoria", tipo === "venta" ? "categoria" : "prenda");
-    const actualizada = {
-      ...original,
-      tipoPublicacion: tipoDestino,
-      nombre: valorGuardado("nombre"),
-      imagen: valorGuardado("imagen"),
-      descripcion: valorGuardado("descripcion"),
-      privacidad: valorGuardado("privacidad"),
-      talle: valorGuardado("talle"),
-      temporada: valorGuardado("temporada"),
-      ocasion: valorGuardado("ocasion"),
-      genero: valorGuardado("genero"),
-      estado: valorGuardado("estado"),
-      estilos: valorGuardado("estilos"),
-      colores: valorGuardado("colores"),
-    };
-
-    const tipoDestino = publicacionEnEdicion.tipoPublicacion;
-    if (tipo !== tipoDestino) actualizada.claveArmario = `${tipoDestino}-${original.id}-${Date.now()}`;
-    if (tipoDestino === "venta") {
-      actualizada.categoria = categoria;
-      const precio = valorGuardado("precio");
-      const stock = valorGuardado("stock");
-      if (precio !== "" && precio != null) actualizada.precio = Number(precio);
-      if (stock !== "" && stock != null) actualizada.stock = Number(stock);
-      delete actualizada.tipo;
-      delete actualizada.tiposAceptados;
-      delete actualizada.estadoMinimoAceptado;
-      delete actualizada.estadoMinimo;
-      delete actualizada.talleBuscado;
-      if (tipo !== tipoDestino) { delete actualizada.propuestas; }
-      if (tipo === "venta") setPublicacionesVenta((items) => items.map((item) => claveRegistro(item, "venta") === claveOrigen ? actualizada : item));
-      else {
-        setPublicacionesIntercambio((items) => items.filter((item) => claveRegistro(item, "intercambio") !== claveOrigen));
-        setPublicacionesVenta((items) => [...items, actualizada]);
-      }
-      if (tipo !== tipoDestino) {
-        publicacionesRecibidas.current.add(`${tipoDestino}-${actualizada.id}`);
-        onPublicacionConvertida?.(actualizada, tipo, tipoDestino, claveOrigen);
-      }
-      else onPublicacionActualizada?.(actualizada, tipo);
-    } else if (tipoDestino === "intercambio") {
-      actualizada.tipo = "intercambio";
-      actualizada.prenda = categoria;
-      actualizada.tiposAceptados = valorGuardado("tiposAceptados");
-      actualizada.estadoMinimoAceptado = valorGuardado("estadoMinimo", "estadoMinimoAceptado");
-      actualizada.talleBuscado = valorGuardado("talleBuscado");
-      delete actualizada.precio;
-      delete actualizada.stock;
-      if (tipo !== tipoDestino) { delete actualizada.solicitudes; }
-      if (tipo === "intercambio") setPublicacionesIntercambio((items) => items.map((item) => claveRegistro(item, "intercambio") === claveOrigen ? actualizada : item));
-      else {
-        setPublicacionesVenta((items) => items.filter((item) => claveRegistro(item, "venta") !== claveOrigen));
-        setPublicacionesIntercambio((items) => [...items, actualizada]);
-      }
-      if (tipo !== tipoDestino) {
-        publicacionesRecibidas.current.add(`${tipoDestino}-${actualizada.id}`);
-        onPublicacionConvertida?.(actualizada, tipo, tipoDestino, claveOrigen);
-      }
-      else onPublicacionActualizada?.(actualizada, tipo);
-    } else {
-      delete actualizada.tipo;
-      delete actualizada.precio;
-      delete actualizada.stock;
-      delete actualizada.solicitudes;
-      delete actualizada.propuestas;
-      delete actualizada.tiposAceptados;
-      delete actualizada.estadoMinimoAceptado;
-      delete actualizada.estadoMinimo;
-      delete actualizada.talleBuscado;
-      setPublicacionesVenta((items) => items.filter((item) => claveRegistro(item, "venta") !== claveOrigen));
-      setPublicacionesIntercambio((items) => items.filter((item) => claveRegistro(item, "intercambio") !== claveOrigen));
-      onPublicacionConvertidaAPrenda?.({
-        ...actualizada,
-        tipo: "prenda",
-        tipoPublicacion: "prenda",
-        categoria,
-        id: original.id,
-      }, tipo, claveOrigen);
-    }
-    cerrarEdicion();
-=======
   const guardarEdicion = async () => {
     if (!publicacionEnEdicion) return;
 
@@ -695,7 +449,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         "No se pudieron guardar los cambios. Intentá nuevamente."
       );
     }
->>>>>>> Stashed changes
   };
 
   const guardarVentaEditada = () => {
@@ -723,20 +476,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
 
   const eliminarPublicacion = (publicacion, tipo) => setPublicacionAEliminar({ ...publicacion, tipo });
 
-<<<<<<< Updated upstream
-  const confirmarEliminacion = () => {
-    if (!publicacionAEliminar) return;
-
-    if (publicacionAEliminar.tipo === "venta") {
-      setPublicacionesVenta((publicaciones) => publicaciones.filter((publicacion) => claveRegistro(publicacion, "venta") !== claveRegistro(publicacionAEliminar, "venta")));
-    } else {
-      setPublicacionesIntercambio((publicaciones) => publicaciones.filter((publicacion) => claveRegistro(publicacion, "intercambio") !== claveRegistro(publicacionAEliminar, "intercambio")));
-    }
-
-    setPublicacionAEliminar(null);
-  };
-
-=======
 
   const confirmarEliminacion = async () => {
     if (!publicacionAEliminar) return;
@@ -787,7 +526,6 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
   };
 
 
->>>>>>> Stashed changes
   const actualizarSolicitudes = (id, solicitudes) => {
     setPublicacionesVenta((publicaciones) => publicaciones.map((publicacion) => (
       publicacion.id === id ? { ...publicacion, solicitudes } : publicacion
@@ -885,15 +623,12 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         pasoEdicion === 1 ? (
           <CrearPrenda
             datos={publicacionEnEdicion}
-<<<<<<< Updated upstream
-=======
             categorias={categorias}
             talles={talles}
             temporadas={temporadas}
             ocasiones={ocasiones}
             generos={generos}
             estados={estados}
->>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onContinuar={continuarEdicion}
@@ -902,11 +637,8 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         ) : pasoEdicion === 2 ? (
           <CrearPrenda2
             datos={publicacionEnEdicion}
-<<<<<<< Updated upstream
-=======
             estilosDisponibles={estilos}
             coloresDisponibles={colores}
->>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onVolver={() => { setErrorEdicion(""); setPasoEdicion(1); }}
@@ -925,10 +657,7 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         ) : publicacionEnEdicion.tipoPublicacion === "intercambio" ? (
           <CrearPrenda3Intercambio
             datos={publicacionEnEdicion}
-<<<<<<< Updated upstream
-=======
             talles={talles}
->>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onVolver={() => { setErrorEdicion(""); setPasoEdicion(2); }}

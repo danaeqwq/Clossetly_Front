@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-<<<<<<< Updated upstream
-=======
 import { useNavigate } from "react-router";
->>>>>>> Stashed changes
 import axios from "axios";
 import "./PrendasArmario.css";
 import TarjetaPrenda from "../../../componentes/tarjetaPrenda/TarjetaPrenda";
@@ -21,19 +18,11 @@ const borradorInicial = {
   descripcion: "",
   imagen: null,
   categoria: "",
-<<<<<<< Updated upstream
-  talle: "M",
-  temporada: "PRIMAVERA",
-  ocasion: "FORMAL",
-  genero: "UNISEX",
-  estado: "NUEVA CON ETIQUETA",
-=======
   talle: "",
   temporada: "",
   ocasion: "",
   genero: "",
   estado: "",
->>>>>>> Stashed changes
   privacidad: true,
   estilos: [],
   colores: [],
@@ -46,11 +35,8 @@ const borradorInicial = {
 
 export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas = [], onAccionesChange, onOutfitCreado }) {
 
-<<<<<<< Updated upstream
-=======
   const navigate = useNavigate();
 
->>>>>>> Stashed changes
   useEffect(() => {
     obtenerPrendas();
   }, []);
@@ -138,10 +124,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
   const manejarAccionTarjeta = (evento, prenda) => {
     const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
-<<<<<<< Updated upstream
-=======
     console.log("CLIC EN PRENDA:", prenda);
->>>>>>> Stashed changes
     if (botonOpciones) {
       setMenuAbiertoId((actual) => actual === clavePrenda(prenda) ? null : clavePrenda(prenda));
       return;
@@ -149,22 +132,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
     const opcion = evento.target.closest(".TarjetaPrenda__menu li");
     if (!opcion) {
-<<<<<<< Updated upstream
-      if (modoSeleccionOutfit && !botonOpciones) alternarSeleccionPrenda(prenda);
-      return;
-    }
-
-    const icono = opcion.querySelector(".material-symbols-outlined")?.textContent.trim();
-    setMenuAbiertoId(null);
-
-    if (icono === "edit") {
-      iniciarEdicionPrenda(prenda);
-    } else if (icono === "checkroom") {
-      iniciarSeleccionOutfit(prenda);
-    } else if (icono === "delete_outline") {
-      setPrendaAEliminar(prenda);
-    }
-=======
       if (modoSeleccionOutfit) {
         alternarSeleccionPrenda(prenda);
       } else {
@@ -175,7 +142,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
       return;
     }
->>>>>>> Stashed changes
   };
 
 
@@ -210,10 +176,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const continuarDesdeDatos = () => {
-<<<<<<< Updated upstream
-    if (!borradorPrenda.nombre.trim() || !borradorPrenda.imagen) {
-      setErrorCreacion("Ingresá un nombre y seleccioná una imagen para continuar.");
-=======
     if (
       !borradorPrenda.nombre.trim() ||
       !borradorPrenda.imagen
@@ -231,7 +193,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       !borradorPrenda.estado
     ) {
       setErrorCreacion("Completá todas las categorías antes de continuar.");
->>>>>>> Stashed changes
       return;
     }
 
@@ -240,16 +201,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const continuarDesdeEstilos = () => {
-<<<<<<< Updated upstream
-    if (!prendaEnEdicion && borradorPrenda.estilos.length === 0) {
-      setErrorCreacion("Seleccioná al menos un estilo para continuar.");
-      return;
-    }
-    setErrorCreacion("");
-    if (prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") guardarEdicion();
-    else if (!prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") guardarNuevaPrenda();
-    else setPasoCreacion(3);
-=======
     if (!borradorPrenda.estilos || borradorPrenda.estilos.length === 0) {
       setErrorCreacion("Seleccioná al menos un estilo para continuar.");
       return;
@@ -264,7 +215,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
     } else {
       setPasoCreacion(3);
     }
->>>>>>> Stashed changes
   };
 
   const guardarVenta = () => {
@@ -287,11 +237,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const [categorias, setCategorias] = useState([]);
-<<<<<<< Updated upstream
-
-  useEffect(() => {
-    const obtenerCategorias = async () => {
-=======
   const [talles, setTalles] = useState([]);
   const [temporadas, setTemporadas] = useState([]);
   const [ocasiones, setOcasiones] = useState([]);
@@ -303,40 +248,19 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
   useEffect(() => {
     const obtenerFiltros = async () => {
->>>>>>> Stashed changes
       const token = localStorage.getItem("token");
 
       try {
         const respuesta = await axios.get(
-<<<<<<< Updated upstream
-          "http://localhost:3000/api/categorias",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-=======
           "http://localhost:3000/api/filtros",
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
->>>>>>> Stashed changes
           }
         );
 
         setCategorias(respuesta.data.categorias || []);
-<<<<<<< Updated upstream
-
-      } catch (error) {
-        console.error("Error al obtener las categorías:", error);
-      }
-    };
-
-    obtenerCategorias();
-  }, []);
-
-
-=======
         setTalles(respuesta.data.talles || []);
         setTemporadas(respuesta.data.temporadas || []);
         setOcasiones(respuesta.data.ocasiones || []);
@@ -358,7 +282,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
 
 
->>>>>>> Stashed changes
   const guardarTipoPublicacion = (tipoPublicacion) => {
     const actualizada = {
       ...prendaEnEdicion,
@@ -387,11 +310,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       );
       setPrendas(respuesta.data.prendas || []);
 
-<<<<<<< Updated upstream
-=======
       console.log("Prendas recibidas:", respuesta.data.prendas);
 
->>>>>>> Stashed changes
     } catch (error) {
       console.error("Error al obtener las prendas:", error);
       console.log("Respuesta del backend:", error.response?.data);
@@ -399,10 +319,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
   const guardarNuevaPrenda = async (datosAdicionales = {}) => {
     const token = localStorage.getItem("token");
 
@@ -421,10 +338,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
       formulario.append("imagen", borradorPrenda.imagen);
 
-<<<<<<< Updated upstream
-=======
       // 1. Guardar la prenda
->>>>>>> Stashed changes
       const respuesta = await axios.post(
         "http://localhost:3000/api/prendas",
         formulario,
@@ -435,36 +349,15 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         }
       );
 
-<<<<<<< Updated upstream
-      console.log("Respuesta al crear prenda:", respuesta.data);
-
-      if (!respuesta.data.id_prenda) {
-        console.error("No se pudo guardar la prenda:", respuesta.data);
-        return;
-=======
       const idPrenda = respuesta.data.id_prenda;
 
       if (!idPrenda) {
         throw new Error("No se recibió el ID de la prenda");
->>>>>>> Stashed changes
       }
 
       const prendaGuardada = {
         ...borradorPrenda,
         ...datosAdicionales,
-<<<<<<< Updated upstream
-        id: respuesta.data.id_prenda,
-        imagen: respuesta.data.imagen,
-      };
-
-      setPrendas((actuales) => [...actuales, prendaGuardada]);
-
-      setCategoriasAbiertas((actuales) =>
-        actuales.includes(prendaGuardada.categoria)
-          ? actuales
-          : [...actuales, prendaGuardada.categoria]
-      );
-=======
         id: idPrenda,
         imagen: respuesta.data.imagen
           ? `http://localhost:3000${respuesta.data.imagen}`
@@ -564,28 +457,18 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             : [...actuales, prendaGuardada.categoria]
         );
       }
->>>>>>> Stashed changes
 
       cerrarAltaPrenda();
 
     } catch (error) {
       console.error(
-<<<<<<< Updated upstream
-        "Error al crear la prenda:",
-        error.response?.data || error
-=======
         "Error al guardar:",
         error.response?.data || error.message || error
->>>>>>> Stashed changes
       );
     }
   };
 
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
   const guardarEdicion = async () => {
     if (!prendaEnEdicion) return;
 
@@ -695,11 +578,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             <section
               className={abierta ? "MiArmario__seccion" : "MiArmario__seccionCerrada"}
               aria-label={nombreCategoria}
-<<<<<<< Updated upstream
-              key={categoria.id_categoria}
-=======
               key={nombreCategoria}
->>>>>>> Stashed changes
             >
               <div className={abierta ? "MiArmario__seccionEncabezado" : "MiArmario__seccionCerradaEncabezado"}>
                 <h2>{nombreCategoria}</h2>
@@ -754,8 +633,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           <CrearPrenda
             datos={borradorPrenda}
             categorias={categorias}
-<<<<<<< Updated upstream
-=======
             talles={talles}
             temporadas={temporadas}
             ocasiones={ocasiones}
@@ -763,7 +640,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             estados={estados}
             colores={colores}
             estilos={estilos}
->>>>>>> Stashed changes
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onContinuar={continuarDesdeDatos}
@@ -772,11 +648,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         ) : pasoCreacion === 2 ? (
           <CrearPrenda2
             datos={borradorPrenda}
-<<<<<<< Updated upstream
-=======
             estilosDisponibles={estilos}
             coloresDisponibles={colores}
->>>>>>> Stashed changes
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onVolver={() => { setErrorCreacion(""); setPasoCreacion(1); }}
@@ -796,10 +669,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           <CrearPrenda3Intercambio
             datos={borradorPrenda}
             onCambiar={cambiarDatoPrenda}
-<<<<<<< Updated upstream
-=======
             talles={talles}
->>>>>>> Stashed changes
             mensajeError={errorCreacion}
             onVolver={() => { setErrorCreacion(""); setPasoCreacion(2); }}
             onGuardar={guardarIntercambio}
