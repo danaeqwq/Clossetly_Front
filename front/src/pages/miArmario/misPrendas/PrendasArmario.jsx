@@ -387,25 +387,36 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
       // 3. Crear publicación de intercambio
       else if (datosAdicionales.tipoPublicacion === "intercambio") {
+        const buscarOpcion = (opciones, campo, valor) =>
+          opciones.find(
+            (opcion) =>
+              String(opcion[campo]).trim().toLowerCase() ===
+              String(valor).trim().toLowerCase()
+          );
+
         const categoriaIds = borradorPrenda.tiposAceptados
           .map((nombre) =>
-            categorias.find((categoria) => categoria.categoria === nombre)
-              ?.id_categoria
+            buscarOpcion(categorias, "categoria", nombre)?.id_categoria
           )
-          .filter((id) => id !== undefined);
+          .filter((id) => id != null);
 
-        const estadoSeleccionado = estados.find(
-          (estado) => estado.estado_prenda === borradorPrenda.estadoMinimo
-        );
+        const estadoTodos =
+          String(borradorPrenda.estadoMinimo).trim().toUpperCase() === "TODOS";
 
-        const talleSeleccionado = talles.find(
-          (talle) => talle.talla === borradorPrenda.talleBuscado
+        const estadoSeleccionado = estadoTodos
+          ? null
+          : buscarOpcion(estados, "estado_prenda", borradorPrenda.estadoMinimo);
+
+        const talleSeleccionado = buscarOpcion(
+          talles,
+          "talla",
+          borradorPrenda.talleBuscado
         );
 
         if (
           !categoriaIds.length ||
           !talleSeleccionado ||
-          (!estadoSeleccionado && borradorPrenda.estadoMinimo !== "TODOS")
+          (!estadoSeleccionado && !estadoTodos)
         ) {
           throw new Error("No se pudieron identificar las opciones del intercambio");
         }
@@ -414,7 +425,9 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           "http://localhost:3000/api/publicaciones/intercambio",
           {
             id_prenda: idPrenda,
-            estado_MA: estadoSeleccionado?.id_estado_prenda ?? null,
+            estado_MA: estadoTodos
+              ? null
+              : estadoSeleccionado.id_estado_prenda,
             talle_buscado: talleSeleccionado.id_talla,
             categoriasAceptadas: categoriaIds,
           },
@@ -621,6 +634,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             ocasiones={ocasiones}
             generos={generos}
             estados={estados}
+            colores={colores}
+            estilos={estilos}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onContinuar={continuarDesdeDatos}
@@ -629,8 +644,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         ) : pasoCreacion === 2 ? (
           <CrearPrenda2
             datos={borradorPrenda}
-            colores={colores}
-            estilos={estilos}
+            estilosDisponibles={estilos}
+            coloresDisponibles={colores}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
             onVolver={() => { setErrorCreacion(""); setPasoCreacion(1); }}
@@ -650,6 +665,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           <CrearPrenda3Intercambio
             datos={borradorPrenda}
             onCambiar={cambiarDatoPrenda}
+            talles={talles}
             mensajeError={errorCreacion}
             onVolver={() => { setErrorCreacion(""); setPasoCreacion(2); }}
             onGuardar={guardarIntercambio}
