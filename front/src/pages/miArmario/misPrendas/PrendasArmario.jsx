@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import "./PrendasArmario.css";
 import TarjetaPrenda from "../../../componentes/tarjetaPrenda/TarjetaPrenda";
@@ -33,6 +34,8 @@ const borradorInicial = {
 };
 
 export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas = [], onAccionesChange, onOutfitCreado }) {
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     obtenerPrendas();
@@ -121,6 +124,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
   const manejarAccionTarjeta = (evento, prenda) => {
     const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
+    console.log("CLIC EN PRENDA:", prenda);
     if (botonOpciones) {
       setMenuAbiertoId((actual) => actual === clavePrenda(prenda) ? null : clavePrenda(prenda));
       return;
@@ -128,19 +132,15 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
     const opcion = evento.target.closest(".TarjetaPrenda__menu li");
     if (!opcion) {
-      if (modoSeleccionOutfit && !botonOpciones) alternarSeleccionPrenda(prenda);
+      if (modoSeleccionOutfit) {
+        alternarSeleccionPrenda(prenda);
+      } else {
+        navigate("/detalles/prenda", {
+          state: { prenda },
+        });
+      }
+
       return;
-    }
-
-    const icono = opcion.querySelector(".material-symbols-outlined")?.textContent.trim();
-    setMenuAbiertoId(null);
-
-    if (icono === "edit") {
-      iniciarEdicionPrenda(prenda);
-    } else if (icono === "checkroom") {
-      iniciarSeleccionOutfit(prenda);
-    } else if (icono === "delete_outline") {
-      setPrendaAEliminar(prenda);
     }
   };
 
@@ -310,6 +310,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       );
       setPrendas(respuesta.data.prendas || []);
 
+      console.log("Prendas recibidas:", respuesta.data.prendas);
+
     } catch (error) {
       console.error("Error al obtener las prendas:", error);
       console.log("Respuesta del backend:", error.response?.data);
@@ -448,10 +450,12 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       // 4. Guardar solamente como prenda normal
       else {
         setPrendas((actuales) => [...actuales, prendaGuardada]);
-        setCategoriasAbiertas((actuales) => ({
-          ...actuales,
-          [prendaGuardada.categoria]: true,
-        }));
+
+        setCategoriasAbiertas((actuales) =>
+          actuales.includes(prendaGuardada.categoria)
+            ? actuales
+            : [...actuales, prendaGuardada.categoria]
+        );
       }
 
       cerrarAltaPrenda();
