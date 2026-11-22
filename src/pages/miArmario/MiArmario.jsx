@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
-import { useCallback, useState } from "react";
-=======
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
->>>>>>> Stashed changes
 import "./miArmario.css";
 import "../../styles/variables.css";
 import Select from "../../componentes/select/Select";
@@ -28,8 +24,6 @@ export default function MiArmario() {
   const [outfits, setOutfits] = useState([]);
   const [outfitEnEdicion, setOutfitEnEdicion] = useState(null);
 
-<<<<<<< Updated upstream
-=======
   useEffect(() => {
     const obtenerOutfits = async () => {
       const token = localStorage.getItem("token");
@@ -57,7 +51,6 @@ export default function MiArmario() {
     obtenerOutfits();
   }, []);
 
->>>>>>> Stashed changes
   const registrarPublicacion = (prenda, idSolicitado) => {
     const listaDestino = publicacionesCreadas[prenda.tipoPublicacion] || [];
     const id = idSolicitado != null && !listaDestino.some((publicacion) => publicacion.id === idSolicitado)
@@ -142,18 +135,6 @@ export default function MiArmario() {
     setAccionesPrendas(acciones);
   }, []);
 
-<<<<<<< Updated upstream
-  const guardarOutfit = (datos) => {
-    if (outfitEnEdicion) {
-      setOutfits((actuales) => actuales.map((outfit) => outfit.id === outfitEnEdicion.id
-        ? { ...outfitEnEdicion, ...datos, id: outfitEnEdicion.id }
-        : outfit));
-      setOutfitEnEdicion(null);
-      return;
-    }
-    setOutfits((actuales) => [...actuales, { ...datos, id: `outfit-${Date.now()}` }]);
-    accionesPrendas?.onCancelar?.();
-=======
   const guardarOutfit = async (datos) => {
     const token = localStorage.getItem("token");
 
@@ -227,7 +208,6 @@ export default function MiArmario() {
         error.response?.data || error
       );
     }
->>>>>>> Stashed changes
   };
 
   const iniciarEdicionOutfit = (outfit) => {
@@ -235,8 +215,6 @@ export default function MiArmario() {
     setSeccionActiva("outfits");
   };
 
-<<<<<<< Updated upstream
-=======
   const eliminarOutfit = async (id) => {
     const token = localStorage.getItem("token");
 
@@ -265,16 +243,11 @@ export default function MiArmario() {
     }
   };
 
->>>>>>> Stashed changes
   const actualizarPublicacion = (publicacion, tipo) => {
     setPublicacionesCreadas((actuales) => ({
       ...actuales,
       [tipo]: actuales[tipo].map((actual) => (
-<<<<<<< Updated upstream
-      clavePublicacion(actual, tipo) === clavePublicacion(publicacion, tipo) ? { ...actual, ...publicacion } : actual
-=======
         clavePublicacion(actual, tipo) === clavePublicacion(publicacion, tipo) ? { ...actual, ...publicacion } : actual
->>>>>>> Stashed changes
       )),
     }));
   };
@@ -316,11 +289,7 @@ export default function MiArmario() {
         <OutfitsArmario
           outfits={outfits}
           onModificar={iniciarEdicionOutfit}
-<<<<<<< Updated upstream
-          onEliminar={(id) => setOutfits((actuales) => actuales.filter((outfit) => outfit.id !== id))}
-=======
           onEliminar={eliminarOutfit}
->>>>>>> Stashed changes
         />
       )}
       {outfitEnEdicion && (
