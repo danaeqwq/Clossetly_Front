@@ -3,6 +3,7 @@ import "../../../../../styles/global.css";
 import "../../../../../styles/variables.css";
 import "./crearPrenda2.css";
 
+<<<<<<< Updated upstream
 const columnasEstilos = [
   ["Art Hoe", "Coquette", "Deportivo", "Goth", "Indie Sleaze", "Mob Wife", "Skater", "Vintage"],
   ["Avant-Garde", "Cottage Core", "Formal", "Gothic Lolita", "Hawai", "Old Money", "Soft Girl", "Western"],
@@ -26,6 +27,14 @@ const colores = [
 export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguiente, onVolver, onClose }) {
   const estilosAdicionales = datos.estilos.filter((estilo) => !columnasEstilos.flat().includes(estilo));
   const coloresAdicionales = datos.colores.filter((color) => !colores.some((opcion) => opcion.nombre === color));
+=======
+export default function CrearPrenda2({ datos, estilosDisponibles = [], coloresDisponibles = [], mensajeError, onCambiar, onSiguiente, onVolver, onClose }) {
+  const nombresEstilos = estilosDisponibles.map((estilo) => estilo.estilo);
+  const estilosAdicionales = datos.estilos.filter((estilo) => !nombresEstilos.includes(estilo));
+
+  const nombresColores = coloresDisponibles.map((color) => color.color);
+  const coloresAdicionales = datos.colores.filter((color) => !nombresColores.includes(color));
+>>>>>>> Stashed changes
   const alternarEstilo = (estilo) => {
     const seleccionados = datos.estilos.includes(estilo)
       ? datos.estilos.filter((actual) => actual !== estilo)
@@ -51,6 +60,7 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
           <h3 id="crear-prenda-estilos">Estilos</h3>
           <p>Elegí uno o más categorías</p>
           <div className="CrearPrenda2__listaEstilos">
+<<<<<<< Updated upstream
             {columnasEstilos.map((columna, indice) => (
               <ul key={`columna-${indice}`}>
                 {columna.map((estilo) => (
@@ -65,6 +75,22 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
                 ))}
               </ul>
             ))}
+=======
+            <ul>
+              {nombresEstilos.map((estilo) => (
+                <li key={estilo}>
+                  <button
+                    className={datos.estilos.includes(estilo) ? "CrearPrenda2__estilo--seleccionado" : ""}
+                    type="button"
+                    aria-pressed={datos.estilos.includes(estilo)}
+                    onClick={() => alternarEstilo(estilo)}
+                  >
+                    {estilo}
+                  </button>
+                </li>
+              ))}
+            </ul>
+>>>>>>> Stashed changes
             {estilosAdicionales.length > 0 && (
               <ul>{estilosAdicionales.map((estilo) => (
                 <li key={`guardado-${estilo}`}><button className="CrearPrenda2__estilo--seleccionado" type="button" aria-pressed="true" onClick={() => alternarEstilo(estilo)}>{estilo}</button></li>
@@ -76,6 +102,7 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
         <section className="CrearPrenda2__seccion CrearPrenda2__seccion--colores" aria-labelledby="crear-prenda-colores">
           <h3 id="crear-prenda-colores">Colores</h3>
           <div className="CrearPrenda2__listaColores">
+<<<<<<< Updated upstream
             {colores.map((color) => (
               <button
                 className="CrearPrenda2__color"
@@ -91,6 +118,23 @@ export default function CrearPrenda2({ datos, mensajeError, onCambiar, onSiguien
                   aria-hidden="true"
                 />
                 {color.nombre}
+=======
+            {coloresDisponibles.map((color) => (
+              <button
+                className="CrearPrenda2__color"
+                key={color.id_color}
+                type="button"
+                aria-pressed={datos.colores.includes(color.color)}
+                onClick={() => alternarColor(color.color)}
+              >
+                <span className="CrearPrenda2__casilla" aria-hidden="true" />
+                <span
+                  className={`CrearPrenda2__muestra${color.color === "Blanco" ? " CrearPrenda2__muestra--borde" : ""}`}
+                  style={{ backgroundColor: color.codigo }}
+                  aria-hidden="true"
+                />
+                {color.color}
+>>>>>>> Stashed changes
               </button>
             ))}
             {coloresAdicionales.map((color) => (

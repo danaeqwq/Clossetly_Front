@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+import axios from "axios";
+>>>>>>> Stashed changes
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import "./PublicacionesArmario.css";
@@ -44,18 +48,27 @@ const crearDatosEdicion = (publicacion, tipo) => {
     estado: normalizarOpcion(publicacion.estado, ["NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"], "NUEVA CON ETIQUETA"),
     privacidad: publicacion.privacidad ?? true,
     estilos: publicacion.estilos || [],
+<<<<<<< Updated upstream
     colores: publicacion.colores || [],
+=======
+    colores: publicacion.colores || (publicacion.color ? [publicacion.color] : []),
+>>>>>>> Stashed changes
     precio: publicacion.precio == null ? "" : String(publicacion.precio),
     stock: publicacion.stock == null ? "" : String(publicacion.stock),
     tiposAceptados: publicacion.tiposAceptados || [],
     estadoMinimo: normalizarOpcion(publicacion.estadoMinimo || publicacion.estadoMinimoAceptado, ["TODOS", "NUEVA CON ETIQUETA", "NUEVA SIN ETIQUETA", "COMO NUEVA", "MUY BUEN ESTADO", "BUEN ESTADO"], "TODOS"),
+<<<<<<< Updated upstream
     talleBuscado: publicacion.talleBuscado || "M",
+=======
+    talleBuscado: publicacion.talleBuscado || publicacion.talle_buscado || "",
+>>>>>>> Stashed changes
   };
   return { ...datos, tipo, id: publicacion.id, original: publicacion, valoresIniciales: { ...datos } };
 };
 
 const mismoValor = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
+<<<<<<< Updated upstream
 const publicacionesVentaIniciales = [
   {
     id: 1,
@@ -191,6 +204,12 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     ...publicacionesIntercambioIniciales,
     ...publicacionesCreadas.intercambio,
   ]);
+=======
+export default function PublicacionesArmario({ publicacionesCreadas = { venta: [], intercambio: [] }, onPublicacionActualizada, onPublicacionConvertida, onPublicacionConvertidaAPrenda }) {
+  const navigate = useNavigate();
+  const [publicacionesVenta, setPublicacionesVenta] = useState([]);
+  const [publicacionesIntercambio, setPublicacionesIntercambio] = useState([]);
+>>>>>>> Stashed changes
   const [ventaEnGestion, setVentaEnGestion] = useState(null);
   const [publicacionConPropuestas, setPublicacionConPropuestas] = useState(null);
   const [publicacionEnEdicion, setPublicacionEnEdicion] = useState(null);
@@ -202,6 +221,81 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     ...publicacionesCreadas.intercambio.map((publicacion) => `intercambio-${publicacion.id}`),
   ]));
 
+<<<<<<< Updated upstream
+=======
+  const [categorias, setCategorias] = useState([]);
+  const [talles, setTalles] = useState([]);
+  const [temporadas, setTemporadas] = useState([]);
+  const [ocasiones, setOcasiones] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [colores, setColores] = useState([]);
+  const [estilos, setEstilos] = useState([]);
+
+  useEffect(() => {
+    const cargarPublicaciones = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const [ventasRes, intercambiosRes] = await Promise.all([
+          axios.get(
+            "http://localhost:3000/api/publicaciones/compra/mis",
+            config
+          ),
+          axios.get(
+            "http://localhost:3000/api/publicaciones/intercambio/mis",
+            config
+          ),
+        ]);
+
+        const ventas = (ventasRes.data.publicaciones || []).map((p) => ({
+          ...p,
+          imagen: p.imagen?.startsWith("http")
+            ? p.imagen
+            : `http://localhost:3000${p.imagen}`,
+          solicitudes: [],
+        }));
+
+        const intercambios = (Array.isArray(intercambiosRes.data)
+          ? intercambiosRes.data
+          : intercambiosRes.data.publicaciones || []
+        ).map((p) => ({
+          ...p,
+          id: p.Id_publicacion_intercambio,
+          idPrenda: p.id_prenda,
+          imagen: p.imagen?.startsWith("http")
+            ? p.imagen
+            : `http://localhost:3000${p.imagen}`,
+          propuestas: [],
+          tiposAceptados: Array.isArray(p.tiposAceptados)
+            ? p.tiposAceptados
+            : p.tiposAceptados
+              ? JSON.parse(p.tiposAceptados)
+              : [],
+        }));
+
+        setPublicacionesVenta(ventas);
+        setPublicacionesIntercambio(intercambios);
+      } catch (error) {
+        console.error(
+          "Error al cargar las publicaciones:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    cargarPublicaciones();
+  }, []);
+
+>>>>>>> Stashed changes
   useEffect(() => {
     const nuevasVentas = publicacionesCreadas.venta.filter((publicacion) => (
       !publicacionesRecibidas.current.has(`venta-${publicacion.id}`)
@@ -220,6 +314,43 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     }
   }, [publicacionesCreadas]);
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    const obtenerFiltros = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const respuesta = await axios.get(
+          "http://localhost:3000/api/filtros",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setCategorias(respuesta.data.categorias || []);
+        setTalles(respuesta.data.talles || []);
+        setTemporadas(respuesta.data.temporadas || []);
+        setOcasiones(respuesta.data.ocasiones || []);
+        setGeneros(respuesta.data.generos || []);
+        setEstados(respuesta.data.estados || []);
+        setColores(respuesta.data.colores || []);
+        setEstilos(respuesta.data.estilos || []);
+
+      } catch (error) {
+        console.error(
+          "Error al obtener los filtros:",
+          error.response?.data || error
+        );
+      }
+    };
+
+    obtenerFiltros();
+  }, []);
+
+>>>>>>> Stashed changes
   const cerrarEdicion = () => {
     setPublicacionEnEdicion(null);
     setPasoEdicion(1);
@@ -227,7 +358,22 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
   };
 
   const iniciarEdicion = (publicacion, tipo) => {
+<<<<<<< Updated upstream
     setPublicacionEnEdicion(crearDatosEdicion(publicacion, tipo));
+=======
+    const datos = crearDatosEdicion(publicacion, tipo);
+
+    if (tipo === "intercambio") {
+      const talleEncontrado = talles.find(
+        (talle) => Number(talle.id_talla) === Number(publicacion.talle_buscado)
+      );
+
+      datos.talleBuscado = talleEncontrado?.talla || "";
+      datos.valoresIniciales.talleBuscado = datos.talleBuscado;
+    }
+
+    setPublicacionEnEdicion(datos);
+>>>>>>> Stashed changes
     setPasoEdicion(1);
     setErrorEdicion("");
   };
@@ -263,6 +409,7 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     return publicacionEnEdicion.original[campoOriginal] ?? cambio;
   };
 
+<<<<<<< Updated upstream
   const guardarEdicion = () => {
     if (!publicacionEnEdicion) return;
     const { tipo, original } = publicacionEnEdicion;
@@ -348,6 +495,207 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
       }, tipo, claveOrigen);
     }
     cerrarEdicion();
+=======
+  const guardarEdicion = async () => {
+    if (!publicacionEnEdicion) return;
+
+    const { tipo, original } = publicacionEnEdicion;
+    const tipoDestino = publicacionEnEdicion.tipoPublicacion;
+
+    // Por ahora no guardamos conversiones entre tipos.
+    if (tipo !== tipoDestino) {
+      setErrorEdicion(
+        "Por ahora solo podés modificar publicaciones sin cambiar su tipo."
+      );
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setErrorEdicion("Tu sesión venció. Iniciá sesión nuevamente.");
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const categoria = valorGuardado(
+        "categoria",
+        tipo === "venta" ? "categoria" : "prenda"
+      );
+
+      const colores = valorGuardado("colores");
+      const estilos = valorGuardado("estilos");
+      const imagen = valorGuardado("imagen");
+
+      // 1. Actualizar los datos de la prenda.
+      const datosPrenda = new FormData();
+
+      datosPrenda.append("nombre", valorGuardado("nombre"));
+      datosPrenda.append("categoria", categoria);
+      datosPrenda.append("talle", valorGuardado("talle"));
+      datosPrenda.append("temporada", valorGuardado("temporada"));
+      datosPrenda.append("ocasion", valorGuardado("ocasion"));
+      datosPrenda.append("genero", valorGuardado("genero"));
+      datosPrenda.append("estado", valorGuardado("estado"));
+      datosPrenda.append(
+        "privacidad",
+        String(valorGuardado("privacidad"))
+      );
+      datosPrenda.append("colores", JSON.stringify(colores));
+      datosPrenda.append("estilos", JSON.stringify(estilos));
+
+      // Solo enviamos imagen cuando se seleccionó un archivo nuevo.
+      if (imagen instanceof File) {
+        datosPrenda.append("imagen", imagen);
+      }
+
+      await axios.put(
+        `http://localhost:3000/api/prendas/${original.idPrenda}`,
+        datosPrenda,
+        config
+      );
+
+      // 2. Actualizar los datos propios de la publicación.
+      if (tipo === "venta") {
+        const precio = Number(valorGuardado("precio"));
+        const stock = Number(valorGuardado("stock"));
+
+        await axios.put(
+          `http://localhost:3000/api/publicaciones/compra/${original.id}`,
+          {
+            precio_unitario: precio,
+            stock,
+          },
+          config
+        );
+      }
+
+      if (tipo === "intercambio") {
+        const estadoMinimo = valorGuardado(
+          "estadoMinimo",
+          "estadoMinimoAceptado"
+        );
+
+        const talleBuscado = valorGuardado("talleBuscado");
+        const tiposAceptados = valorGuardado("tiposAceptados");
+
+        const buscarId = (opciones, campo, valor) =>
+          opciones.find(
+            (opcion) =>
+              String(opcion[campo]).toLowerCase() ===
+              String(valor).toLowerCase()
+          );
+
+        const estadoSeleccionado =
+          estadoMinimo === "TODOS"
+            ? null
+            : buscarId(estados, "estado_prenda", estadoMinimo);
+
+        const talleSeleccionado = buscarId(
+          talles,
+          "talla",
+          talleBuscado
+        );
+
+        const categoriasSeleccionadas = tiposAceptados.map((nombre) =>
+          buscarId(categorias, "categoria", nombre)?.id_categoria
+        );
+
+        if (
+          (!estadoSeleccionado && estadoMinimo !== "TODOS") ||
+          !talleSeleccionado
+        ) {
+          setErrorEdicion(
+            "No se pudieron identificar el estado mínimo o el talle buscado."
+          );
+          return;
+        }
+
+        if (categoriasSeleccionadas.some((id) => !id)) {
+          setErrorEdicion(
+            "No se pudieron identificar todas las categorías aceptadas."
+          );
+          return;
+        }
+
+        await axios.put(
+          `http://localhost:3000/api/publicaciones/intercambio/${original.id}`,
+          {
+            estado_MA: estadoSeleccionado?.id_estado_prenda ?? null,
+            talle_buscado: talleSeleccionado.id_talla,
+            categoriasAceptadas: categoriasSeleccionadas,
+          },
+          config
+        );
+      }
+
+      // 3. Actualizar las tarjetas cuando el backend confirmó los cambios.
+      const actualizada = {
+        ...original,
+        nombre: valorGuardado("nombre"),
+        imagen:
+          imagen instanceof File
+            ? URL.createObjectURL(imagen)
+            : original.imagen,
+        categoria,
+        prenda: categoria,
+        talle: valorGuardado("talle"),
+        temporada: valorGuardado("temporada"),
+        ocasion: valorGuardado("ocasion"),
+        genero: valorGuardado("genero"),
+        estado: valorGuardado("estado"),
+        privacidad: valorGuardado("privacidad"),
+        colores,
+        estilos,
+      };
+
+      if (tipo === "venta") {
+        actualizada.precio = Number(valorGuardado("precio"));
+        actualizada.stock = Number(valorGuardado("stock"));
+
+        setPublicacionesVenta((items) =>
+          items.map((item) =>
+            item.id === original.id ? actualizada : item
+          )
+        );
+      }
+
+      if (tipo === "intercambio") {
+        actualizada.tiposAceptados = valorGuardado("tiposAceptados");
+        actualizada.estadoMinimoAceptado = valorGuardado(
+          "estadoMinimo",
+          "estadoMinimoAceptado"
+        );
+        actualizada.talleBuscado = valorGuardado("talleBuscado");
+
+        setPublicacionesIntercambio((items) =>
+          items.map((item) =>
+            item.id === original.id ? actualizada : item
+          )
+        );
+      }
+
+      onPublicacionActualizada?.(actualizada, tipo);
+      cerrarEdicion();
+
+    } catch (error) {
+      console.error(
+        "Error al guardar la modificación:",
+        error.response?.data || error
+      );
+
+      setErrorEdicion(
+        error.response?.data?.mensaje ||
+        "No se pudieron guardar los cambios. Intentá nuevamente."
+      );
+    }
+>>>>>>> Stashed changes
   };
 
   const guardarVentaEditada = () => {
@@ -375,6 +723,7 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
 
   const eliminarPublicacion = (publicacion, tipo) => setPublicacionAEliminar({ ...publicacion, tipo });
 
+<<<<<<< Updated upstream
   const confirmarEliminacion = () => {
     if (!publicacionAEliminar) return;
 
@@ -387,6 +736,58 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
     setPublicacionAEliminar(null);
   };
 
+=======
+
+  const confirmarEliminacion = async () => {
+    if (!publicacionAEliminar) return;
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Tu sesión venció. Iniciá sesión nuevamente.");
+      return;
+    }
+
+    const tipo = publicacionAEliminar.tipo;
+    const id = publicacionAEliminar.id;
+
+    const ruta = tipo === "venta"
+      ? `http://localhost:3000/api/publicaciones/compra/${id}`
+      : `http://localhost:3000/api/publicaciones/intercambio/${id}`;
+
+    try {
+      await axios.delete(ruta, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (tipo === "venta") {
+        setPublicacionesVenta((publicaciones) =>
+          publicaciones.filter(
+            (publicacion) => publicacion.id !== id
+          )
+        );
+      } else {
+        setPublicacionesIntercambio((publicaciones) =>
+          publicaciones.filter(
+            (publicacion) => publicacion.id !== id
+          )
+        );
+      }
+
+      setPublicacionAEliminar(null);
+
+    } catch (error) {
+      console.error(
+        "Error al eliminar la publicación:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+
+>>>>>>> Stashed changes
   const actualizarSolicitudes = (id, solicitudes) => {
     setPublicacionesVenta((publicaciones) => publicaciones.map((publicacion) => (
       publicacion.id === id ? { ...publicacion, solicitudes } : publicacion
@@ -484,6 +885,15 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         pasoEdicion === 1 ? (
           <CrearPrenda
             datos={publicacionEnEdicion}
+<<<<<<< Updated upstream
+=======
+            categorias={categorias}
+            talles={talles}
+            temporadas={temporadas}
+            ocasiones={ocasiones}
+            generos={generos}
+            estados={estados}
+>>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onContinuar={continuarEdicion}
@@ -492,6 +902,11 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         ) : pasoEdicion === 2 ? (
           <CrearPrenda2
             datos={publicacionEnEdicion}
+<<<<<<< Updated upstream
+=======
+            estilosDisponibles={estilos}
+            coloresDisponibles={colores}
+>>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onVolver={() => { setErrorEdicion(""); setPasoEdicion(1); }}
@@ -510,6 +925,10 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
         ) : publicacionEnEdicion.tipoPublicacion === "intercambio" ? (
           <CrearPrenda3Intercambio
             datos={publicacionEnEdicion}
+<<<<<<< Updated upstream
+=======
+            talles={talles}
+>>>>>>> Stashed changes
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}
             onVolver={() => { setErrorEdicion(""); setPasoEdicion(2); }}

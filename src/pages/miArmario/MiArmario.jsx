@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 import { useCallback, useState } from "react";
+=======
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+>>>>>>> Stashed changes
 import "./miArmario.css";
 import "../../styles/variables.css";
 import Select from "../../componentes/select/Select";
@@ -23,6 +28,36 @@ export default function MiArmario() {
   const [outfits, setOutfits] = useState([]);
   const [outfitEnEdicion, setOutfitEnEdicion] = useState(null);
 
+<<<<<<< Updated upstream
+=======
+  useEffect(() => {
+    const obtenerOutfits = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const respuesta = await axios.get(
+          "http://localhost:3000/api/outfits",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setOutfits(respuesta.data.outfits || []);
+
+      } catch (error) {
+        console.error(
+          "Error al obtener los outfits:",
+          error.response?.data || error
+        );
+      }
+    };
+
+    obtenerOutfits();
+  }, []);
+
+>>>>>>> Stashed changes
   const registrarPublicacion = (prenda, idSolicitado) => {
     const listaDestino = publicacionesCreadas[prenda.tipoPublicacion] || [];
     const id = idSolicitado != null && !listaDestino.some((publicacion) => publicacion.id === idSolicitado)
@@ -107,6 +142,7 @@ export default function MiArmario() {
     setAccionesPrendas(acciones);
   }, []);
 
+<<<<<<< Updated upstream
   const guardarOutfit = (datos) => {
     if (outfitEnEdicion) {
       setOutfits((actuales) => actuales.map((outfit) => outfit.id === outfitEnEdicion.id
@@ -117,6 +153,81 @@ export default function MiArmario() {
     }
     setOutfits((actuales) => [...actuales, { ...datos, id: `outfit-${Date.now()}` }]);
     accionesPrendas?.onCancelar?.();
+=======
+  const guardarOutfit = async (datos) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const datosBackend = {
+        nombre: datos.nombre,
+        descripcion: datos.descripcion,
+        privacidad: datos.privacidad ? 1 : 0,
+        temporada: datos.temporada,
+        ocasion: datos.ocasion,
+        genero: datos.genero,
+        prendas: datos.prendas.map((prenda) => Number(prenda.id)),
+      };
+
+      // SI ESTAMOS MODIFICANDO UN OUTFIT
+      if (outfitEnEdicion) {
+        await axios.put(
+          `http://localhost:3000/api/outfits/${outfitEnEdicion.id}`,
+          datosBackend,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // Actualizar el outfit existente en la lista
+        setOutfits((actuales) =>
+          actuales.map((outfit) =>
+            outfit.id === outfitEnEdicion.id
+              ? {
+                ...outfit,
+                ...datos,
+                id: outfitEnEdicion.id,
+              }
+              : outfit
+          )
+        );
+
+        setOutfitEnEdicion(null);
+
+        console.log("Outfit modificado correctamente");
+
+      } else {
+        // SI ESTAMOS CREANDO UN OUTFIT
+        const respuesta = await axios.post(
+          "http://localhost:3000/api/outfits",
+          datosBackend,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const outfitGuardado = {
+          ...datos,
+          id: respuesta.data.id_outfit,
+        };
+
+        setOutfits((actuales) => [...actuales, outfitGuardado]);
+
+        accionesPrendas?.onCancelar?.();
+
+        console.log("Outfit creado correctamente");
+      }
+
+    } catch (error) {
+      console.error(
+        "Error al guardar el outfit:",
+        error.response?.data || error
+      );
+    }
+>>>>>>> Stashed changes
   };
 
   const iniciarEdicionOutfit = (outfit) => {
@@ -124,11 +235,46 @@ export default function MiArmario() {
     setSeccionActiva("outfits");
   };
 
+<<<<<<< Updated upstream
+=======
+  const eliminarOutfit = async (id) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/outfits/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Eliminar de la lista solamente si el backend respondió correctamente
+      setOutfits((actuales) =>
+        actuales.filter((outfit) => String(outfit.id) !== String(id))
+      );
+
+      console.log("Outfit eliminado correctamente");
+
+    } catch (error) {
+      console.error(
+        "Error al eliminar el outfit:",
+        error.response?.data || error
+      );
+    }
+  };
+
+>>>>>>> Stashed changes
   const actualizarPublicacion = (publicacion, tipo) => {
     setPublicacionesCreadas((actuales) => ({
       ...actuales,
       [tipo]: actuales[tipo].map((actual) => (
+<<<<<<< Updated upstream
       clavePublicacion(actual, tipo) === clavePublicacion(publicacion, tipo) ? { ...actual, ...publicacion } : actual
+=======
+        clavePublicacion(actual, tipo) === clavePublicacion(publicacion, tipo) ? { ...actual, ...publicacion } : actual
+>>>>>>> Stashed changes
       )),
     }));
   };
@@ -170,7 +316,11 @@ export default function MiArmario() {
         <OutfitsArmario
           outfits={outfits}
           onModificar={iniciarEdicionOutfit}
+<<<<<<< Updated upstream
           onEliminar={(id) => setOutfits((actuales) => actuales.filter((outfit) => outfit.id !== id))}
+=======
+          onEliminar={eliminarOutfit}
+>>>>>>> Stashed changes
         />
       )}
       {outfitEnEdicion && (

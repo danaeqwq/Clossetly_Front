@@ -7,6 +7,7 @@
   font-family: var(--font-manrope);
 }
 
+<<<<<<< Updated upstream
 .CrearPrenda2__seccion { min-width: 0; }
 .CrearPrenda2__seccion h3 { font: 700 19px/1.15 var(--font-CormUpri); }
 .CrearPrenda2__seccion p { color: var(--color-rosaTerra); font-size: 14px; line-height: 1.35; }
@@ -24,6 +25,65 @@
 .CrearPrenda2__listaEstilos li button.CrearPrenda2__estilo--seleccionado { color: var(--color-rojo); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 
 .CrearPrenda2__seccion--colores { padding-top: 2px; }
+=======
+.CrearPrenda2__seccion {
+  min-width: 0;
+}
+
+.CrearPrenda2__seccion h3 {
+  font: 700 19px/1.15 var(--font-CormUpri);
+}
+
+.CrearPrenda2__seccion p {
+  color: var(--color-rosaTerra);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+/* ESTILOS */
+.CrearPrenda2__listaEstilos {
+  column-count: 5;
+  column-gap: 15px;
+  margin-top: 10px;
+}
+
+.CrearPrenda2__listaEstilos ul {
+  display: contents;
+}
+
+.CrearPrenda2__listaEstilos li {
+  break-inside: avoid;
+  overflow: hidden;
+  color: var(--color-carbon);
+  font-size: 14px;
+  line-height: 1.70;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.CrearPrenda2__listaEstilos li button {
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.CrearPrenda2__listaEstilos li button.CrearPrenda2__estilo--seleccionado {
+  color: var(--color-rojo);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* COLORES */
+.CrearPrenda2__seccion--colores {
+  padding-top: 2px;
+}
+
+>>>>>>> Stashed changes
 .CrearPrenda2__listaColores {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -45,6 +105,7 @@
   cursor: pointer;
 }
 
+<<<<<<< Updated upstream
 .CrearPrenda2__casilla { flex: 0 0 12px; width: 12px; height: 12px; border: 1px solid var(--color-rosaTerra); border-radius: 2px; background: var(--color-blancaso); }
 .CrearPrenda2__muestra { flex: 0 0 15px; width: 15px; height: 15px; border-radius: 50%; }
 .CrearPrenda2__muestra[data-color="Rojo"] { background: #a24e5a; }
@@ -60,6 +121,34 @@
 .CrearPrenda2__muestra--borde { border: 1px solid var(--color-rosaEmpol); }
 .CrearPrenda2__color[aria-pressed="true"] .CrearPrenda2__casilla { background: var(--color-bordoVino); box-shadow: inset 0 0 0 3px var(--color-blancaso); }
 
+=======
+.CrearPrenda2__casilla {
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--color-rosaTerra);
+  border-radius: 2px;
+  background: var(--color-blancaso);
+}
+
+.CrearPrenda2__muestra {
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.CrearPrenda2__muestra--borde {
+  border: 1px solid var(--color-rosaEmpol);
+}
+
+.CrearPrenda2__color[aria-pressed="true"] .CrearPrenda2__casilla {
+  background: var(--color-bordoVino);
+  box-shadow: inset 0 0 0 3px var(--color-blancaso);
+}
+
+/* BOTÓN VOLVER */
+>>>>>>> Stashed changes
 .CrearPrenda2__volver {
   display: grid;
   flex: 0 0 32px;
@@ -74,10 +163,24 @@
   background: var(--color-bordoVino);
   cursor: pointer;
 }
+<<<<<<< Updated upstream
 .CrearPrenda2__volver .material-symbols-outlined { font-size: 22px; }
 
 .CrearPrenda2__error { color: var(--color-rojo1); font: 12px/1.4 var(--font-manrope); }
 
+=======
+
+.CrearPrenda2__volver .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.CrearPrenda2__error {
+  color: var(--color-rojo1);
+  font: 12px/1.4 var(--font-manrope);
+}
+
+/* ACCIONES DEL MODAL */
+>>>>>>> Stashed changes
 .Modal:has(.CrearPrenda2) .Modal__acciones {
   box-sizing: border-box;
   flex: 0 0 auto;
@@ -86,6 +189,7 @@
   gap: 10px;
 }
 
+<<<<<<< Updated upstream
 .CrearPrenda2__acciones { grid-column: 1 / -1; width: 100%; }
 .CrearPrenda2__acciones .CrearPrenda2__volver { flex: 0 0 32px; }
 .CrearPrenda2__acciones .Modal__accion { min-height: 40px; border-radius: 7px; font-size: 14px; }
@@ -98,6 +202,52 @@
 
 @media (max-width: 600px) {
   .Modal:has(.CrearPrenda2) { position: fixed; inset: 0; display: block; width: 100%; height: 100%; height: 100dvh; overflow: hidden; padding: 0; background: var(--color-cremita); }
+=======
+.CrearPrenda2__acciones {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.CrearPrenda2__acciones .CrearPrenda2__volver {
+  flex: 0 0 32px;
+}
+
+.CrearPrenda2__acciones .Modal__accion {
+  min-height: 40px;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+/* TABLET */
+@media (max-width: 760px) {
+  .Modal:has(.CrearPrenda2) .Modal__ventana {
+    width: min(100%, 560px);
+  }
+
+  .CrearPrenda2__listaEstilos {
+    column-count: 3;
+    column-gap: 10px;
+  }
+
+  .CrearPrenda2__listaColores {
+    gap: 9px 6px;
+  }
+}
+
+/* CELULAR */
+@media (max-width: 600px) {
+  .Modal:has(.CrearPrenda2) {
+    position: fixed;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+    padding: 0;
+    background: var(--color-cremita);
+  }
+>>>>>>> Stashed changes
 
   .Modal:has(.CrearPrenda2) .Modal__ventana {
     width: 100%;
@@ -111,6 +261,7 @@
     border-radius: 0;
   }
 
+<<<<<<< Updated upstream
   .Modal:has(.CrearPrenda2) .Modal__titulo { font-size: 23px; }
   .Modal:has(.CrearPrenda2) .Modal__descripcion { max-width: 34ch; font-size: 12px; }
   .CrearPrenda2 { gap: 18px; }
@@ -132,6 +283,87 @@
 .Modal:has(.CrearPrenda2) .Modal__ventana { display: flex; min-height: 0; flex-direction: column; overflow: hidden; }
 .Modal:has(.CrearPrenda2) .Modal__encabezado,
 .Modal:has(.CrearPrenda2) .Modal__acciones { flex: 0 0 auto; }
+=======
+  .Modal:has(.CrearPrenda2) .Modal__titulo {
+    font-size: 23px;
+  }
+
+  .Modal:has(.CrearPrenda2) .Modal__descripcion {
+    max-width: 34ch;
+    font-size: 12px;
+  }
+
+  .CrearPrenda2 {
+    gap: 18px;
+  }
+
+  .CrearPrenda2__listaEstilos {
+    column-count: 2;
+    column-gap: 16px;
+  }
+
+  .CrearPrenda2__listaEstilos li {
+    font-size: 13px;
+  }
+
+  .CrearPrenda2__listaColores {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 8px;
+  }
+
+  .CrearPrenda2__color {
+    font-size: 12px;
+  }
+
+  .Modal:has(.CrearPrenda2) .Modal__acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin: 12px -16px calc(-1 * max(14px, env(safe-area-inset-bottom)));
+    padding: 12px 16px max(14px, env(safe-area-inset-bottom));
+    background: var(--color-cremita);
+  }
+
+  .Modal:has(.CrearPrenda2) .Modal__accion {
+    min-width: 0;
+    min-height: 38px;
+    padding-inline: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* CELULARES PEQUEÑOS */
+@media (max-width: 380px) {
+  .Modal:has(.CrearPrenda2) .Modal__acciones {
+    flex-direction: row;
+    gap: 5px;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .Modal:has(.CrearPrenda2) .Modal__accion {
+    width: auto;
+    flex: 1 1 145px;
+    padding-inline: 6px;
+    font-size: 14px;
+  }
+}
+
+/* ESTRUCTURA Y SCROLL DEL MODAL */
+.Modal:has(.CrearPrenda2) .Modal__ventana {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.Modal:has(.CrearPrenda2) .Modal__encabezado,
+.Modal:has(.CrearPrenda2) .Modal__acciones {
+  flex: 0 0 auto;
+}
+
+>>>>>>> Stashed changes
 .Modal:has(.CrearPrenda2) .Modal__contenido {
   min-height: 0;
   flex: 1 1 auto;

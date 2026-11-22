@@ -3,7 +3,11 @@ import "./crearPrenda3Intercambio.css";
 
 const tiposPrenda = ["Pantalones", "Accesorios", "Remeras", "Cortos", "Camperas", "Zapatos"];
 
+<<<<<<< Updated upstream
 export default function CrearPrenda3Intercambio({ datos, mensajeError, onCambiar, onGuardar, onVolver, onClose }) {
+=======
+export default function CrearPrenda3Intercambio({ datos, talles = [], mensajeError, onCambiar, onGuardar, onVolver, onClose }) {
+>>>>>>> Stashed changes
   const alternarTipo = (tipo) => {
     const tipos = datos.tiposAceptados.includes(tipo)
       ? datos.tiposAceptados.filter((actual) => actual !== tipo)
@@ -47,8 +51,20 @@ export default function CrearPrenda3Intercambio({ datos, mensajeError, onCambiar
           </label>
           <label className="Intercambiar__selector">
             <span>Talle que busca</span>
+<<<<<<< Updated upstream
             <select value={datos.talleBuscado} onChange={(evento) => onCambiar("talleBuscado", evento.target.value)} aria-label="Talle que busca">
               <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option>
+=======
+            <select
+              value={datos.talleBuscado}
+              onChange={(evento) => onCambiar("talleBuscado", evento.target.value)}
+            >
+              {talles.map((talle) => (
+                <option key={talle.id_talla} value={talle.talla}>
+                  {talle.talla}
+                </option>
+              ))}
+>>>>>>> Stashed changes
             </select>
           </label>
         </div>

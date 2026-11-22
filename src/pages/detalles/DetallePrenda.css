@@ -193,10 +193,20 @@
   opacity: 0;
 }
 
+<<<<<<< Updated upstream
+=======
+.DetallePrenda__colores label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+>>>>>>> Stashed changes
 .DetallePrenda__colores label span {
   display: block;
   width: 34px;
   height: 34px;
+<<<<<<< Updated upstream
   border: 1px solid var(--color-rosaEmpol);
   border-radius: 50%;
   background: var(--color-blancaso);
@@ -204,6 +214,17 @@
 
 .DetallePrenda__colores label:nth-of-type(2) span {
   background: var(--color-rosaEmpol);
+=======
+  flex-shrink: 0;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 50%;
+}
+
+.DetallePrenda__colores label small {
+  color: var(--color-rosaTerra);
+  font-size: 13px;
+  font-weight: 700;
+>>>>>>> Stashed changes
 }
 
 .DetallePrenda__colores input:checked + span {
@@ -339,6 +360,18 @@
     overflow-x: clip;
   }
 
+<<<<<<< Updated upstream
+=======
+  .DetallePrenda__colores label small {
+  font-size: 9px;
+}
+
+.DetallePrenda__colores label span {
+  width: 18px;
+  height: 18px;
+}
+
+>>>>>>> Stashed changes
   .DetallePrenda__principal {
     grid-template-columns: minmax(0, 1fr);
     gap: 10px;
