@@ -138,13 +138,16 @@ function Preferencia({ preferencia, onCambiar, onAgregar }) {
                                     preferencia.id === "estilos" ||
                                     preferencia.id === "transmitir"
                                 }
+                                onClick={() => onCambiar(preferencia.id, elemento)}
                                 className={
                                     seleccionado
                                         ? "EditarEstilos__etiqueta EditarEstilos__etiqueta--seleccionada"
                                         : "EditarEstilos__etiqueta"
                                 }
                             >
-                                {elemento}
+                                {typeof elemento === "object"
+                                    ? elemento.estilo
+                                    : elemento}
                             </button>
                         );
                     })}

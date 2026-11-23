@@ -29,8 +29,8 @@ export default function TarjetaPrenda({
         className="TarjetaPrenda__imagen"
         src={
           prenda.imagen?.startsWith("data:") ||
-            prenda.imagen?.startsWith("blob:") ||
-            prenda.imagen?.startsWith("http")
+          prenda.imagen?.startsWith("blob:") ||
+          prenda.imagen?.startsWith("http")
             ? prenda.imagen
             : `http://localhost:3000${prenda.imagen}`
         }
@@ -49,18 +49,20 @@ export default function TarjetaPrenda({
 
           {menuAbierto && (
             <ul className="TarjetaPrenda__menu">
-              <li>
+              <li data-accion="modificar">
                 <span className="material-symbols-outlined">edit</span>
                 Modificar
               </li>
 
-              <li>
+              <li data-accion="armar-outfit">
                 <span className="material-symbols-outlined">checkroom</span>
                 Armar outfit
               </li>
 
-              <li>
-                <span className="material-symbols-outlined">delete_outline</span>
+              <li data-accion="eliminar">
+                <span className="material-symbols-outlined">
+                  delete_outline
+                </span>
                 Eliminar
               </li>
             </ul>

@@ -23,10 +23,10 @@ export default function DetallePrenda() {
                         </div>
 
                         <dl className="DetallePrenda__datos">
-                            <div><dt><span class="material-symbols-outlined DetallePrenda__iconoGoogle">
+                            <div><dt><span className="material-symbols-outlined DetallePrenda__iconoGoogle">
                                 calendar_today
                             </span>Temporada</dt><dd>otoño / invierno</dd></div>
-                            <div><dt><span class="material-symbols-outlined DetallePrenda__iconoGoogle">
+                            <div><dt><span className="material-symbols-outlined DetallePrenda__iconoGoogle">
                                 apparel
                             </span>Tipo prenda</dt><dd>Remera</dd></div>
                             <div className="DetallePrenda__estilos" ><dt><img
