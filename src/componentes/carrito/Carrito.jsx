@@ -1,342 +1,644 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import axios from "axios";
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import { Link } from "react-router";
 import iconoWhatsapp from "../../assets/logo wsp mi armario.svg";
 import ProductoCarrito from "./productoCarrito/ProductoCarrito";
 import "./carrito.css";
 
-const imagenVendedora =
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96&q=80";
+const URL_BASE = "http://localhost:3000";
+const URL_PEDIDOS = `${URL_BASE}/api/pedidos`;
+const URL_PEDIDO_ITEMS = `${URL_BASE}/api/pedido-items`;
 
-// Productos y pedidos de prueba
-const pedidosIniciales = [
-  {
-    usuario: "@user67",
-    telefono: "5492901650809",
-    estado: null,
-    expandido: false,
-    productos: [
-      { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 0 },
-      { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
-    ],
-  },
-  {
-    usuario: "@sigma",
-    telefono: "5492901000001",
-    estado: "En contacto",
-    expandido: false,
-    productos: [
-      { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 5 },
-      { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
-    ],
-  },
-  {
-    usuario: "@luna",
-    telefono: "5492901000002",
-    estado: "Confirmado",
-    expandido: false,
-    productos: [
-      { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 5 },
-      { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
-    ],
-  },
-  {
-    usuario: "@mora",
-    telefono: "5492901000003",
-    estado: "Completado",
-    expandido: false,
-    productos: [
-      { id: 1, nombre: "Remera rayas", precio: 10000, cantidad: 1, stock: 5 },
-      { id: 2, nombre: "Remera negra", precio: 12000, cantidad: 1, stock: 3 },
-    ],
-  },
-];
+// Obtener la URL completa de las imágenes
+const obtenerImagen = (imagen) => {
+    if (!imagen) return null;
+
+    if (
+        imagen.startsWith("http://") ||
+        imagen.startsWith("https://")
+    ) {
+        return imagen;
+    }
+
+    const rutaLimpia = imagen.replace(/\\/g, "/");
+
+    return `${URL_BASE}/${rutaLimpia.replace(/^\/+/, "")}`;
+};
 
 // Formatear precios
 const formatearPrecio = (precio) =>
-  `$${precio.toLocaleString("es-AR")}`;
+    `$${Number(precio || 0).toLocaleString("es-AR")}`;
 
 // Generar mensaje para WhatsApp
 const contactarWhatsapp = (pedido, subtotal) => {
-  const productos = pedido.productos
-    .map(
-      (producto) =>
-        `- ${producto.nombre} x${producto.cantidad}: ${formatearPrecio(
-          producto.precio * producto.cantidad
-        )}`
-    )
-    .join("\n");
+    const productos = pedido.productos
+        .map(
+            (producto) =>
+                `- ${producto.nombre} x${producto.cantidad}: ${formatearPrecio(
+                    producto.precio * producto.cantidad
+                )}`
+        )
+        .join("\n");
+
     const mensaje = `¡Hola! Estoy interesado/a en coordinar el siguiente pedido de Clossetly:
-    ${productos}
-    Subtotal: ${formatearPrecio(subtotal)}
-    Usuario: ${pedido.usuario}
-    ¿Podemos coordinar el pago y la entrega?`;
+${productos}
+Subtotal: ${formatearPrecio(subtotal)}
+Usuario: ${pedido.usuario}
+¿Podemos coordinar el pago y la entrega?`;
+
     const url = `https://wa.me/${pedido.telefono}?text=${encodeURIComponent(
-    mensaje
-  )}`;
-  window.open(url, "_blank");
+        mensaje
+    )}`;
+
+    window.open(url, "_blank");
 };
 
+// Apariencia de los estados
 const aparienciaEstado = {
-  "En contacto": { icono: "schedule", clase: "contacto" },
-  Confirmado: { icono: "check", clase: "confirmado" },
-  Completado: { icono: "verified", clase: "completado" },
+    "En contacto": {
+        icono: "schedule",
+        clase: "contacto",
+    },
+    Confirmado: {
+        icono: "check",
+        clase: "confirmado",
+    },
+    Completado: {
+        icono: "verified",
+        clase: "completado",
+    },
 };
 
 export default function Carrito({ onCerrar }) {
-  const [pedidos, setPedidos] = useState(pedidosIniciales);
+    const [pedidos, setPedidos] = useState([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState("");
+    const [itemsProcesando, setItemsProcesando] = useState([]);
+    const [pedidosProcesando, setPedidosProcesando] = useState([]);
+    // Obtener pedidos e items del usuario autenticado
+    useEffect(() => {
+        const token = localStorage.getItem("token");
 
-  // Desplegar o contraer un pedido
-  const alternarPedido = (usuario) => {
-    setPedidos((actuales) =>
-      actuales.map((pedido) =>
-        pedido.usuario === usuario
-          ? { ...pedido, expandido: !pedido.expandido }
-          : pedido
-      )
+        if (!token) {
+            setError("No se encontró una sesión activa.");
+            setCargando(false);
+            return;
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        // Realizar las dos peticiones
+        Promise.all([
+            axios.get(URL_PEDIDOS, config),
+            axios.get(URL_PEDIDO_ITEMS, config),
+        ])
+            .then(([respuestaPedidos, respuestaItems]) => {
+                const pedidosRecibidos =
+                    respuestaPedidos.data.pedidos || [];
+
+                const itemsRecibidos =
+                    respuestaItems.data.pedidoItems || [];
+
+                // Agrupar los productos por ID de pedido
+                const productosPorPedido = {};
+
+                itemsRecibidos.forEach((item) => {
+                    const idPedido = String(item.idPedido);
+
+                    if (!productosPorPedido[idPedido]) {
+                        productosPorPedido[idPedido] = [];
+                    }
+
+                    productosPorPedido[idPedido].push({
+                        ...item,
+                        imagen: obtenerImagen(item.imagen),
+                    });
+                });
+
+                // Asociar los productos con cada pedido
+                const pedidosPreparados = pedidosRecibidos.map((pedido) => ({
+                    ...pedido,
+
+                    imagenVendedora: obtenerImagen(
+                        pedido.imagenVendedora
+                    ),
+
+                    expandido: false,
+
+                    productos:
+                        productosPorPedido[String(pedido.id)] || [],
+                }));
+
+                setPedidos(pedidosPreparados);
+            })
+            .catch((error) => {
+                console.error(
+                    "Error al obtener los pedidos y sus productos:",
+                    error
+                );
+
+                setError(
+                    error.response?.data?.mensaje ||
+                    "No se pudieron cargar los pedidos."
+                );
+            })
+            .finally(() => {
+                setCargando(false);
+            });
+    }, []);
+
+    // Desplegar o contraer un pedido
+    const alternarPedido = (idPedido) => {
+        setPedidos((actuales) =>
+            actuales.map((pedido) =>
+                pedido.id === idPedido
+                    ? {
+                        ...pedido,
+                        expandido: !pedido.expandido,
+                    }
+                    : pedido
+            )
+        );
+    };
+
+    // MODIFICAR CANTIDAD DE UN PRODUCTO
+    const cambiarCantidad = (idPedido, productoId, cambio) => {
+        const pedido = pedidos.find(
+            (pedido) => pedido.id === idPedido
+        );
+
+        if (!pedido) return;
+
+        const producto = pedido.productos.find(
+            (producto) => producto.id === productoId
+        );
+
+        if (!producto) return;
+
+        // Calcular nueva cantidad
+        const nuevaCantidad =
+            Number(producto.cantidad) + cambio;
+
+        // Validar cantidad y stock
+        if (
+            nuevaCantidad < 1 ||
+            nuevaCantidad > Number(producto.stock)
+        ) {
+            return;
+        }
+
+        // Evitar solicitudes repetidas
+        if (itemsProcesando.includes(productoId)) return;
+
+        const token = localStorage.getItem("token");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        setItemsProcesando((actuales) => [
+            ...actuales,
+            productoId,
+        ]);
+
+        // Actualizar cantidad en el backend
+        axios.patch(
+            `${URL_PEDIDO_ITEMS}/${productoId}`,
+            {
+                cantidad: nuevaCantidad,
+            },
+            config
+        )
+            .then((respuesta) => {
+
+                // Actualizar cantidad en pantalla
+                setPedidos((actuales) =>
+                    actuales.map((pedido) =>
+                        pedido.id === idPedido
+                            ? {
+                                ...pedido,
+                                productos: pedido.productos.map(
+                                    (producto) =>
+                                        producto.id === productoId
+                                            ? {
+                                                ...producto,
+                                                cantidad: respuesta.data.cantidad,
+                                            }
+                                            : producto
+                                ),
+                            }
+                            : pedido
+                    )
+                );
+
+            })
+            .catch((error) => {
+                console.error(
+                    "Error al modificar la cantidad:",
+                    error
+                );
+
+                alert(
+                    error.response?.data?.mensaje ||
+                    "No se pudo modificar la cantidad."
+                );
+            })
+            .finally(() => {
+                setItemsProcesando((actuales) =>
+                    actuales.filter((id) => id !== productoId)
+                );
+            });
+    };
+
+    // ELIMINAR UN PRODUCTO DEL CARRITO
+    const eliminarProducto = (idPedido, productoId) => {
+        // Evitar solicitudes repetidas
+        if (itemsProcesando.includes(productoId)) return;
+
+        const token = localStorage.getItem("token");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        setItemsProcesando((actuales) => [
+            ...actuales,
+            productoId,
+        ]);
+
+        // Eliminar producto en el backend
+        axios.delete(
+            `${URL_PEDIDO_ITEMS}/${productoId}`,
+            config
+        )
+            .then(() => {
+
+                // Quitar producto de la pantalla
+                setPedidos((actuales) =>
+                    actuales.map((pedido) =>
+                        pedido.id === idPedido
+                            ? {
+                                ...pedido,
+                                productos: pedido.productos.filter(
+                                    (producto) => producto.id !== productoId
+                                ),
+                            }
+                            : pedido
+                    )
+                );
+
+            })
+            .catch((error) => {
+                console.error(
+                    "Error al eliminar el producto:",
+                    error
+                );
+
+                alert(
+                    error.response?.data?.mensaje ||
+                    "No se pudo eliminar el producto."
+                );
+            })
+            .finally(() => {
+                setItemsProcesando((actuales) =>
+                    actuales.filter((id) => id !== productoId)
+                );
+            });
+    };
+
+    // Eliminar un pedido completo (solo modifica la vista por ahora)
+    const eliminarPedido = (idPedido) => {
+        if (pedidosProcesando.includes(idPedido)) return;
+
+        const confirmar = window.confirm(
+            "¿Estás segura de que querés eliminar este pedido?"
+        );
+
+        if (!confirmar) return;
+
+        const token = localStorage.getItem("token");
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        setPedidosProcesando((actuales) => [
+            ...actuales,
+            idPedido,
+        ]);
+
+        // Eliminar pedido en el backend
+        axios.delete(`${URL_PEDIDOS}/${idPedido}`, config)
+            .then(() => {
+
+                // Actualizar la pantalla cuando se confirme la eliminación
+                setPedidos((actuales) =>
+                    actuales.filter((pedido) => pedido.id !== idPedido)
+                );
+
+            })
+            .catch((error) => {
+                console.error("Error al eliminar el pedido:", error);
+
+                alert(
+                    error.response?.data?.mensaje ||
+                    "No se pudo eliminar el pedido."
+                );
+            })
+            .finally(() => {
+                setPedidosProcesando((actuales) =>
+                    actuales.filter((id) => id !== idPedido)
+                );
+            });
+    };
+
+    // Calcular subtotal de cada pedido
+    const calcularSubtotal = (productos) =>
+        productos.reduce(
+            (total, producto) =>
+                total +
+                Number(producto.precio || 0) *
+                Number(producto.cantidad || 0),
+            0
+        );
+
+    // Calcular total de compra
+    const totalCompra = pedidos.reduce(
+        (total, pedido) =>
+            total + calcularSubtotal(pedido.productos),
+        0
     );
-  };
 
-  // Modificar la cantidad de un producto según el stock disponible
-  const cambiarCantidad = (usuario, productoId, cambio) => {
-    setPedidos((actuales) =>
-      actuales.map((pedido) =>
-        pedido.usuario === usuario
-          ? {
-              ...pedido,
-              productos: pedido.productos.map((producto) => {
-                if (producto.id !== productoId) return producto;
+    // Vaciar carrito (solo modifica la vista por ahora)
+    const limpiarCarrito = () => {
+        setPedidos([]);
+    };
 
-                if (producto.stock <= 0) return producto;
+    return (
+        <PanelDesplegable
+            titulo="Carrito"
+            icono="shopping_cart"
+            className="Carrito"
+            onClose={onCerrar}
+        >
+            <div className="Carrito__layout">
 
-                return {
-                  ...producto,
-                  cantidad: Math.min(
-                    producto.stock,
-                    Math.max(1, producto.cantidad + cambio)
-                  ),
-                };
-              }),
-            }
-          : pedido
-      )
-    );
-  };
+                <Link
+                    className="Carrito__ayuda"
+                    to="/preguntas-frecuentes"
+                >
+                    ¿Cómo funcionan los estados del pedido?
+                </Link>
 
-  // Eliminar un producto
-  const eliminarProducto = (usuario, productoId) => {
-    setPedidos((actuales) =>
-      actuales.map((pedido) =>
-        pedido.usuario === usuario
-          ? {
-              ...pedido,
-              productos: pedido.productos.filter(
-                (producto) => producto.id !== productoId
-              ),
-            }
-          : pedido
-      )
-    );
-  };
+                <div className="Carrito__pedidos">
 
-  // Eliminar el pedido completo
-  const eliminarPedido = (usuario) => {
-    setPedidos((actuales) =>
-      actuales.filter((pedido) => pedido.usuario !== usuario)
-    );
-  };
+                    {cargando ? (
+                        <p className="Carrito__vacio">
+                            Cargando pedidos...
+                        </p>
 
-  // Calcular subtotal de cada pedido
-  const calcularSubtotal = (productos) =>
-    productos.reduce(
-      (total, producto) => total + producto.precio * producto.cantidad,
-      0
-    );
+                    ) : error ? (
+                        <p className="Carrito__vacio">
+                            {error}
+                        </p>
 
-  // Calcular total de compra
-  const totalCompra = pedidos.reduce(
-    (total, pedido) => total + calcularSubtotal(pedido.productos),
-    0
-  );
+                    ) : pedidos.length > 0 ? (
 
-  // Vaciar carrito
-  const limpiarCarrito = () => {
-    setPedidos([]);
-  };
+                        pedidos.map((pedido) => {
+                            const subtotal = calcularSubtotal(
+                                pedido.productos
+                            );
 
-  return (
-    <PanelDesplegable
-      titulo="Carrito"
-      icono="shopping_cart"
-      className="Carrito"
-      onClose={onCerrar}
-    >
-      <div className="Carrito__layout">
-        <Link className="Carrito__ayuda" to="/preguntas-frecuentes">
-          ¿Cómo funcionan los estados del pedido?
-        </Link>
+                            return (
+                                <section
+                                    className="Carrito__pedido"
+                                    key={pedido.id}
+                                >
 
-        <div className="Carrito__pedidos">
-          {pedidos.length > 0 ? (
-            pedidos.map((pedido) => {
-              const subtotal = calcularSubtotal(pedido.productos);
+                                    <header className="Carrito__pedidoEncabezado">
 
-              return (
-                <section className="Carrito__pedido" key={pedido.usuario}>
-                  <header className="Carrito__pedidoEncabezado">
-                    <img
-                      className="Carrito__vendedoraImagen"
-                      src={imagenVendedora}
-                      alt=""
-                    />
+                                        <img
+                                            className="Carrito__vendedoraImagen"
+                                            src={
+                                                pedido.imagenVendedora ||
+                                                "/imagen-default.png"
+                                            }
+                                            alt={`Foto de ${pedido.usuario}`}
+                                            onError={(e) => {
+                                                e.currentTarget.onerror = null;
+                                                e.currentTarget.src =
+                                                    "/imagen-default.png";
+                                            }}
+                                        />
 
-                    <div className="Carrito__vendedoraDatos">
-                      <div className="Carrito__vendedoraLinea">
-                        <span className="Carrito__usuario">
-                          {pedido.usuario}
-                        </span>
+                                        <div className="Carrito__vendedoraDatos">
 
-                        {pedido.estado && (
-                          <span
-                            className={`Carrito__estado Carrito__estado--${
-                              aparienciaEstado[pedido.estado]?.clase ||
-                              "contacto"
-                            }`}
-                          >
-                            <span
-                              className="material-symbols-outlined"
-                              aria-hidden="true"
-                            >
-                              {aparienciaEstado[pedido.estado]?.icono ||
-                                "schedule"}
-                            </span>
-                            {pedido.estado}
-                          </span>
-                        )}
-                      </div>
+                                            <div className="Carrito__vendedoraLinea">
 
-                      <span className="Carrito__subtotal">
-                        SubTotal: {formatearPrecio(subtotal)}
-                      </span>
+                                                <span className="Carrito__usuario">
+                                                    {pedido.usuario}
+                                                </span>
+
+                                                {pedido.estado && (
+                                                    <span
+                                                        className={`Carrito__estado Carrito__estado--${
+                                                            aparienciaEstado[pedido.estado]?.clase ||
+                                                            "contacto"
+                                                        }`}
+                                                    >
+                                                        <span
+                                                            className="material-symbols-outlined"
+                                                            aria-hidden="true"
+                                                        >
+                                                            {
+                                                                aparienciaEstado[pedido.estado]?.icono ||
+                                                                "schedule"
+                                                            }
+                                                        </span>
+
+                                                        {pedido.estado}
+                                                    </span>
+                                                )}
+
+                                            </div>
+
+                                            <span className="Carrito__subtotal">
+                                                SubTotal: {formatearPrecio(subtotal)}
+                                            </span>
+
+                                        </div>
+
+                                        <button
+                                            className="Carrito__botonDesplegar"
+                                            type="button"
+                                            aria-expanded={pedido.expandido}
+                                            onClick={() =>
+                                                alternarPedido(pedido.id)
+                                            }
+                                        >
+                                            <span
+                                                className={`material-symbols-outlined Carrito__desplegar${
+                                                    pedido.expandido
+                                                        ? " Carrito__desplegar--abierto"
+                                                        : ""
+                                                }`}
+                                                aria-hidden="true"
+                                            >
+                                                expand_more
+                                            </span>
+                                        </button>
+
+                                    </header>
+
+                                    {pedido.expandido && (
+                                        <>
+
+                                            <div className="Carrito__productos">
+
+                                                {pedido.productos.length > 0 ? (
+
+                                                    pedido.productos.map((producto) => (
+                                                        <ProductoCarrito
+                                                            key={producto.id}
+                                                            producto={producto}
+                                                            editable={
+                                                                !pedido.estado &&
+                                                                !itemsProcesando.includes(producto.id)
+                                                            }
+                                                            onCambiarCantidad={(cambio) =>
+                                                                cambiarCantidad(
+                                                                    pedido.id,
+                                                                    producto.id,
+                                                                    cambio
+                                                                )
+                                                            }
+                                                            onEliminar={() =>
+                                                                eliminarProducto(
+                                                                    pedido.id,
+                                                                    producto.id
+                                                                )
+                                                            }
+                                                        />
+                                                    ))
+
+                                                ) : (
+                                                    <p className="Carrito__vacio">
+                                                        Este pedido todavía no tiene productos.
+                                                    </p>
+                                                )}
+
+                                            </div>
+
+                                            <div className="Carrito__accionesPedido">
+
+                                                <button
+                                                    className="Carrito__contactar"
+                                                    type="button"
+                                                    onClick={() =>
+                                                        contactarWhatsapp(
+                                                            pedido,
+                                                            subtotal
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        pedido.productos.length === 0
+                                                    }
+                                                >
+                                                    <img
+                                                        src={iconoWhatsapp}
+                                                        alt=""
+                                                        aria-hidden="true"
+                                                    />
+
+                                                    Contactar Al Whatsapp
+                                                </button>
+
+                                                <button
+                                                    className="Carrito__eliminarPedido"
+                                                    type="button"
+                                                    title="Eliminar pedido"
+                                                    disabled={pedidosProcesando.includes(pedido.id)}
+                                                    onClick={() => eliminarPedido(pedido.id)}
+                                                >
+                                                    <span
+                                                        className="material-symbols-outlined"
+                                                        aria-hidden="true"
+                                                    >
+                                                        delete_outline
+                                                    </span>
+                                                </button>
+
+                                            </div>
+
+                                        </>
+                                    )}
+
+                                </section>
+                            );
+                        })
+
+                    ) : (
+                        <p className="Carrito__vacio">
+                            Tu carrito está vacío.
+                        </p>
+                    )}
+
+                </div>
+
+                <footer className="Carrito__resumen">
+
+                    <div className="Carrito__total">
+                        <span>Total de compra:</span>
+
+                        <strong>
+                            {formatearPrecio(totalCompra)}
+                        </strong>
                     </div>
 
-                    <button
-                      className="Carrito__botonDesplegar"
-                      type="button"
-                      aria-expanded={pedido.expandido}
-                      onClick={() => alternarPedido(pedido.usuario)}
+                    <Link
+                        className="Carrito__seguir"
+                        to="/boutique"
                     >
-                      <span
-                        className={`material-symbols-outlined Carrito__desplegar${
-                          pedido.expandido
-                            ? " Carrito__desplegar--abierto"
-                            : ""
-                        }`}
-                        aria-hidden="true"
-                      >
-                        expand_more
-                      </span>
-                    </button>
-                  </header>
-
-                  {pedido.expandido && (
-                    <>
-                      <div className="Carrito__productos">
-                        {pedido.productos.length > 0 ? (
-                          pedido.productos.map((producto) => (
-                            <ProductoCarrito
-                              key={producto.id}
-                              producto={producto}
-                              editable={!pedido.estado}
-                              onCambiarCantidad={(cambio) =>
-                                cambiarCantidad(
-                                  pedido.usuario,
-                                  producto.id,
-                                  cambio
-                                )
-                              }
-                              onEliminar={() =>
-                                eliminarProducto(pedido.usuario, producto.id)
-                              }
-                            />
-                          ))
-                        ) : (
-                          <p className="Carrito__vacio">
-                            Este pedido todavía no tiene productos.
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="Carrito__accionesPedido">
-                        <button
-                          className="Carrito__contactar"
-                          type="button"
-                          onClick={() => contactarWhatsapp(pedido, subtotal)}
-                          disabled={pedido.productos.length === 0}
-                        >
-                          <img
-                            src={iconoWhatsapp}
-                            alt=""
-                            aria-hidden="true"
-                          />
-                          Contactar Al Whatsapp
-                        </button>
-
-                        <button
-                          className="Carrito__eliminarPedido"
-                          type="button"
-                          title="Eliminar pedido"
-                          onClick={() => eliminarPedido(pedido.usuario)}
-                        >
-                          <span
+                        <span
                             className="material-symbols-outlined"
                             aria-hidden="true"
-                          >
+                        >
+                            shopping_bag
+                        </span>
+
+                        Seguir Explorando
+                    </Link>
+
+                    <button
+                        className="Carrito__limpiar"
+                        type="button"
+                        onClick={limpiarCarrito}
+                    >
+                        <span
+                            className="material-symbols-outlined"
+                            aria-hidden="true"
+                        >
                             delete_outline
-                          </span>
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </section>
-              );
-            })
-          ) : (
-            <p className="Carrito__vacio">Tu carrito está vacío.</p>
-          )}
-        </div>
+                        </span>
 
-        <footer className="Carrito__resumen">
-          <div className="Carrito__total">
-            <span>Total de compra:</span>
-            <strong>{formatearPrecio(totalCompra)}</strong>
-          </div>
+                        Limpiar carrito
+                    </button>
 
-          <Link className="Carrito__seguir" to="/boutique">
-            <span
-              className="material-symbols-outlined"
-              aria-hidden="true"
-            >
-              shopping_bag
-            </span>
-            Seguir Explorando
-          </Link>
+                </footer>
 
-          <button
-            className="Carrito__limpiar"
-            type="button"
-            onClick={limpiarCarrito}
-          >
-            <span
-              className="material-symbols-outlined"
-              aria-hidden="true"
-            >
-              delete_outline
-            </span>
-            Limpiar carrito
-          </button>
-        </footer>
-      </div>
-    </PanelDesplegable>
-  );
+            </div>
+        </PanelDesplegable>
+    );
 }

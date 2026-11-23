@@ -18,8 +18,6 @@ const filtrosBoutique = [
   { valor: "todos", texto: "TODOS", icono: "sell" },
   { valor: "compra", texto: "COMPRA", icono: "shopping_basket" },
 ];
-
-
 export default function Boutique({
   carritoAbierto = false,
   onCerrarCarrito,
@@ -45,89 +43,77 @@ export default function Boutique({
     ordenPrecio: "MAYOR MENOR",
   });
 useEffect(() => {
-  const params = {
-    categoria: criterios.prenda,
-    talle: criterios.talle,
-    temporada: criterios.temporada,
-    estado: criterios.estado,
-    ocasion: criterios.ocasion,
-    genero: criterios.genero,
-    colores,
-    estilos: categoriasActivas,
-  };
+    const token = localStorage.getItem("token");
+    const params = {
+        categoria: criterios.prenda,
+        talle: criterios.talle,
+        temporada: criterios.temporada,
+        estado: criterios.estado,
+        ocasion: criterios.ocasion,
+        genero: criterios.genero,
+        colores,
+        estilos: categoriasActivas,
+    };
 
-  if (filtro === "compra" || filtro === "todos") {
-    params.ordenPrecio = criterios.ordenPrecio;
-  }
+    if (filtro === "compra" || filtro === "todos") {
+        params.ordenPrecio = criterios.ordenPrecio;
+    }
 
-  if (filtro === "intercambio" || filtro === "todos") {
-    params.estadoMinimoAceptado = criterios.estadoMinimoAceptado;
-    params.talleBuscado = criterios.talleBuscado;
-    params.categoriasAceptadas = tiposAceptados;
-  }
+    if (filtro === "intercambio" || filtro === "todos") {
+        params.estadoMinimoAceptado = criterios.estadoMinimoAceptado;
+        params.talleBuscado = criterios.talleBuscado;
+        params.categoriasAceptadas = tiposAceptados;
+    }
 
-  const serializarParams = (params) => {
-    const resultado = new URLSearchParams();
+    const serializarParams = (params) => {
+        const resultado = new URLSearchParams();
 
-    Object.entries(params).forEach(([clave, valor]) => {
-      if (Array.isArray(valor)) {
-        valor.forEach((item) => resultado.append(clave, item));
-      } else if (valor !== "" && valor !== null && valor !== undefined) {
-        resultado.append(clave, valor);
-      }
-    });
+        Object.entries(params).forEach(([clave, valor]) => {
+            (Array.isArray(valor) ? valor : [valor]).forEach((item) => {
+                if (item !== "" && item !== null && item !== undefined) {
+                    resultado.append(clave, item);
+                }
+            });
+        });
 
-    return resultado.toString();
-  };
+        return resultado.toString();
+    };
 
-  Promise.all([
-    axios.get("http://localhost:3000/api/publicaciones/compra", {
-      params,
-      paramsSerializer: serializarParams,
-    }),
-    axios.get("http://localhost:3000/api/publicaciones/intercambio", {
-      params,
-      paramsSerializer: serializarParams,
-    }),
-  ])
-    .then(([compra, intercambio]) => {
-      setProductos([
-        ...(filtro === "intercambio" ? [] : compra.data.publicaciones),
-        ...(filtro === "compra" ? [] : intercambio.data.publicaciones),
-      ]);
-    })
-    .catch((error) => {
-      console.error("Error al obtener publicaciones filtradas:", error);
-    });
-}, [
-  filtro,
-  criterios,
-  colores,
-  categoriasActivas,
-  tiposAceptados,
-]);
-  // Obtener todas las publicaciones al entrar a Boutique
-  useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:3000/api/publicaciones/compra"),
-      axios.get("http://localhost:3000/api/publicaciones/intercambio"),
-    ])
-      .then(([respuestaCompra, respuestaIntercambio]) => {
-        setProductos([
-          ...respuestaCompra.data.publicaciones,
-          ...respuestaIntercambio.data.publicaciones,
-        ]);
-      })
-      .catch((error) => {
-        console.error("Error al obtener las publicaciones:", error);
-      });
-  }, []);
+        axios.get("http://localhost:3000/api/publicaciones/compra", {
+            headers: {
+                  Authorization: `Bearer ${token}`
+              },
+            params,
+            paramsSerializer: serializarParams,
+        }),
 
-  // Seleccionar qué tipo de publicaciones mostrar
-  const productosVisibles =
-    filtro === "todos"
-      ? productos
-      : productos.filter((producto) => producto.tipo === filtro);
+        axios.get("http://localhost:3000/api/publicaciones/intercambio", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            params,
+            paramsSerializer: serializarParams,
+        }),
+    ])
+        .then(([compra, intercambio]) => {
+            setProductos([
+                ...(filtro === "intercambio" ? [] : compra.data.publicaciones),
+                ...(filtro === "compra" ? [] : intercambio.data.publicaciones),
+            ]);
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("idUsuario");
+              navigate("/login");
+              return;
+          }
+
+          console.error("Error al obtener publicaciones:", error);
+      });
+
+}, [filtro, criterios, colores, categoriasActivas, tiposAceptados]);
 
   // Abrir detalle de la publicación
   const abrirDetalle = (producto) => {
@@ -170,7 +156,7 @@ useEffect(() => {
           className="Boutique__productos"
           aria-label="Productos de Boutique"
         >
-          {productosVisibles.map((producto) => {
+          {productos.map((producto) => {
           const color = producto.codigoColor || "#A87975";
           const colorTexto = producto.color?.toLowerCase() === "blanco"? "#332D37": "#FFFFFF";
           const colorAccion = colorTexto === "#332D37"? "#332D37": color;

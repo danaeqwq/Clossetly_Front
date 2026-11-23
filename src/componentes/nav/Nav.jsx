@@ -17,7 +17,7 @@ function NavAdmin() {
       className={({ isActive }) =>
         `Nav__enlace Nav__enlace--admin ${isActive ? "Nav__enlace--activo" : ""}`
       }
-      aria-label="Administración"
+      data-label="Administración"
     >
       <span className="material-symbols-outlined" aria-hidden="true">
         admin_panel_settings
@@ -39,12 +39,11 @@ export default function Nav() {
   );
 
   return (
-    <nav className="Nav" aria-label="Navegación principal">
+    <nav className="Nav">
 
       <NavLink
         to="/boutique"
         className="Nav__enlace Nav__enlace--logo"
-        aria-label="Inicio"
       >
         <svg viewBox="0 0 24 24">
           <rect x="4" y="4" width="16" height="16" rx="1" />
@@ -58,7 +57,6 @@ export default function Nav() {
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
-        aria-label="Guía de estilo"
         data-label="Guía de estilo"
       >
         <img src={iconTest} alt="" />
@@ -69,7 +67,6 @@ export default function Nav() {
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
-        aria-label="Boutique"
         data-label="Boutique"
       >
         <img src={iconBoutique} alt="" />
@@ -80,7 +77,6 @@ export default function Nav() {
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
-        aria-label="Explorar"
         data-label="Explorar"
       >
         <img src={iconExplorar} alt="" />
@@ -91,7 +87,6 @@ export default function Nav() {
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
-        aria-label="Mi armario"
         data-label="Mi armario"
       >
         <img src={iconMiArmario} alt="" />
@@ -102,7 +97,6 @@ export default function Nav() {
         className={({ isActive }) =>
           `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
         }
-        aria-label="Mi cuenta"
         data-label="Mi cuenta"
       >
         <img src={iconMiCuenta} alt="" />

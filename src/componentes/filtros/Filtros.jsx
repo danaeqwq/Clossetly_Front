@@ -3,7 +3,6 @@ import axios from "axios";
 
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import Select from "../select/Select";
-import Boton from "../Boton/Boton";
 
 import "./filtros.css";
 
@@ -43,14 +42,19 @@ export default function Filtros({
 
   // Obtener opciones de filtros desde el backend
   useEffect(() => {
+    const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:3000/api/filtros")
-      .then((respuesta) => {
-        setOpciones(respuesta.data);
-      })
-      .catch((error) => {
-        console.error("Error al obtener opciones de filtros:", error);
-      });
+        .get("http://localhost:3000/api/filtros", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((respuesta) => {
+            setOpciones(respuesta.data);
+        })
+        .catch((error) => {
+            console.error("Error al obtener opciones de filtros:", error);
+        });
   }, []);
 
   // Opciones dinámicas

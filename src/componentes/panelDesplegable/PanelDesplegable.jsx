@@ -9,7 +9,7 @@ export default function PanelDesplegable({ titulo, icono, children, className = 
         {icono && <span className="PanelDesplegable__icono material-symbols-outlined" aria-hidden="true">{icono}</span>}
         <h2 className="PanelDesplegable__titulo">{titulo}</h2>
         <button className="PanelDesplegable__cerrar" type="button" aria-label={`Cerrar ${titulo}`} onClick={onClose}>
-          <span class="material-symbols-outlined">
+          <span className="material-symbols-outlined">
             close
             </span>
         </button>

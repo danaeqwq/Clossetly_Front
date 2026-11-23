@@ -124,41 +124,23 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
   const manejarAccionTarjeta = (evento, prenda) => {
     const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
-
+    console.log("CLIC EN PRENDA:", prenda);
     if (botonOpciones) {
-      setMenuAbiertoId((actual) =>
-        actual === clavePrenda(prenda) ? null : clavePrenda(prenda)
-      );
+      setMenuAbiertoId((actual) => actual === clavePrenda(prenda) ? null : clavePrenda(prenda));
       return;
     }
 
     const opcion = evento.target.closest(".TarjetaPrenda__menu li");
-
-    if (opcion) {
-      const texto = opcion.textContent.trim();
-
-      if (texto.includes("Modificar")) {
-        iniciarEdicionPrenda(prenda);
+    if (!opcion) {
+      if (modoSeleccionOutfit) {
+        alternarSeleccionPrenda(prenda);
+      } else {
+        navigate("/detalles/prenda", {
+          state: { prenda },
+        });
       }
 
-      if (texto.includes("Armar outfit")) {
-        iniciarSeleccionOutfit(prenda);
-      }
-
-      if (texto.includes("Eliminar")) {
-        setPrendaAEliminar(prenda);
-      }
-
-      setMenuAbiertoId(null);
       return;
-    }
-
-    if (modoSeleccionOutfit) {
-      alternarSeleccionPrenda(prenda);
-    } else {
-      navigate("/detalles/prenda", {
-        state: { prenda },
-      });
     }
   };
 

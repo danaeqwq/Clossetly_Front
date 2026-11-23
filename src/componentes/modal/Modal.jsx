@@ -1,4 +1,6 @@
 import "./modal.css";
+import { useState } from "react";
+
 export default function Modal({
   titulo,
   descripcion,
@@ -8,6 +10,18 @@ export default function Modal({
   className = "",
   onClose,
 }) {
+  const [abierto, setAbierto] = useState(true);
+
+  const cerrar = () => {
+    if (onClose) {
+      onClose();
+      return;
+    }
+
+    setAbierto(false);
+  };
+
+  if (!abierto) return null;
 
   return (
     <div className={`Modal ${className}`.trim()} role="presentation">
@@ -22,8 +36,8 @@ export default function Modal({
             <h2 className="Modal__titulo" id="modal-titulo">{titulo}</h2>
             {descripcion && <p className="Modal__descripcion">{descripcion}</p>}
           </div>
-          <button className="Modal__cerrar" type="button" aria-label="Cerrar">
-            <span className="material-symbols-outlined" aria-hidden="true" onClick={onClose}>close</span>
+          <button className="Modal__cerrar" type="button" aria-label="Cerrar" onClick={cerrar}>
+            <span className="material-symbols-outlined" aria-hidden="true">close</span>
           </button>
         </header>
         <div className="Modal__contenido">{children}</div>
