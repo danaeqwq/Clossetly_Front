@@ -1,18 +1,43 @@
-import "./TerminoPregunta.css"
-import Flecha from"../../assets/flecha.svg"
 
-export default function TerminoPregunta({ titulo, contenido, abierto = false }) {
+import "./TerminoPregunta.css"
+import Flecha from "../../assets/flecha.svg"
+
+export default function TerminoPregunta({
+    titulo,
+    contenido,
+    abierto = false,
+    onClick,
+}) {
     return (
         <article className={`TerminoPregunta${abierto ? " TerminoPregunta--abierto" : ""}`}>
-            <div className="TerminoPregunta__encabezado">
-                <h2 className="TerminoPregunta__titulo">{titulo}</h2>
-                <img src={Flecha} alt="" aria-hidden="true" className="TerminoPregunta__indicador" />
-            </div>
-            {abierto && (
-                <div className="TerminoPregunta__contenido">
-                    {contenido}
+            <button
+                className="TerminoPregunta__encabezado"
+                type="button"
+                onClick={onClick}
+                aria-expanded={abierto}
+            >
+                <h2 className="TerminoPregunta__titulo">
+                    {titulo}
+                </h2>
+
+                <img
+                    src={Flecha}
+                    alt=""
+                    aria-hidden="true"
+                    className="TerminoPregunta__indicador"
+                />
+            </button>
+
+            <div
+                className="TerminoPregunta__contenido"
+                aria-hidden={!abierto}
+            >
+                <div className="TerminoPregunta__contenido-interior">
+                    <p className="TerminoPregunta__texto">
+                        {contenido}
+                    </p>
                 </div>
-            )}
+            </div>
         </article>
     )
 }
