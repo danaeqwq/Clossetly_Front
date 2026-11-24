@@ -136,7 +136,79 @@
   color: var(--color-rojo1);
   background: transparent;
 }
+.BloquearUsuario__duracion {
+    cursor: pointer;
+    font: inherit;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
 
+.BloquearUsuario__duracion:hover {
+    filter: brightness(0.95);
+}
+
+.BloquearUsuario__duracion--actual {
+    border-color: var(--color-bordoVino);
+    color: var(--color-blancaso);
+    background: var(--color-bordoVino);
+}
+
+.BloquearUsuario__duracion--actual i {
+    border-color: var(--color-blancaso);
+    background: var(--color-blancaso);
+    box-shadow: inset 0 0 0 2px var(--color-bordoVino);
+}
+.BloquearUsuario__campoMotivo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+    margin-top: 12px;
+    padding: 11px 12px 8px;
+    border: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 75%, var(--color-blancaso));
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--color-rosaEmpol) 12%, var(--color-cremita));
+}
+
+.BloquearUsuario__campoMotivo label {
+    color: var(--color-bordoVino);
+    font: 600 13px/1.2 var(--font-manrope);
+    letter-spacing: 0.01em;
+    font-weight: 600;
+}
+
+.BloquearUsuario__campoMotivo textarea {
+    width: 100%;
+    min-height: 92px;
+    padding: 11px 12px;
+    resize: vertical;
+    border: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 65%, var(--color-bordoVino));
+    border-radius: 7px;
+    background: var(--color-blancaso);
+    color: var(--color-carbon);
+    font: 13px/1.45 var(--font-manrope);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.BloquearUsuario__campoMotivo textarea::placeholder {
+    color: color-mix(in srgb, var(--color-carbon) 55%, var(--color-blancaso));
+}
+
+.BloquearUsuario__campoMotivo textarea:focus {
+    outline: none;
+    border-color: var(--color-bordoVino);
+    background: #fff;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-bordoVino) 14%, transparent);
+}
+
+.BloquearUsuario__campoMotivo span {
+    align-self: flex-end;
+    padding: 2px 7px;
+    border-radius: 999px;
+    color: var(--color-bordoVino);
+    background: color-mix(in srgb, var(--color-rosaEmpol) 24%, var(--color-cremita));
+    font: 11px/1.4 var(--font-manrope);
+}
 @media (max-width: 600px) {
   .Modal:has(.BloquearUsuario__contenido) .Modal__ventana {
     width: 100%;

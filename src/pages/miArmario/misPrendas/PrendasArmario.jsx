@@ -122,49 +122,36 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
     ));
   };
 
-const manejarAccionTarjeta = (evento, prenda) => {
-  const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
+  const manejarAccionTarjeta = (evento, prenda) => {
+    const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
 
-  if (botonOpciones) {
-    setMenuAbiertoId((actual) =>
-      actual === clavePrenda(prenda) ? null : clavePrenda(prenda)
-    );
-    return;
-  }
-
-  const opcion = evento.target.closest(".TarjetaPrenda__menu li");
-
-  if (opcion) {
-    const accion = opcion.dataset.accion;
-
-    if (accion === "modificar") {
-      setMenuAbiertoId(null);
-      setPrendaEnEdicion(prenda);
-      return;
+    if (botonOpciones) {
+        setMenuAbiertoId((actual) =>
+            actual === clavePrenda(prenda) ? null : clavePrenda(prenda)
+        );
+        return;
     }
 
-    if (accion === "armar-outfit") {
-      setMenuAbiertoId(null);
-      iniciarSeleccionOutfit(prenda);
-      return;
+    const opcion = evento.target.closest(".TarjetaPrenda__menu li");
+
+    if (opcion) {
+        const accion = opcion.dataset.accion;
+
+        if (accion === "eliminar") {
+            setMenuAbiertoId(null);
+            setPrendaAEliminar(prenda);
+        }
+
+        return;
     }
 
-    if (accion === "eliminar") {
-      setMenuAbiertoId(null);
-      setPrendaAEliminar(prenda);
-      return;
+    if (modoSeleccionOutfit) {
+        alternarSeleccionPrenda(prenda);
+    } else {
+        navigate("/detalles/prenda", {
+            state: { prenda },
+        });
     }
-
-    return;
-  }
-
-  if (modoSeleccionOutfit) {
-    alternarSeleccionPrenda(prenda);
-  } else {
-    navigate("/detalles/prenda", {
-      state: { prenda },
-    });
-  }
 };
   const iniciarEdicionPrenda = (prenda) => {
     setPrendaEnEdicion({ ...prenda });

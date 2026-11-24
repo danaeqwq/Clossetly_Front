@@ -23,7 +23,6 @@ import Login from "./pages/login/Login";
 import OlvidarContraseña from "./pages/olvidarContraseña/olvidarContraseña";
 import VerificarCodigo from "./pages/verificarCode/verificarCode";
 import TestInicial from "./pages/testInicial/testInicial";
-import admin from "./pages/admin/Admin";
 import GestionDeUsuario from "./pages/admin/gestionDeUsuario/GestionDeUsuario";
 import GestionPublicaciones from "./pages/admin/gestionPublicaciones/GestionPublicaciones";
 import GestionSeccionPendiente from "./pages/admin/GestionSeccionPendiente";

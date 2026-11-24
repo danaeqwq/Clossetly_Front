@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 const secciones = [
   { titulo: "Gestión de usuarios", descripcion: "Administra las cuentas y ayuda a mantener una comunidad segura.", icono: "manage_accounts", ruta: "/admin/usuarios" },
-  { titulo: "Gestión de prendas y publicaciones", descripcion: "Revisa el contenido y asegúrate de que cumpla las normas.", icono: "edit_note", ruta: "/admin/publicaciones" },
+  { titulo: "Gestión de prendas y publicaciones", descripcion: "Revisa el contenido y asegúrate de que cumpla las normas.", icono: "edit_note", ruta: "/admin/gestion-publicaciones" },
   { titulo: "Gestión de denuncias", descripcion: "Atiende los reportes y cuida la convivencia en la comunidad.", icono: "report", ruta: "/admin/denuncias" },
   { titulo: "Gestión de categorías", descripcion: "Organiza las categorías de prendas y colores de Clossetly.", icono: "category", ruta: "/admin/categorias" },
 ];

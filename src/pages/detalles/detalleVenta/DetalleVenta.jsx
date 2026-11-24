@@ -20,6 +20,36 @@ export default function DetalleVenta() {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
 
+    const agregarAlCarrito = () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
+            return;
+        }
+        axios.post(
+            "http://localhost:3000/api/pedido-items",
+            {
+                idPublicacion: producto.id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+        .then((respuesta) => {
+            alert(respuesta.data.mensaje);
+        })
+        .catch((error) => {
+            console.error("Error al agregar al carrito:", error);
+
+            alert(
+                error.response?.data?.mensaje ||
+                "No se pudo agregar el producto al carrito."
+            );
+        });
+    };
+
     useEffect(() => {
         const token = localStorage.getItem("token");
 
@@ -190,7 +220,12 @@ export default function DetalleVenta() {
                         Stock disponible: {producto.stock ?? 0} unidades
                     </p>
 
-                    <Boton texto="Agregar al carrito" variante="principal" type="button" />
+                    <Boton
+                        texto="Agregar al carrito"
+                        variante="principal"
+                        type="button"
+                        onClick={agregarAlCarrito}
+                    />
 
                     <Boton
                         texto="Agregar a favoritos"

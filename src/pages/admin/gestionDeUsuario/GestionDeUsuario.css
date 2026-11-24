@@ -2,19 +2,19 @@
   width: 100%;
   min-height: calc(100dvh - 150px);
   margin: 0 auto;
-  padding: 12px clamp(24px, 5vw, 96px) 42px;
+  padding: 12px clamp(24px, 9vw, 160px) 42px;
   color: var(--color-carbon);
 }
 
 .GestionDeUsuario__encabezado h1 {
   color: var(--color-bordoVino);
-  font: 600 30px/1.2 var(--font-CormGaram);
+  font: 600 33px/1.2 var(--font-CormGaram);
 }
 
 .GestionDeUsuario__encabezado p {
   margin-top: 2px;
   color: var(--color-carbon);
-  font: 16px/1.4 var(--font-manrope);
+  font: 18px/1.4 var(--font-manrope);
 }
 
 .GestionDeUsuario__resumen {
@@ -30,7 +30,7 @@
   min-height: 68px;
   align-items: center;
   gap: 11px;
-  padding: 9px 12px;
+  padding: 15px 15px;
   border: 1px solid var(--color-rosaEmpol);
   border-radius: 9px;
   background: color-mix(in srgb, var(--color-rosaEmpol) 13%, var(--color-cremita));
@@ -53,12 +53,13 @@
   min-width: 0;
   flex-direction: column;
   color: var(--color-bordoVino);
-  font: 14px/1.2 var(--font-CormGaram);
+  font: 17px/1.2 var(--font-Newsreader);
+  font-weight: 500;
 }
 
 .GestionDeUsuario__indicadorTexto strong {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .GestionDeUsuario__tablaContenedor {
@@ -79,7 +80,7 @@
   padding: 4px 16px;
   border-bottom: 1px solid var(--color-rosaEmpol);
   color: var(--color-bordoVino);
-  font: 600 12px/1.2 var(--font-CormGaram);
+  font: 600 12px/1.2 var(--font-Newsreader);
   text-align: left;
 }
 
@@ -91,7 +92,6 @@
 .GestionDeUsuario__tabla th:nth-child(4) { width: 36%; }
 
 @media (min-width: 761px) {
-  .GestionDeUsuario__tablaContenedor { min-height: 320px; }
   .GestionDeUsuario__tabla th { height: 38px; padding-inline: 18px; font-size: 16px; }
   .GestionDeUsuario__tabla .Usuario__celda { padding: 8px 18px; font-size: 14px; }
   .GestionDeUsuario__tabla .Usuario__fila { height: 56px; }

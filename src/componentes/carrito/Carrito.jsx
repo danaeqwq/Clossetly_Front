@@ -32,7 +32,7 @@ const formatearPrecio = (precio) =>
     `$${Number(precio || 0).toLocaleString("es-AR")}`;
 
 // Generar mensaje para WhatsApp
-const contactarWhatsapp = (pedido, subtotal) => {
+const generarUrlWhatsapp = (pedido, subtotal) => {
     const productos = pedido.productos
         .map(
             (producto) =>
@@ -48,11 +48,9 @@ Subtotal: ${formatearPrecio(subtotal)}
 Usuario: ${pedido.usuario}
 ¿Podemos coordinar el pago y la entrega?`;
 
-    const url = `https://wa.me/${pedido.telefono}?text=${encodeURIComponent(
+    return `https://wa.me/${pedido.telefono}?text=${encodeURIComponent(
         mensaje
     )}`;
-
-    window.open(url, "_blank");
 };
 
 // Apariencia de los estados
@@ -77,6 +75,8 @@ export default function Carrito({ onCerrar }) {
     const [error, setError] = useState("");
     const [itemsProcesando, setItemsProcesando] = useState([]);
     const [pedidosProcesando, setPedidosProcesando] = useState([]);
+    const [limpiando, setLimpiando] = useState(false);
+
     // Obtener pedidos e items del usuario autenticado
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -316,7 +316,7 @@ export default function Carrito({ onCerrar }) {
             });
     };
 
-    // Eliminar un pedido completo (solo modifica la vista por ahora)
+    // Eliminar un pedido completo
     const eliminarPedido = (idPedido) => {
         if (pedidosProcesando.includes(idPedido)) return;
 
@@ -381,9 +381,105 @@ export default function Carrito({ onCerrar }) {
         0
     );
 
-    // Vaciar carrito (solo modifica la vista por ahora)
+    // VACIAR CARRITO
     const limpiarCarrito = () => {
-        setPedidos([]);
+        if (pedidosProcesando.length > 0 || limpiando) return;
+
+        const pedidosPendientes = pedidos.filter(
+            (pedido) => !pedido.estado
+        );
+
+        if (pedidosPendientes.length === 0) {
+            alert("No tenés pedidos pendientes para eliminar.");
+            return;
+        }
+
+        const confirmar = window.confirm(
+            "¿Estás segura de que querés eliminar todos los pedidos pendientes del carrito?"
+        );
+
+        if (!confirmar) return;
+
+        const token = localStorage.getItem("token");
+
+        setLimpiando(true);
+
+        axios.delete(
+            `${URL_PEDIDOS}/limpiar`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+            .then((respuesta) => {
+                // Eliminar de la pantalla únicamente los pedidos pendientes.
+                setPedidos((actuales) =>
+                    actuales.filter((pedido) => pedido.estado)
+                );
+
+                alert(respuesta.data.mensaje);
+            })
+            .catch((error) => {
+                console.error("Error al limpiar el carrito:", error);
+
+                alert(
+                    error.response?.data?.mensaje ||
+                    "No se pudo vaciar el carrito."
+                );
+            })
+            .finally(() => {
+                setLimpiando(false);
+            });
+    };
+
+    // CONTACTAR AL VENDEDOR POR WHATSAPP
+    const contactarWhatsapp = (pedido, subtotal) => {
+        if (!pedido.telefono || pedido.productos.length === 0) {
+            alert("No se puede contactar al vendedor.");
+            return;
+        }
+
+        const url = generarUrlWhatsapp(pedido, subtotal);
+
+        // Abrir WhatsApp
+        window.open(url, "_blank");
+
+        // Si ya tiene estado, no hace falta modificarlo.
+        if (pedido.estado) return;
+
+        const token = localStorage.getItem("token");
+
+        axios.patch(
+            `${URL_PEDIDOS}/${pedido.id}/contacto`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+            .then((respuesta) => {
+                // Actualizar el estado del pedido en pantalla.
+                setPedidos((actuales) =>
+                    actuales.map((actual) =>
+                        actual.id === pedido.id
+                            ? {
+                                ...actual,
+                                estado: respuesta.data.estado,
+                            }
+                            : actual
+                    )
+                );
+            })
+            .catch((error) => {
+                console.error("Error al cambiar el estado del pedido:", error);
+
+                alert(
+                    error.response?.data?.mensaje ||
+                    "WhatsApp se abrió, pero no se pudo actualizar el estado del pedido."
+                );
+            });
     };
 
     return (
@@ -625,6 +721,7 @@ export default function Carrito({ onCerrar }) {
                         className="Carrito__limpiar"
                         type="button"
                         onClick={limpiarCarrito}
+                        disabled={limpiando}
                     >
                         <span
                             className="material-symbols-outlined"
@@ -633,7 +730,7 @@ export default function Carrito({ onCerrar }) {
                             delete_outline
                         </span>
 
-                        Limpiar carrito
+                        {limpiando ? "Vaciando carrito..." : "Limpiar carrito"}
                     </button>
 
                 </footer>

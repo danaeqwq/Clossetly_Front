@@ -244,8 +244,8 @@ export default function CrearOutfit({
             ].map(({ etiqueta, valor, cambiar, opciones, campo }) => (
               <label
                 className={`CrearOutfit__etiqueta${etiqueta === "Género"
-                    ? " CrearOutfit__etiqueta--genero"
-                    : ""
+                  ? " CrearOutfit__etiqueta--genero"
+                  : ""
                   }`}
                 key={etiqueta}
               >
