@@ -1,20 +1,33 @@
 
 import "./TerminoPregunta.css"
+import { useState } from "react"
 import Flecha from "../../assets/flecha.svg"
 
 export default function TerminoPregunta({
     titulo,
     contenido,
-    abierto = false,
+    abierto,
     onClick,
+    onToggle,
+    mostrarContenido = true,
 }) {
+    const [abiertoLocal, setAbiertoLocal] = useState(false)
+    const controlado = abierto !== undefined
+    const estaAbierto = controlado ? abierto : abiertoLocal
+
+    const alternar = () => {
+        if (!controlado) setAbiertoLocal((valor) => !valor)
+        onToggle?.()
+        onClick?.()
+    }
+
     return (
-        <article className={`TerminoPregunta${abierto ? " TerminoPregunta--abierto" : ""}`}>
+        <article className={`TerminoPregunta${estaAbierto ? " TerminoPregunta--abierto" : ""}`}>
             <button
                 className="TerminoPregunta__encabezado"
                 type="button"
-                onClick={onClick}
-                aria-expanded={abierto}
+                onClick={alternar}
+                aria-expanded={estaAbierto}
             >
                 <h2 className="TerminoPregunta__titulo">
                     {titulo}
@@ -28,16 +41,16 @@ export default function TerminoPregunta({
                 />
             </button>
 
-            <div
+            {mostrarContenido && <div
                 className="TerminoPregunta__contenido"
-                aria-hidden={!abierto}
+                aria-hidden={!estaAbierto}
             >
                 <div className="TerminoPregunta__contenido-interior">
                     <p className="TerminoPregunta__texto">
                         {contenido}
                     </p>
                 </div>
-            </div>
+            </div>}
         </article>
     )
 }

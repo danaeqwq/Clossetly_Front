@@ -80,8 +80,8 @@ export default function PreguntaAbierta() {
                             titulo={pregunta.titulo}
                             abierto={preguntaSeleccionada === index}
                             mostrarContenido={false}
-                            onToggle={() => setPreguntaSeleccionada(
-                                preguntaSeleccionada === index ? null : index
+                            onToggle={() => setPreguntaSeleccionada((seleccionada) =>
+                                seleccionada === index ? null : index
                             )}
                         />
                     ))}

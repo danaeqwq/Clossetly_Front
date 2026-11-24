@@ -1,4 +1,5 @@
 import "./PreguntaFrecuentes.css";
+import { useState } from "react";
 import TerminoPregunta from "../../componentes/TerminoPregunta/TerminoPregunta";
 import mariposa from "../../assets/componentes/mariposa.svg";
 import Logo from "../../assets/Logo.svg";
@@ -20,6 +21,8 @@ const preguntas = [
 ];
 
 export default function PreguntaFrecuentes() {
+  const [preguntaAbierta, setPreguntaAbierta] = useState(null);
+
   return (
     <main className="PreguntasFrecuentes">
       <div className="PreguntasFrecuentes__intro">
@@ -30,7 +33,12 @@ export default function PreguntaFrecuentes() {
       <div className="PreguntasFrecuentes__contenido">
         <section className="PreguntasFrecuentes__lista" aria-label="Preguntas frecuentes">
           {preguntas.map((pregunta, index) => (
-            <TerminoPregunta key={`${pregunta.titulo}-${index}`} {...pregunta} />
+            <TerminoPregunta
+              key={`${pregunta.titulo}-${index}`}
+              {...pregunta}
+              abierto={preguntaAbierta === index}
+              onToggle={() => setPreguntaAbierta(preguntaAbierta === index ? null : index)}
+            />
           ))}
         </section>
 
