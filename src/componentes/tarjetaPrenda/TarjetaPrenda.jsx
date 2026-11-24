@@ -1,3 +1,4 @@
+
 import "./tarjetaPrenda.css";
 import { useNavigate } from "react-router";
 
@@ -39,6 +40,10 @@ export default function TarjetaPrenda({
 
       {mostrarOpciones && (
         <>
+          {menuAbierto && (
+            <div className="TarjetaPrenda__overlay"></div>
+          )}
+
           <button
             className="TarjetaPrenda__opciones"
             type="button"

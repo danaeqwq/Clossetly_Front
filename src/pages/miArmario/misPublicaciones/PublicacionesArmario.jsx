@@ -7,8 +7,6 @@ import TarjetaIntercambioArmario from "../../../componentes/tarjetaIntercambioAr
 import GestionarVentas from "./modales/Gestionar ventas/GestionarVentas";
 import PropuestasDeIntercambio from "./modales/Propuestas de intercambio/PropuestasDeIntercambio";
 import EliminarPublicacion from "./modales/eliminarPublicacion/EliminarPublicacion";
-import ropaEjemplo from "../../../assets/Ropa__ejemplo.jpg";
-import ropaUno from "../../../assets/ropa1.jpg";
 import CrearPrenda from "../misPrendas/mi modales/crear prenda/CrearPrenda";
 import CrearPrenda2 from "../misPrendas/mi modales/crear prenda 2/CrearPrenda2";
 import CrearPrenda3Venta from "../misPrendas/mi modales/crear prenda 3 venta/CrearPrenda3Venta";
@@ -81,6 +79,68 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
   const [colores, setColores] = useState([]);
   const [estilos, setEstilos] = useState([]);
 
+
+  const cargarPropuestas = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const respuesta = await axios.get(
+        "http://localhost:3000/api/propuestas/recibidas",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const propuestas = respuesta.data.map((propuesta) => {
+        const imagen = propuesta.imagen_ofrecida?.startsWith("http")
+          ? propuesta.imagen_ofrecida
+          : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`;
+
+        return {
+          id: propuesta.id_propuesta,
+          idPublicacion: propuesta.publicacion_intercambio,
+          estado: propuesta.estado_propuesta,
+          usuario: propuesta.usuario,
+          mensaje: propuesta.mensaje,
+          fecha: propuesta.fecha,
+          imagen,
+          producto: {
+            id: propuesta.id_propuesta,
+            nombre: propuesta.prenda_ofrecida,
+            imagen,
+            usuario: propuesta.usuario,
+            mensaje: propuesta.mensaje,
+            prendaPublicada: propuesta.prenda_publicada,
+            imagenPublicada: propuesta.imagen_publicada?.startsWith("http")
+              ? propuesta.imagen_publicada
+              : `http://localhost:3000${propuesta.imagen_publicada || ""}`,
+          },
+        };
+      });
+
+      setPublicacionesIntercambio((actuales) =>
+        actuales.map((publicacion) => ({
+          ...publicacion,
+          propuestas: propuestas.filter(
+            (propuesta) =>
+              Number(propuesta.idPublicacion) === Number(publicacion.id)
+          ),
+        }))
+      );
+
+    } catch (error) {
+      console.error(
+        "Error al cargar las propuestas:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+
   useEffect(() => {
     const cargarPublicaciones = async () => {
       const token = localStorage.getItem("token");
@@ -133,6 +193,7 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
 
         setPublicacionesVenta(ventas);
         setPublicacionesIntercambio(intercambios);
+        await cargarPropuestas();
       } catch (error) {
         console.error(
           "Error al cargar las publicaciones:",
@@ -558,7 +619,9 @@ export default function PublicacionesArmario({ publicacionesCreadas = { venta: [
             <TarjetaIntercambioArmario
               key={claveRegistro(publicacion, "intercambio")}
               {...publicacion}
-              propuestas={publicacion.propuestas.filter((propuesta) => propuesta.estado === "PENDIENTE").length}
+              propuestas={publicacion.propuestas.filter(
+                (propuesta) => propuesta.estado?.toLowerCase() === "pendiente"
+              ).length}
               onVerPropuestas={() => setPublicacionConPropuestas(publicacion.id)}
               onModificar={() => iniciarEdicion(publicacion, "intercambio")}
               onEliminar={() => eliminarPublicacion(publicacion, "intercambio")}

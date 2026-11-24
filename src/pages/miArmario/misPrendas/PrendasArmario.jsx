@@ -152,7 +152,9 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             state: { prenda },
         });
     }
-};
+  };
+
+
   const iniciarEdicionPrenda = (prenda) => {
     setPrendaEnEdicion({ ...prenda });
 

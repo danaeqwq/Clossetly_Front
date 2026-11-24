@@ -1,9 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .Terminos {
     min-height: 100vh;
     background: var(--color-cremita);
@@ -16,7 +10,7 @@
 }
 
 .Terminos__contenido {
-    width: min(100%, 1560px);
+    width: min(100%, 1500px);
     margin: 0 auto;
 }
 

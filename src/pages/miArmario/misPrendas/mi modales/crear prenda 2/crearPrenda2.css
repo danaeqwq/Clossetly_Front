@@ -7,7 +7,6 @@
   font-family: var(--font-manrope);
 }
 
-/* SECCIONES */
 .CrearPrenda2__seccion {
   min-width: 0;
 }
@@ -24,10 +23,9 @@
 
 /* ESTILOS */
 .CrearPrenda2__listaEstilos {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 7px;
+  column-count: 5;
+  column-gap: 15px;
+  margin-top: 10px;
 }
 
 .CrearPrenda2__listaEstilos ul {
@@ -102,17 +100,6 @@
   height: 15px;
   border-radius: 50%;
 }
-
-.CrearPrenda2__muestra[data-color="Rojo"] { background: #a24e5a; }
-.CrearPrenda2__muestra[data-color="Rosa"] { background: #c89eae; }
-.CrearPrenda2__muestra[data-color="Naranja"] { background: #d8896d; }
-.CrearPrenda2__muestra[data-color="Verde"] { background: #5d7867; }
-.CrearPrenda2__muestra[data-color="Negro"] { background: #302b30; }
-.CrearPrenda2__muestra[data-color="Azul"] { background: #6276b0; }
-.CrearPrenda2__muestra[data-color="Morado"] { background: #8b739b; }
-.CrearPrenda2__muestra[data-color="Blanco"] { background: #fff; }
-.CrearPrenda2__muestra[data-color="Amarillo"] { background: #efbd73; }
-.CrearPrenda2__muestra[data-color="guardado"] { background: #a58c91; }
 
 .CrearPrenda2__muestra--borde {
   border: 1px solid var(--color-rosaEmpol);
@@ -228,12 +215,8 @@
   }
 
   .CrearPrenda2__listaEstilos {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 16px;
-  }
-
-  .CrearPrenda2__listaEstilos ul {
-    gap: 7px;
+    column-count: 2;
+    column-gap: 16px;
   }
 
   .CrearPrenda2__listaEstilos li {
