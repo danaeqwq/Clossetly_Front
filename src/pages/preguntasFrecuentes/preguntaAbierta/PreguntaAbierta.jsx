@@ -1,4 +1,5 @@
 import "./PreguntaAbierta.css";
+import { useState } from "react";
 import "../../../styles/variables.css";
 import "../../../styles/global.css";
 import TerminoPregunta from "../../../componentes/TerminoPregunta/TerminoPregunta";
@@ -7,12 +8,31 @@ import estrella from "../../../assets/Star 1.svg";
 import LineaM from "../../../componentes/LineaM/LineaM";
 
 const preguntas = [
-    { titulo: "¿Que significa cada estado de una prenda?", abierto: true },
-    { titulo: "¿Cómo funcionan los estados del pedido?" },
-    { titulo: "Pregunta frecuente" },
-    { titulo: "Pregunta frecuente" },
-    { titulo: "Pregunta frecuente" },
-    { titulo: "Pregunta frecuente" },
+    {
+        titulo: "¿Qué significa cada estado de una prenda?",
+        contenido: "Los estados describen la condición de la prenda: nueva con etiqueta, nueva sin etiqueta, como nueva, muy buen estado o buen estado. Revisá la descripción y las fotos para conocer sus detalles antes de comprar o intercambiar.",
+        abierto: true,
+    },
+    {
+        titulo: "¿Cómo funcionan los estados del pedido?",
+        contenido: "El estado del pedido te permite seguir su avance desde la confirmación hasta la entrega. Consultá la sección de pedidos para ver las actualizaciones disponibles.",
+    },
+    {
+        titulo: "¿Cómo publico una prenda?",
+        contenido: "Desde tu armario podés cargar las fotos y completar los datos de la prenda, como talle, estado, categoría y descripción. Revisá la información antes de publicarla.",
+    },
+    {
+        titulo: "¿Cómo puedo comprar una prenda?",
+        contenido: "Elegí la prenda que te interesa y seguí los pasos que aparecen en su publicación para iniciar la compra. Podés consultar el avance desde tus pedidos.",
+    },
+    {
+        titulo: "¿Cómo propongo un intercambio?",
+        contenido: "En la publicación de una prenda disponible para intercambio, iniciá una propuesta y seleccioná una prenda de tu armario. La otra persona podrá revisar la propuesta.",
+    },
+    {
+        titulo: "¿Dónde puedo editar mi perfil?",
+        contenido: "Ingresá a Mi cuenta para actualizar tus datos personales, tu foto y tus preferencias.",
+    },
 ];
 
 const estados = [
@@ -42,6 +62,9 @@ const estados = [
 ];
 
 export default function PreguntaAbierta() {
+    const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(0);
+    const preguntaActual = preguntas[preguntaSeleccionada];
+
     return (
         <main className="PreguntaAbierta">
             <header className="PreguntaAbierta__intro">
@@ -55,21 +78,25 @@ export default function PreguntaAbierta() {
                         <TerminoPregunta
                             key={`${pregunta.titulo}-${index}`}
                             titulo={pregunta.titulo}
-                            abierto={pregunta.abierto}
+                            abierto={preguntaSeleccionada === index}
+                            mostrarContenido={false}
+                            onToggle={() => setPreguntaSeleccionada(
+                                preguntaSeleccionada === index ? null : index
+                            )}
                         />
                     ))}
                 </section>
 
-                <aside className="PreguntaAbierta__tarjeta" aria-label="Estados de una prenda">
+                <aside className="PreguntaAbierta__tarjeta" aria-label="Respuesta de la pregunta seleccionada">
                     <div className="PreguntaAbierta__marca" aria-hidden="true">
                         <img className="PreguntaAbierta__estrella" src={estrella} alt="" />
                         <span className="PreguntaAbierta__punto" />
                         <span className="PreguntaAbierta__punto PreguntaAbierta__punto--grande" />
                         <img className="PreguntaAbierta__logo" src={mariposa} alt="" />
                     </div>
-                    <p className="PreguntaAbierta__ayuda">
-                        Haz click en la pregunta para ver sus respuestas
-                    </p>
+                    <h2 className="PreguntaAbierta__respuestaTitulo">
+                        {preguntaActual?.titulo ?? "Elegí una pregunta"}
+                    </h2>
 
                     <div className="PreguntaAbierta__separador" aria-hidden="true">
                         <LineaM lado="izquierdo" />
@@ -77,14 +104,20 @@ export default function PreguntaAbierta() {
                         <LineaM lado="derecho" />
                     </div>
 
-                    <div className="PreguntaAbierta__estados">
-                        {estados.map((estado) => (
-                            <section className="PreguntaAbierta__estado" key={estado.titulo}>
-                                <h2>{estado.titulo}</h2>
-                                <p>{estado.descripcion}</p>
-                            </section>
-                        ))}
-                    </div>
+                    {preguntaSeleccionada === 0 ? (
+                        <div className="PreguntaAbierta__estados">
+                            {estados.map((estado) => (
+                                <section className="PreguntaAbierta__estado" key={estado.titulo}>
+                                    <h3>{estado.titulo}</h3>
+                                    <p>{estado.descripcion}</p>
+                                </section>
+                            ))}
+                        </div>
+                    ) : preguntaActual ? (
+                        <p className="PreguntaAbierta__respuesta">{preguntaActual.contenido}</p>
+                    ) : (
+                        <p className="PreguntaAbierta__respuesta">Seleccioná una pregunta de la lista para ver su respuesta.</p>
+                    )}
                 </aside>
             </div>
         </main>

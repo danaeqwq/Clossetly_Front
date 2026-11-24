@@ -8,12 +8,19 @@
 }
 
 .TerminoPregunta__encabezado {
+  width: 100%;
   min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   padding: 15px 20px 15px 15px;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .TerminoPregunta__titulo {
@@ -22,6 +29,11 @@
   font-family: var(--font-CormGaram);
   font-size: 25px;
   font-weight: 600;
+}
+
+.TerminoPregunta__encabezado:focus-visible {
+  outline: 2px solid var(--color-bordoVino);
+  outline-offset: 2px;
 }
 
 .TerminoPregunta__indicador {
