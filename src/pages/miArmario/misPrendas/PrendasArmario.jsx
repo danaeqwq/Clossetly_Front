@@ -320,8 +320,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       );
       setPrendas(respuesta.data.prendas || []);
 
-      console.log("Prendas recibidas:", respuesta.data.prendas);
-
     } catch (error) {
       console.error("Error al obtener las prendas:", error);
       console.log("Respuesta del backend:", error.response?.data);
