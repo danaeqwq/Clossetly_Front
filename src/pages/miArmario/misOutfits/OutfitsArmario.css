@@ -38,7 +38,7 @@
   border: 1px solid color-mix(in srgb, var(--color-blanco) 75%, transparent);
   border-radius: 50%;
   color: var(--color-blanco);
-  background: var(--color-morado);
+  background: var(--color-bordoVino);
   font: 700 23px/1 Arial, sans-serif;
 }
 

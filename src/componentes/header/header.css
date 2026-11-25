@@ -91,6 +91,13 @@
     -webkit-font-smoothing: antialiased;
 }
 
+.Header__buscadorIcono {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
 .Header__icono {
     position: relative;
     width: 34px;
@@ -128,6 +135,11 @@
 
 .Header__buscadorIcono {
     color: var(--color-rosaTerra);
+}
+
+.Header__menuBoton,
+.Header__menuMovil {
+    display: none;
 }
 
 .Header__srOnly {
@@ -172,37 +184,36 @@
 
 @media (max-width: 640px) {
     .Header {
-        min-height: 76px;
-        height: auto;
+        position: relative;
+        min-height: 58px;
+        height: 58px;
         gap: 8px;
-        padding: 0 12px;
+        padding: 0 15px;
     }
 
     .Header__marca {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         min-width: 0;
-        font-size: clamp(29px, 10vw, 37px);
+        font-size: clamp(24px, 7vw, 30px);
+        letter-spacing: -1px;
     }
 
-    .Header__separador {
-        height: 34px;
-    }
-
+    .Header__separador,
     .Header__seccion {
-        flex: 0 1 auto;
-        min-width: 0;
-        font-size: clamp(18px, 6vw, 22px);
+        display: none;
     }
 
     .Header__acciones {
-        min-width: 0;
-        gap: 8px;
+        flex: 0 0 auto;
+        min-width: auto;
+        margin-left: auto;
+        gap: 12px;
     }
 
     .Header__buscador {
-        flex: 0 0 24px;
-        width: 24px;
-        height: 34px;
+        flex: 0 0 28px;
+        width: 28px;
+        height: 36px;
         padding: 0;
         border: none;
         background: transparent;
@@ -214,7 +225,93 @@
     }
 
     .Header__buscador .material-symbols-outlined {
+        font-size: 21px;
+    }
+
+    .Header__acciones > .Header__icono {
+        display: none;
+    }
+
+    .Header__menuBoton {
+        display: grid;
+        width: 28px;
+        height: 36px;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        color: var(--color-rosaTerra);
+        background: transparent;
+    }
+
+    .Header__menuBoton .material-symbols-outlined {
         font-size: 22px;
+    }
+
+    .Header--busquedaAbierta .Header__marca {
+        display: none;
+    }
+
+    .Header--busquedaAbierta .Header__acciones {
+        width: 100%;
+        flex: 1 1 auto;
+        margin-left: 0;
+    }
+
+    .Header--busquedaAbierta .Header__buscador {
+        width: 100%;
+        height: 34px;
+        flex: 1 1 auto;
+        padding: 0 10px;
+        border: 1px solid var(--color-rosaEmpol);
+        background: var(--color-blancaso);
+        justify-content: initial;
+    }
+
+    .Header--busquedaAbierta .Header__buscador input {
+        display: block;
+        font-size: 12px;
+    }
+
+    .Header--busquedaAbierta .Header__menuBoton {
+        display: none;
+    }
+
+    .Header__menuMovil {
+        position: absolute;
+        z-index: 120;
+        top: calc(100% + 5px);
+        right: 10px;
+        display: grid;
+        width: min(210px, calc(100vw - 20px));
+        gap: 3px;
+        padding: 9px;
+        border: 1px solid var(--color-rosaEmpol);
+        border-radius: 12px;
+        background: var(--color-cremita);
+        box-shadow: 0 8px 20px rgb(52 44 48 / 18%);
+    }
+
+    .Header__menuMovil button {
+        display: flex;
+        min-height: 38px;
+        align-items: center;
+        gap: 10px;
+        padding: 0 8px;
+        border: 0;
+        border-radius: 8px;
+        color: var(--color-carbon);
+        background: transparent;
+        font: 14px var(--font-CormGaram);
+        text-align: left;
+    }
+
+    .Header__menuMovil button:active {
+        background: color-mix(in srgb, var(--color-rosaEmpol) 40%, transparent);
+    }
+
+    .Header__menuMovil .material-symbols-outlined {
+        color: var(--color-rosaTerra);
+        font-size: 20px;
     }
 }
 

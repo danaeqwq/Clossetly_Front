@@ -1,8 +1,6 @@
-
 import { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
-
 import "./header.css";
 import "../../styles/global.css";
 
@@ -33,13 +31,42 @@ export default function Header({
     onAbrirFiltros,
     onAlternarCarrito
 }) {
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
+    const navigate = useNavigate();
 
     const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false);
     const [cantidadNoLeidas, setCantidadNoLeidas] = useState(0);
+    const [busqueda, setBusqueda] = useState("");
+    const [busquedaAbierta, setBusquedaAbierta] = useState(false);
+    const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
 
     const esBoutique = pathname === "/boutique";
+    const mostrarCarrito = esBoutique || pathname.startsWith("/detalles/");
     const nombreSeccion = nombresSeccion[pathname] || seccion;
+
+    // ACTUALIZAR EL BUSCADOR AL ENTRAR A BOUTIQUE
+    useEffect(() => {
+        if (pathname === "/boutique") {
+            const parametros = new URLSearchParams(search);
+            setBusqueda(parametros.get("busqueda") || "");
+        }
+    }, [pathname, search]);
+
+    // REALIZAR BÚSQUEDA Y REDIRIGIR A BOUTIQUE
+    const buscar = (evento) => {
+        evento.preventDefault();
+
+        const texto = busqueda.trim();
+
+        if (!texto) {
+            navigate("/boutique");
+            setBusquedaAbierta(false);
+            return;
+        }
+
+        navigate(`/boutique?busqueda=${encodeURIComponent(texto)}`);
+        setBusquedaAbierta(false);
+    };
 
     // OBTENER CANTIDAD DE NOTIFICACIONES SIN LEER
     const cargarCantidadNoLeidas = useCallback(async () => {
@@ -86,7 +113,7 @@ export default function Header({
     }, [cargarCantidadNoLeidas]);
 
     return (
-        <header className="Header">
+        <header className={`Header${busquedaAbierta ? " Header--busquedaAbierta" : ""}`}>
             <a
                 className="Header__marca"
                 href="#"
@@ -105,23 +132,52 @@ export default function Header({
             </a>
 
             <div className="Header__acciones">
-                <label className="Header__buscador">
-                    <span className="Header__srOnly">
+                <form className="Header__buscador" onSubmit={buscar}>
+                    <label
+                        className="Header__srOnly"
+                        htmlFor="Header-busqueda"
+                    >
                         Buscar prenda
-                    </span>
+                    </label>
 
                     <input
+                        id="Header-busqueda"
                         type="search"
                         placeholder="Buscar prenda..."
+                        value={busqueda}
+                        onChange={(evento) => setBusqueda(evento.target.value)}
                     />
 
-                    <span
+                    <button
                         className="Header__buscadorIcono material-symbols-outlined"
-                        aria-hidden="true"
+                        type="submit"
+                        aria-label="Buscar"
+                        onClick={(evento) => {
+                            if (window.matchMedia("(max-width: 640px)").matches && !busquedaAbierta) {
+                                evento.preventDefault();
+                                setMenuMovilAbierto(false);
+                                setBusquedaAbierta(true);
+                            }
+                        }}
                     >
                         search
+                    </button>
+                </form>
+
+                <button
+                    className="Header__menuBoton"
+                    type="button"
+                    aria-label={menuMovilAbierto ? "Cerrar menú" : "Abrir menú"}
+                    aria-expanded={menuMovilAbierto}
+                    onClick={() => {
+                        setBusquedaAbierta(false);
+                        setMenuMovilAbierto((abierto) => !abierto);
+                    }}
+                >
+                    <span className="material-symbols-outlined" aria-hidden="true">
+                        {menuMovilAbierto ? "close" : "menu"}
                     </span>
-                </label>
+                </button>
 
                 <button
                     className="Header__icono"
@@ -155,13 +211,16 @@ export default function Header({
                     </span>
                 </button>
 
-                {esBoutique && (
+                {mostrarCarrito && (
                     <button
                         className="Header__icono"
                         type="button"
                         onClick={onAlternarCarrito}
                     >
-                        <span className="material-symbols-outlined" aria-hidden="true">
+                        <span
+                            className="material-symbols-outlined"
+                            aria-hidden="true"
+                        >
                             shopping_cart
                         </span>
                     </button>
@@ -173,12 +232,44 @@ export default function Header({
                         type="button"
                         onClick={onAbrirFiltros}
                     >
-                        <span className="material-symbols-outlined" aria-hidden="true">
+                        <span
+                            className="material-symbols-outlined"
+                            aria-hidden="true"
+                        >
                             tune
                         </span>
                     </button>
                 )}
             </div>
+
+            {menuMovilAbierto && (
+                <nav className="Header__menuMovil" aria-label="Menú principal">
+                    {mostrarCarrito && (
+                        <button type="button" onClick={() => { onAlternarCarrito?.(); setMenuMovilAbierto(false); }}>
+                            <span className="material-symbols-outlined" aria-hidden="true">shopping_cart</span>
+                            Carrito
+                        </button>
+                    )}
+                    {esBoutique && (
+                        <button type="button" onClick={() => { onAbrirFiltros?.(); setMenuMovilAbierto(false); }}>
+                            <span className="material-symbols-outlined" aria-hidden="true">tune</span>
+                            Filtros
+                        </button>
+                    )}
+                    <button type="button" onClick={() => setMenuMovilAbierto(false)}>
+                        <span className="material-symbols-outlined" aria-hidden="true">favorite_border</span>
+                        Favoritos
+                    </button>
+                    <button type="button" onClick={() => {
+                        setMostrarNotificaciones(true);
+                        setMenuMovilAbierto(false);
+                        cargarCantidadNoLeidas();
+                    }}>
+                        <span className="material-symbols-outlined" aria-hidden="true">notifications_none</span>
+                        Notificaciones
+                    </button>
+                </nav>
+            )}
 
             {mostrarNotificaciones && (
                 <Notificaciones

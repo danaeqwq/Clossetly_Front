@@ -1,10 +1,12 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PanelDesplegable from "../panelDesplegable/PanelDesplegable";
 import { Link } from "react-router";
+import Alert from "../Alert/Alert";
+
 import iconoWhatsapp from "../../assets/logo wsp mi armario.svg";
 import ProductoCarrito from "./productoCarrito/ProductoCarrito";
+
 import "./carrito.css";
 
 const URL_BASE = "http://localhost:3000";
@@ -77,6 +79,17 @@ export default function Carrito({ onCerrar }) {
     const [pedidosProcesando, setPedidosProcesando] = useState([]);
     const [limpiando, setLimpiando] = useState(false);
 
+    // Estado del componente Alert
+    const [alerta, setAlerta] = useState(null);
+
+    // Mostrar alerta personalizada
+    const mostrarAlerta = (mensaje) => {
+        setAlerta({
+            titulo: "¡Atención!",
+            mensaje,
+        });
+    };
+
     // Obtener pedidos e items del usuario autenticado
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -93,7 +106,6 @@ export default function Carrito({ onCerrar }) {
             },
         };
 
-        // Realizar las dos peticiones
         Promise.all([
             axios.get(URL_PEDIDOS, config),
             axios.get(URL_PEDIDO_ITEMS, config),
@@ -105,7 +117,6 @@ export default function Carrito({ onCerrar }) {
                 const itemsRecibidos =
                     respuestaItems.data.pedidoItems || [];
 
-                // Agrupar los productos por ID de pedido
                 const productosPorPedido = {};
 
                 itemsRecibidos.forEach((item) => {
@@ -121,7 +132,6 @@ export default function Carrito({ onCerrar }) {
                     });
                 });
 
-                // Asociar los productos con cada pedido
                 const pedidosPreparados = pedidosRecibidos.map((pedido) => ({
                     ...pedido,
 
@@ -181,11 +191,9 @@ export default function Carrito({ onCerrar }) {
 
         if (!producto) return;
 
-        // Calcular nueva cantidad
         const nuevaCantidad =
             Number(producto.cantidad) + cambio;
 
-        // Validar cantidad y stock
         if (
             nuevaCantidad < 1 ||
             nuevaCantidad > Number(producto.stock)
@@ -193,7 +201,6 @@ export default function Carrito({ onCerrar }) {
             return;
         }
 
-        // Evitar solicitudes repetidas
         if (itemsProcesando.includes(productoId)) return;
 
         const token = localStorage.getItem("token");
@@ -209,7 +216,6 @@ export default function Carrito({ onCerrar }) {
             productoId,
         ]);
 
-        // Actualizar cantidad en el backend
         axios.patch(
             `${URL_PEDIDO_ITEMS}/${productoId}`,
             {
@@ -218,8 +224,6 @@ export default function Carrito({ onCerrar }) {
             config
         )
             .then((respuesta) => {
-
-                // Actualizar cantidad en pantalla
                 setPedidos((actuales) =>
                     actuales.map((pedido) =>
                         pedido.id === idPedido
@@ -238,7 +242,6 @@ export default function Carrito({ onCerrar }) {
                             : pedido
                     )
                 );
-
             })
             .catch((error) => {
                 console.error(
@@ -246,7 +249,7 @@ export default function Carrito({ onCerrar }) {
                     error
                 );
 
-                alert(
+                mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "No se pudo modificar la cantidad."
                 );
@@ -260,7 +263,6 @@ export default function Carrito({ onCerrar }) {
 
     // ELIMINAR UN PRODUCTO DEL CARRITO
     const eliminarProducto = (idPedido, productoId) => {
-        // Evitar solicitudes repetidas
         if (itemsProcesando.includes(productoId)) return;
 
         const token = localStorage.getItem("token");
@@ -276,14 +278,11 @@ export default function Carrito({ onCerrar }) {
             productoId,
         ]);
 
-        // Eliminar producto en el backend
         axios.delete(
             `${URL_PEDIDO_ITEMS}/${productoId}`,
             config
         )
             .then(() => {
-
-                // Quitar producto de la pantalla
                 setPedidos((actuales) =>
                     actuales.map((pedido) =>
                         pedido.id === idPedido
@@ -296,7 +295,6 @@ export default function Carrito({ onCerrar }) {
                             : pedido
                     )
                 );
-
             })
             .catch((error) => {
                 console.error(
@@ -304,7 +302,7 @@ export default function Carrito({ onCerrar }) {
                     error
                 );
 
-                alert(
+                mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "No se pudo eliminar el producto."
                 );
@@ -339,20 +337,16 @@ export default function Carrito({ onCerrar }) {
             idPedido,
         ]);
 
-        // Eliminar pedido en el backend
         axios.delete(`${URL_PEDIDOS}/${idPedido}`, config)
             .then(() => {
-
-                // Actualizar la pantalla cuando se confirme la eliminación
                 setPedidos((actuales) =>
                     actuales.filter((pedido) => pedido.id !== idPedido)
                 );
-
             })
             .catch((error) => {
                 console.error("Error al eliminar el pedido:", error);
 
-                alert(
+                mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "No se pudo eliminar el pedido."
                 );
@@ -390,7 +384,9 @@ export default function Carrito({ onCerrar }) {
         );
 
         if (pedidosPendientes.length === 0) {
-            alert("No tenés pedidos pendientes para eliminar.");
+            mostrarAlerta(
+                "No tenés pedidos pendientes para eliminar."
+            );
             return;
         }
 
@@ -413,17 +409,16 @@ export default function Carrito({ onCerrar }) {
             }
         )
             .then((respuesta) => {
-                // Eliminar de la pantalla únicamente los pedidos pendientes.
                 setPedidos((actuales) =>
                     actuales.filter((pedido) => pedido.estado)
                 );
 
-                alert(respuesta.data.mensaje);
+                mostrarAlerta(respuesta.data.mensaje);
             })
             .catch((error) => {
                 console.error("Error al limpiar el carrito:", error);
 
-                alert(
+                mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "No se pudo vaciar el carrito."
                 );
@@ -436,16 +431,14 @@ export default function Carrito({ onCerrar }) {
     // CONTACTAR AL VENDEDOR POR WHATSAPP
     const contactarWhatsapp = (pedido, subtotal) => {
         if (!pedido.telefono || pedido.productos.length === 0) {
-            alert("No se puede contactar al vendedor.");
+            mostrarAlerta("No se puede contactar al vendedor.");
             return;
         }
 
         const url = generarUrlWhatsapp(pedido, subtotal);
 
-        // Abrir WhatsApp
         window.open(url, "_blank");
 
-        // Si ya tiene estado, no hace falta modificarlo.
         if (pedido.estado) return;
 
         const token = localStorage.getItem("token");
@@ -460,7 +453,6 @@ export default function Carrito({ onCerrar }) {
             }
         )
             .then((respuesta) => {
-                // Actualizar el estado del pedido en pantalla.
                 setPedidos((actuales) =>
                     actuales.map((actual) =>
                         actual.id === pedido.id
@@ -473,9 +465,12 @@ export default function Carrito({ onCerrar }) {
                 );
             })
             .catch((error) => {
-                console.error("Error al cambiar el estado del pedido:", error);
+                console.error(
+                    "Error al cambiar el estado del pedido:",
+                    error
+                );
 
-                alert(
+                mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "WhatsApp se abrió, pero no se pudo actualizar el estado del pedido."
                 );
@@ -736,6 +731,16 @@ export default function Carrito({ onCerrar }) {
                 </footer>
 
             </div>
+
+            {alerta && (
+                <Alert
+                    titulo={alerta.titulo}
+                    mensaje={alerta.mensaje}
+                    textoBoton="Entendido"
+                    onClick={() => setAlerta(null)}
+                />
+            )}
+
         </PanelDesplegable>
     );
 }

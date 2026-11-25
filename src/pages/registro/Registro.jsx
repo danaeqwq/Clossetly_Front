@@ -9,7 +9,6 @@ import Boton from "../../componentes/Boton/Boton";
 import Alert from "../../componentes/Alert/Alert";
 
 import ilustracion from "../../assets/Ilustracion__registro.svg";
-import iconoGoogle from "../../assets/Icono__google.svg";
 import Icono__ojo from "../../assets/Icono__ojo-cerrado.svg";
 import Icono__ojo_abierto from "../../assets/Icono__ojo-abierto.svg";
 import { useNavigate } from "react-router";
@@ -211,17 +210,6 @@ export default function Registro() {
                             type="submit"
                         />
                     </form>
-
-                    <div className="Login__separador">
-                        <span>o continuar con</span>
-                    </div>
-
-                    <Boton
-                        texto="Google"
-                        variante="secundario"
-                        icono={iconoGoogle}
-                        type="button"
-                    />
 
                     <p className="Registro__section-div-p">
                         ¿Tenés cuenta?{" "}

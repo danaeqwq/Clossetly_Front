@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import Header from "./componentes/header/Header";
 import Footer from "./componentes/footer/Footer";
 import NavBar from "./componentes/nav/Nav";
+import Carrito from "./componentes/carrito/Carrito";
 
 import Admin from "./pages/admin/Admin";
 import Boutique from "./pages/boutique/Boutique";
@@ -78,9 +79,7 @@ export default function App() {
                                     element={
                                         <Boutique
                                             filtrosAbiertos={panelActivo === "filtros"}
-                                            carritoAbierto={panelActivo === "carrito"}
                                             onCerrarFiltros={() => setPanelActivo(null)}
-                                            onCerrarCarrito={() => setPanelActivo(null)}
                                         />
                                     }
                                 />
@@ -105,6 +104,9 @@ export default function App() {
                         )}
                     </Routes>
                 </main>
+                {usuario && panelActivo === "carrito" && (
+                    <Carrito onCerrar={() => setPanelActivo(null)} />
+                )}
                 {usuario && <Footer />}
             </>
         </BrowserRouter>

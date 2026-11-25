@@ -12,7 +12,6 @@ import Icono__correo from "../../assets/Icono__correo.svg";
 import Icono_candado from "../../assets/Icono_candado.svg";
 import Icono__ojo from "../../assets/Icono__ojo-cerrado.svg";
 import Icono__ojo_abierto from "../../assets/Icono__ojo-abierto.svg";
-import Icono__google from "../../assets/Icono__google.svg";
 
 export default function Login({ setUsuario }) {
     const [correo, setCorreo] = useState("");
@@ -113,17 +112,6 @@ export default function Login({ setUsuario }) {
                             type="submit"
                         />
                     </form>
-
-                    <div className="Login__separador">
-                        <span>o continuar con</span>
-                    </div>
-
-                    <Boton
-                        texto="Google"
-                        variante="secundario"
-                        icono={Icono__google}
-                        type="button"
-                    />
 
                     <p className="Login__registro">
                         ¿No tienes cuenta? <Link to="/registro" className="Login__enlace">

@@ -101,25 +101,97 @@
 
 @media (max-width: 640px) {
   .Login {
-    overflow: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    align-items: start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: max(12px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom));
   }
 
   .Login__panel {
-    display: block;
-    min-height: 100vh;
-    padding: 10px 15px;
+    display: flex;
+    width: min(100%, 420px);
+    min-height: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 15px 16px;
   }
 
+  .Login__illustration { flex: 0 0 auto; }
+
   .Login__ilustration-img {
-    width: 20vh;
+    width: min(150px, 42vw);
+    height: 145px;
+    object-fit: contain;
   }
 
   .Login__formulario {
-    margin: 5vh auto 0;
+    width: 100%;
+    margin: 3px auto 0;
   }
+
+  .Login__encabezado { margin-bottom: 8px; }
 
   .Login__titulo {
-    font-size: 30px;
+    margin-bottom: 2px;
+    font-size: 27px;
   }
 
+  .Login__subtitulo {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .Login__subtitulo br { display: none; }
+
+  .Login .Label {
+    margin-bottom: 4px;
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  .Login .Campo {
+    min-height: 35px;
+    gap: 6px;
+    margin-bottom: 9px;
+    padding-inline: 8px;
+    border-radius: 11px;
+  }
+
+  .Login .Campo__img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .Login .Campo__input { font-size: 11px; }
+
+  .Login .Campo__img-final {
+    width: 15px;
+    height: 15px;
+  }
+
+  .Login__enlace--olvido {
+    align-self: flex-end;
+    margin-top: 0;
+    font-size: 12px;
+  }
+
+  .Login__form .Boton {
+    min-height: 35px;
+    margin-top: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  .Login__registro {
+    margin-top: 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .Login__panel { padding-inline: 13px; }
+  .Login__ilustration-img { width: min(132px, 40vw); height: 125px; }
+  .Login__titulo { font-size: 25px; }
 }
