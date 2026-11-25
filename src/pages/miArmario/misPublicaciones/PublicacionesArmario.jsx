@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
@@ -262,6 +261,8 @@ export default function PublicacionesArmario({
   };
 
   // CARGAR PUBLICACIONES
+
+  // CARGAR PUBLICACIONES
   useEffect(() => {
     const cargarPublicaciones = async () => {
       const token = localStorage.getItem("token");
@@ -278,27 +279,50 @@ export default function PublicacionesArmario({
           },
         };
 
-        const [ventasRes, intercambiosRes] = await Promise.all([
-          axios.get(
-            "http://localhost:3000/api/publicaciones/compra/mis",
-            config
-          ),
-          axios.get(
-            "http://localhost:3000/api/publicaciones/intercambio/mis",
-            config
-          ),
-        ]);
+        const [ventasRes, intercambiosRes, contadoresRes] =
+          await Promise.all([
+            axios.get(
+              "http://localhost:3000/api/publicaciones/compra/mis",
+              config
+            ),
+            axios.get(
+              "http://localhost:3000/api/publicaciones/intercambio/mis",
+              config
+            ),
+            axios.get(
+              "http://localhost:3000/api/ventas/contadores",
+              config
+            ),
+          ]);
+
+        // PUBLICACIONES DE COMPRA
+        const contadores = contadoresRes.data.contadores || [];
 
         const ventas = (
           ventasRes.data.publicaciones || []
-        ).map((p) => ({
-          ...p,
-          imagen: p.imagen?.startsWith("http")
-            ? p.imagen
-            : `http://localhost:3000${p.imagen}`,
-          solicitudes: [],
-        }));
+        ).map((p) => {
+          const contador = contadores.find(
+            (item) =>
+              Number(item.idPublicacion) === Number(p.id)
+          );
 
+          return {
+            ...p,
+            imagen: p.imagen?.startsWith("http")
+              ? p.imagen
+              : `http://localhost:3000${p.imagen}`,
+            solicitudes: [
+              ...Array(
+                Number(contador?.solicitudesPendientes || 0)
+              ).fill({ estado: null }),
+              ...Array(
+                Number(contador?.ventas || 0)
+              ).fill({ estado: "CONFIRMADO" }),
+            ],
+          };
+        });
+
+        // PUBLICACIONES DE INTERCAMBIO
         const intercambios = (
           Array.isArray(intercambiosRes.data)
             ? intercambiosRes.data
@@ -336,6 +360,7 @@ export default function PublicacionesArmario({
 
     cargarPublicaciones();
   }, []);
+
 
   // ABRIR PROPUESTAS DESDE UNA NOTIFICACIÓN
   useEffect(() => {
@@ -938,17 +963,16 @@ export default function PublicacionesArmario({
 
         <div className="MiArmario__listaPublicaciones">
           {publicacionesVenta.map((publicacion) => {
-            const ventasConfirmadas =
-              publicacion.solicitudes.filter(
-                (solicitud) =>
-                  solicitud.estado === "CONFIRMADO"
-              ).length;
+            const ventasConfirmadas = publicacion.solicitudes.filter(
+              (solicitud) =>
+                ["CONFIRMADO", "COMPLETADO"].includes(
+                  (solicitud.estado || "").toUpperCase()
+                )
+            ).length;
 
-            const solicitudesPendientes =
-              publicacion.solicitudes.filter(
-                (solicitud) =>
-                  solicitud.estado === "EN CONTACTO"
-              ).length;
+            const solicitudesPendientes = publicacion.solicitudes.filter(
+              (solicitud) => solicitud.estado === null
+            ).length;
 
             return (
               <TarjetaVentaArmario
@@ -981,13 +1005,7 @@ export default function PublicacionesArmario({
             publicacion && (
               <GestionarVentas
                 key={publicacion.id}
-                solicitudes={publicacion.solicitudes}
-                onGuardar={(solicitudes) =>
-                  actualizarSolicitudes(
-                    publicacion.id,
-                    solicitudes
-                  )
-                }
+                idPublicacion={publicacion.id}
                 onClose={() => setVentaEnGestion(null)}
               />
             )
