@@ -214,6 +214,20 @@
 
 .Propuesta__seleccionar .material-symbols-outlined { font-size: 14px; }
 
+.Propuesta__cambiar--girando {
+  animation: girarIntercambio 1s linear infinite;
+}
+
+@keyframes girarIntercambio {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 1050px) {
   .Propuesta {
     padding-inline: 64px 32px;

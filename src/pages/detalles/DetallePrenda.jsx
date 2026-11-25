@@ -3,7 +3,6 @@ import { useLocation } from "react-router";
 import "./DetallePrenda.css";
 import "../../styles/variables.css";
 import "../../styles/global.css";
-import Boton from "../../componentes/Boton/Boton";
 import Ropa from "../../assets/Ropa__ejemplo.jpg";
 import Etiqueta from "../../assets/etiqueta.svg";
 
@@ -29,7 +28,10 @@ export default function DetallePrenda() {
 
     return (
         <main className="DetallePrenda">
-            <section className="DetallePrenda__principal" aria-label="Detalle de la prenda">
+            <section
+                className="DetallePrenda__principal"
+                aria-label="Detalle de la prenda"
+            >
                 <article className="DetallePrenda__ficha">
                     <div className="DetallePrenda__imagenMarco">
                         <img src={imagen} alt={prenda.nombre} />
@@ -41,9 +43,14 @@ export default function DetallePrenda() {
                         <div className="DetallePrenda__privacidad">
                             <strong>Privacidad</strong>
                             <span>
-                                {Number(prenda.privacidad) === 1 ? "Pública" : "Privada"}
+                                {Number(prenda.privacidad) === 1
+                                    ? "Pública"
+                                    : "Privada"}
                             </span>
-                            <span className="DetallePrenda__interruptor" aria-label="Privacidad" />
+                            <span
+                                className="DetallePrenda__interruptor"
+                                aria-label="Privacidad"
+                            />
                         </div>
 
                         <dl className="DetallePrenda__datos">
@@ -77,13 +84,11 @@ export default function DetallePrenda() {
                                     Estilos:
                                 </dt>
                                 <dd>
-                                    {prenda.estilos?.length > 0 ? (
-                                        prenda.estilos.map((estilo) => (
+                                    {prenda.estilos?.length > 0
+                                        ? prenda.estilos.map((estilo) => (
                                             <span key={estilo}>{estilo}</span>
                                         ))
-                                    ) : (
-                                        <span>Sin estilos</span>
-                                    )}
+                                        : <span>Sin estilos</span>}
                                 </dd>
                             </div>
 
@@ -106,7 +111,6 @@ export default function DetallePrenda() {
                                 </dt>
                                 <dd>{prenda.genero || "Sin especificar"}</dd>
                             </div>
-
                         </dl>
                     </div>
                 </article>
@@ -141,20 +145,6 @@ export default function DetallePrenda() {
                             <span>{prenda.talle || "Sin talle"}</span>
                         </label>
                     </fieldset>
-
-                    <Boton
-                        texto="Modificar prenda"
-                        variante="secundario"
-                        iconoGoogle="edit_square"
-                        type="button"
-                    />
-
-                    <Boton
-                        texto="Eliminar prenda"
-                        variante="secundario eliminar"
-                        iconoGoogle="delete"
-                        type="button"
-                    />
                 </aside>
             </section>
         </main>

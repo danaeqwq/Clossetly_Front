@@ -1,8 +1,15 @@
+
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import axios from "axios";
+
 import "./header.css";
-import "../../styles/global.css"
+import "../../styles/global.css";
+
 import iconoFavoritos from "../../assets/componentes/icono favoritos.svg";
 import iconoCampana from "../../assets/componentes/icono campana.svg";
-import { useLocation } from "react-router";
+
+import Notificaciones from "../notificaciones/Notificaciones";
 
 const nombresSeccion = {
     "/admin": "Administración",
@@ -27,8 +34,56 @@ export default function Header({
     onAlternarCarrito
 }) {
     const { pathname } = useLocation();
+
+    const [mostrarNotificaciones, setMostrarNotificaciones] = useState(false);
+    const [cantidadNoLeidas, setCantidadNoLeidas] = useState(0);
+
     const esBoutique = pathname === "/boutique";
     const nombreSeccion = nombresSeccion[pathname] || seccion;
+
+    // OBTENER CANTIDAD DE NOTIFICACIONES SIN LEER
+    const cargarCantidadNoLeidas = useCallback(async () => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            setCantidadNoLeidas(0);
+            return;
+        }
+
+        try {
+            const respuesta = await axios.get(
+                "http://localhost:3000/api/notificaciones",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            const datos = Array.isArray(respuesta.data)
+                ? respuesta.data
+                : [];
+
+            const cantidad = datos.filter(
+                (notificacion) => !Boolean(Number(notificacion.visto))
+            ).length;
+
+            setCantidadNoLeidas(cantidad);
+        } catch (error) {
+            console.error("Error al obtener cantidad de notificaciones:", error);
+        }
+    }, []);
+
+    // CONSULTAR AL ENTRAR Y ACTUALIZAR PERIÓDICAMENTE
+    useEffect(() => {
+        cargarCantidadNoLeidas();
+
+        const intervalo = setInterval(() => {
+            cargarCantidadNoLeidas();
+        }, 15000);
+
+        return () => clearInterval(intervalo);
+    }, [cargarCantidadNoLeidas]);
 
     return (
         <header className="Header">
@@ -60,7 +115,12 @@ export default function Header({
                         placeholder="Buscar prenda..."
                     />
 
-                    <span className="Header__buscadorIcono material-symbols-outlined" aria-hidden="true">search</span>
+                    <span
+                        className="Header__buscadorIcono material-symbols-outlined"
+                        aria-hidden="true"
+                    >
+                        search
+                    </span>
                 </label>
 
                 <button
@@ -74,9 +134,25 @@ export default function Header({
                 <button
                     className="Header__icono"
                     type="button"
-                    aria-label="Notificaciones"
+                    aria-label={`Notificaciones${cantidadNoLeidas > 0
+                        ? `, ${cantidadNoLeidas} sin leer`
+                        : ""
+                        }`}
+                    aria-expanded={mostrarNotificaciones}
+                    onClick={() => {
+                        setMostrarNotificaciones(!mostrarNotificaciones);
+                        cargarCantidadNoLeidas();
+                    }}
                 >
-                    <img src={iconoCampana} alt="" />
+                    <span className="Header__campanaContenedor">
+                        <img src={iconoCampana} alt="" />
+
+                        {cantidadNoLeidas > 0 && (
+                            <span className="Header__contadorNotificaciones">
+                                {cantidadNoLeidas > 99 ? "99+" : cantidadNoLeidas}
+                            </span>
+                        )}
+                    </span>
                 </button>
 
                 {esBoutique && (
@@ -89,7 +165,6 @@ export default function Header({
                             shopping_cart
                         </span>
                     </button>
-                    
                 )}
 
                 {esBoutique && (
@@ -104,6 +179,13 @@ export default function Header({
                     </button>
                 )}
             </div>
+
+            {mostrarNotificaciones && (
+                <Notificaciones
+                    onClose={() => setMostrarNotificaciones(false)}
+                    onCambioNotificaciones={cargarCantidadNoLeidas}
+                />
+            )}
         </header>
     );
 }

@@ -4,7 +4,12 @@ import axios from "axios";
 import Modal from "../../../../../componentes/modal/Modal";
 import "./propuestasDeIntercambio.css";
 
-export default function PropuestasDeIntercambio({ propuestas = [], onGuardar, onVerDetalle, onClose }) {
+export default function PropuestasDeIntercambio({
+  propuestas = [],
+  onGuardar,
+  onVerDetalle,
+  onClose,
+}) {
   const [propuestasActuales, setPropuestasActuales] = useState(propuestas);
   const [cargando, setCargando] = useState(null);
   const [error, setError] = useState("");
@@ -23,9 +28,7 @@ export default function PropuestasDeIntercambio({ propuestas = [], onGuardar, on
     try {
       await axios.patch(
         `http://localhost:3000/api/propuestas/${id}/estado`,
-        {
-          decision,
-        },
+        { decision },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,14 +39,13 @@ export default function PropuestasDeIntercambio({ propuestas = [], onGuardar, on
       const estado = decision === "aceptar" ? "Confirmado" : "Rechazado";
 
       const actualizadas = propuestasActuales.map((propuesta) =>
-        propuesta.id === id
+        Number(propuesta.id) === Number(id)
           ? { ...propuesta, estado }
           : propuesta
       );
 
       setPropuestasActuales(actualizadas);
       onGuardar?.(actualizadas);
-
     } catch (error) {
       console.error(
         "Error al resolver la propuesta:",
@@ -75,11 +77,8 @@ export default function PropuestasDeIntercambio({ propuestas = [], onGuardar, on
       onClose={onClose}
     >
       <div className="PropuestasIntercambio" aria-label="Propuestas recibidas">
-
         {error && (
-          <p className="PropuestasIntercambio__error">
-            {error}
-          </p>
+          <p className="PropuestasIntercambio__error">{error}</p>
         )}
 
         {propuestasPendientes.length === 0 ? (
@@ -101,7 +100,7 @@ export default function PropuestasDeIntercambio({ propuestas = [], onGuardar, on
               <button
                 className="PropuestasIntercambio__detalle"
                 type="button"
-                onClick={() => onVerDetalle?.(propuesta.producto)}
+                onClick={() => onVerDetalle?.(propuesta)}
               >
                 Ver detalle
               </button>

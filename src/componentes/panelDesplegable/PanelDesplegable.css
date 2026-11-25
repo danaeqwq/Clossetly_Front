@@ -53,6 +53,7 @@
   color: var(--color-bordoVino);
   background: transparent;
   font: 300 32px/1 Arial, sans-serif;
+  cursor: pointer;
 }
 
 .PanelDesplegable__contenido {

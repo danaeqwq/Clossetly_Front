@@ -71,6 +71,17 @@
 }
 .PropuestasIntercambio__rechazar:hover { background: #f5e8e5 !important; }
 
+.PropuestasIntercambio__vacio {
+  grid-column: 1 / -1;
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  padding: 12px;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
 @media (min-width: 601px) and (max-width: 900px) {
   .Modal:has(.PropuestasIntercambio) .Modal__ventana {
     width: min(760px, calc(100vw - 48px));

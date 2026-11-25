@@ -1,78 +1,151 @@
+
 .Notificaciones__lista {
-  padding: 10px 18px 24px;
+    padding: 10px 18px 24px;
 }
 
 .Notificaciones__fecha {
-  margin-bottom: 10px;
-  color:rgba(136, 87, 83, 1);
-  font: italic 600 17px/1.3 var(--font-CormGaram);
+    margin-bottom: 10px;
+    color: rgba(136, 87, 83, 1);
+    font: italic 600 17px/1.3 var(--font-CormGaram);
 }
 
 .Notificaciones__tarjeta {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-bottom: 12px;
-  padding: 12px 16px;
-  border: 1px solid #d8c6c3;
-  border-radius: 6px;
-  background: #fbf7f5;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 14px 12px;
+    border: 1px solid #d8c6c3;
+    border-radius: 6px;
+    background: #fbf7f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.Notificaciones__tarjeta:hover {
+    background: #f2e8e5;
+    border-color: #c9aaa7;
+}
+
+.Notificaciones__tarjeta:focus-visible {
+    outline: 2px solid var(--color-bordoVino);
+    outline-offset: 2px;
 }
 
 .Notificaciones__tarjeta--no-leido::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #c91f2d;
-  transform: translateY(-50%);
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #c91f2d;
+    transform: translateY(-50%);
 }
 
-.Notificaciones__tarjeta--no-leido { padding-left: 22px; }
+.Notificaciones__tarjeta--no-leido {
+    padding-left: 18px;
+}
+
+.Notificaciones__tarjeta--leido {
+    opacity: 0.75;
+}
 
 .Notificaciones__avatar {
-  display: grid;
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  overflow: hidden;
-  border: 1px solid #c7aaa6;
-  border-radius: 50%;
-  color: var(--color-bordoVino);
-  background: #e7d7d4;
-  font-size: 26px;
+    display: grid;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid #c7aaa6;
+    border-radius: 50%;
+    color: var(--color-bordoVino);
+    background: #e7d7d4;
+    font-size: 25px;
+    object-fit: cover;
+}
+
+.Notificaciones__contenido {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 4px;
+    padding-right: 2px;
+}
+
+.Notificaciones__encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.Notificaciones__usuario {
+    overflow: hidden;
+    color: var(--color-carbon);
+    font: 600 14px/1.3 var(--font-manrope);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .Notificaciones__texto {
-  min-width: 0;
-  padding-right: 24px;
-  font: 400 15px/1.25 var(--font-Newsreader);
-  color: var(--color-carbon);
+    margin: 0;
+    color: var(--color-carbon);
+    font: 400 14px/1.4 var(--font-Newsreader);
 }
 
-.Notificaciones__texto strong { font-weight: 500; }
-
-.Notificaciones__detalle {
-  margin-top: 3px;
-  font: 12px/1.3 var(--font-manrope);
+.Notificaciones__destacado {
+    color: #c45b83;
+    font-weight: 600;
 }
 
 .Notificaciones__hora {
-  position: absolute;
-  top: 7px;
-  right: 10px;
-  color: #756a68;
-  font: 9px/1 var(--font-manrope);
-  white-space: nowrap;
+    flex-shrink: 0;
+    color: #756a68;
+    font: 9px/1 var(--font-manrope);
+    white-space: nowrap;
 }
 
+.Notificaciones__mensaje {
+    padding: 24px 12px;
+    color: var(--color-carbon);
+    font: 15px/1.5 var(--font-manrope);
+    text-align: center;
+}
+
+
+.Notificaciones__whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  color: #25a56a;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.Notificaciones__whatsapp:hover {
+  opacity: 0.75;
+}
+
+.Notificaciones__whatsapp .material-symbols-outlined {
+  font-size: 19px;
+}
+
+
 @media (max-width: 700px) {
-  .Notificaciones__lista { padding: 12px 14px 24px; }
-  .Notificaciones__tarjeta { min-height: 78px; }
+    .Notificaciones__lista {
+        padding: 12px 14px 24px;
+    }
+
+    .Notificaciones__tarjeta {
+        min-height: 70px;
+    }
 }
