@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
@@ -13,82 +12,18 @@ import CrearPrenda2 from "../misPrendas/mi modales/crear prenda 2/CrearPrenda2";
 import CrearPrenda3Venta from "../misPrendas/mi modales/crear prenda 3 venta/CrearPrenda3Venta";
 import CrearPrenda3Intercambio from "../misPrendas/mi modales/crear prenda 3 intercambio/CrearPrenda3Intercambio";
 
-const avatarEjemplo = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=96&h=96&q=80";
-
-const claveRegistro = (registro, tipo) =>
-  registro.claveArmario || `${tipo}-${registro.id}`;
-
-const normalizarCategoria = (categoria) => {
-  const categorias = [
-    "Remeras",
-    "Pantalones",
-    "Cortos",
-    "Camperas",
-    "Accesorios",
-    "Zapatos",
-  ];
-
-  return (
-    categorias.find(
-      (opcion) =>
-        opcion.toLowerCase() ===
-        String(categoria || "").toLowerCase()
-    ) ||
-    categorias.find((opcion) =>
-      opcion
-        .toLowerCase()
-        .startsWith(String(categoria || "").toLowerCase())
-    ) ||
-    "Remeras"
-  );
-};
-
-const normalizarOpcion = (valor, opciones, predeterminado) => {
-  const texto = String(valor || "").toLowerCase();
-
-  return (
-    opciones.find((opcion) => opcion.toLowerCase() === texto) ||
-    opciones.find((opcion) => texto.includes(opcion.toLowerCase())) ||
-    predeterminado
-  );
-};
-
 const crearDatosEdicion = (publicacion, tipo) => {
   const datos = {
     tipoPublicacion: tipo,
     nombre: publicacion.nombre || "",
     descripcion: publicacion.descripcion || "",
     imagen: publicacion.imagen || "",
-    categoria: normalizarCategoria(
-      publicacion.categoria || publicacion.prenda
-    ),
+    categoria: publicacion.categoria || publicacion.prenda || "",
     talle: publicacion.talle || "M",
-    temporada: normalizarOpcion(
-      publicacion.temporada,
-      ["PRIMAVERA", "VERANO", "OTOÑO", "INVIERNO"],
-      "PRIMAVERA"
-    ),
-    ocasion: normalizarOpcion(
-      publicacion.ocasion,
-      ["CASUAL", "FORMAL", "FIESTA", "DEPORTE"],
-      "FORMAL"
-    ),
-    genero: normalizarOpcion(
-      publicacion.genero,
-      ["UNISEX", "MUJER", "HOMBRE"],
-      "UNISEX"
-    ),
-    estado: normalizarOpcion(
-      publicacion.estado,
-      [
-        "NUEVA CON ETIQUETA",
-        "NUEVA SIN ETIQUETA",
-        "COMO NUEVA",
-        "MUY BUEN ESTADO",
-        "BUEN ESTADO",
-      ],
-      "NUEVA CON ETIQUETA"
-    ),
+    temporada: publicacion.temporada || "",
+    ocasion: publicacion.ocasion || "",
+    genero: publicacion.genero || "",
+    estado: publicacion.estado || "",
     privacidad: publicacion.privacidad ?? true,
     estilos: publicacion.estilos || [],
     colores:
@@ -103,19 +38,10 @@ const crearDatosEdicion = (publicacion, tipo) => {
         ? ""
         : String(publicacion.stock),
     tiposAceptados: publicacion.tiposAceptados || [],
-    estadoMinimo: normalizarOpcion(
+    estadoMinimo:
       publicacion.estadoMinimo ||
-      publicacion.estadoMinimoAceptado,
-      [
-        "TODOS",
-        "NUEVA CON ETIQUETA",
-        "NUEVA SIN ETIQUETA",
-        "COMO NUEVA",
-        "MUY BUEN ESTADO",
-        "BUEN ESTADO",
-      ],
-      "TODOS"
-    ),
+      publicacion.estadoMinimoAceptado ||
+      "TODOS",
     talleBuscado:
       publicacion.talleBuscado ||
       publicacion.talle_buscado ||
@@ -222,7 +148,6 @@ export default function PublicacionesArmario({
             imagen: propuesta.imagen_ofrecida?.startsWith("http")
               ? propuesta.imagen_ofrecida
               : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`,
-
             privacidad: propuesta.privacidad_ofrecida,
             categoria: propuesta.categoria_ofrecida,
             talle: propuesta.talle_ofrecido,
@@ -232,7 +157,6 @@ export default function PublicacionesArmario({
             genero: propuesta.genero_ofrecido,
             color: propuesta.color_ofrecido,
             codigoColor: propuesta.codigo_color_ofrecido,
-
             estilos: Array.isArray(propuesta.estilos_ofrecidos)
               ? propuesta.estilos_ofrecidos
               : typeof propuesta.estilos_ofrecidos === "string"
@@ -859,8 +783,6 @@ export default function PublicacionesArmario({
     );
   };
 
-
-
   const abrirDetallePropuesta = (propuesta) => {
     const prenda = propuesta?.producto;
 
@@ -899,7 +821,7 @@ export default function PublicacionesArmario({
         <div className="MiArmario__listaPublicaciones">
           {publicacionesIntercambio.map((publicacion) => (
             <TarjetaIntercambioArmario
-              key={claveRegistro(publicacion, "intercambio")}
+              key={publicacion.id}
               {...publicacion}
               propuestas={publicacion.propuestas.filter(
                 (propuesta) =>
@@ -952,7 +874,7 @@ export default function PublicacionesArmario({
 
             return (
               <TarjetaVentaArmario
-                key={claveRegistro(publicacion, "venta")}
+                key={publicacion.id}
                 {...publicacion}
                 ventas={ventasConfirmadas}
                 solicitudesPendientes={solicitudesPendientes}
@@ -1069,6 +991,7 @@ export default function PublicacionesArmario({
         ) : publicacionEnEdicion.tipoPublicacion === "intercambio" ? (
           <CrearPrenda3Intercambio
             datos={publicacionEnEdicion}
+            categoriasDisponibles={categorias}
             talles={talles}
             onCambiar={actualizarCampoEdicion}
             mensajeError={errorEdicion}

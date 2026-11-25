@@ -19,7 +19,8 @@ export default function CrearOutfit({
   prendas = [],
   outfit,
   onGuardar,
-  onClose
+  onClose,
+  mensajeError
 }) {
   const [nombre, setNombre] = useState(outfit?.nombre || "");
   const [descripcion, setDescripcion] = useState(outfit?.descripcion || "");
@@ -284,6 +285,11 @@ export default function CrearOutfit({
               </label>
             ))}
           </div>
+          {mensajeError && (
+            <p className="CrearOutfit__error" role="alert">
+              {mensajeError}
+            </p>
+          )}
         </div>
       </div>
     </Modal>
