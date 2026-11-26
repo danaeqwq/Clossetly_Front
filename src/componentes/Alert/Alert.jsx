@@ -1,3 +1,4 @@
+
 import "./Alert.css";
 import Boton from "../Boton/Boton";
 
@@ -5,6 +6,7 @@ export default function Alert({
     titulo,
     mensaje,
     icono,
+    tipoIcono = "imagen",
     textoBoton,
     onClick,
     tipoInput,
@@ -20,12 +22,22 @@ export default function Alert({
 
                 <h2 className="Alert__div-h2">
                     {icono && (
-                        <img
-                            src={icono}
-                            alt=""
-                            className="Alert__icono"
-                        />
+                        tipoIcono === "google" ? (
+                            <span
+                                className="material-symbols-outlined Alert__icono"
+                                aria-hidden="true"
+                            >
+                                {icono}
+                            </span>
+                        ) : (
+                            <img
+                                src={icono}
+                                alt=""
+                                className="Alert__icono"
+                            />
+                        )
                     )}
+
                     {titulo}
                 </h2>
 

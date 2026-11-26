@@ -20,13 +20,20 @@ export default function PropuestaDeIntercambio() {
   const [error, setError] = useState("");
   const [propuestaEnviada, setPropuestaEnviada] = useState(false);
 
+  // CARGAR PRENDAS COMPATIBLES
   useEffect(() => {
     const cargarPrendas = async () => {
+      if (!producto?.id) {
+        setError("No se encontró la publicación de intercambio.");
+        setCargando(false);
+        return;
+      }
+
       const token = localStorage.getItem("token");
 
       try {
         const respuesta = await axios.get(
-          "http://localhost:3000/api/prendas/disponibles-intercambio",
+          `http://localhost:3000/api/prendas/disponibles-intercambio?publicacion=${producto.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,14 +44,18 @@ export default function PropuestaDeIntercambio() {
         setPrendasDisponibles(respuesta.data.prendas || []);
       } catch (error) {
         console.error("Error al cargar las prendas:", error);
-        setError("No se pudieron cargar tus prendas.");
+
+        setError(
+          error.response?.data?.mensaje ||
+          "No se pudieron cargar tus prendas."
+        );
       } finally {
         setCargando(false);
       }
     };
 
     cargarPrendas();
-  }, []);
+  }, [producto?.id]);
 
   // SELECCIONAR PRENDA
   const seleccionarPrenda = () => {
@@ -206,7 +217,7 @@ export default function PropuestaDeIntercambio() {
         >
           <header className="Propuesta__encabezado">
             <h1 id="Propuesta__titulo">
-              Prendas disponibles para intercambiar
+              Prendas compatibles para intercambiar
             </h1>
 
             <p>
@@ -222,7 +233,10 @@ export default function PropuestaDeIntercambio() {
             ) : error && prendasDisponibles.length === 0 ? (
               <p>{error}</p>
             ) : prendasDisponibles.length === 0 ? (
-              <p>No tenés prendas disponibles en tu armario.</p>
+              <p>
+                No tenés prendas compatibles con el talle, estado y
+                categorías aceptadas para este intercambio.
+              </p>
             ) : (
               prendasDisponibles.map((prenda) => (
                 <div

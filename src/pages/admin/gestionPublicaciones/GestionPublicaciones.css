@@ -8,8 +8,42 @@
 .GestionPublicaciones__encabezado h1 { color: var(--color-bordoVino); font: 600 25px/1.2 var(--font-CormGaram); }
 .GestionPublicaciones__encabezado p { color: var(--color-carbon); font: 14px/1.4 var(--font-manrope); }
 .GestionPublicaciones__herramientas { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.GestionPublicaciones__buscador { display: flex; min-width: 0; height: 34px; flex: 1; align-items: center; justify-content: space-between; padding: 0 12px 0 18px; border: 1px solid var(--color-rosaEmpol); border-radius: 20px; color: var(--color-rosaTerra); background: var(--color-blancaso); font: 11px var(--font-manrope); }
-.GestionPublicaciones__buscador .material-symbols-outlined { font-size: 19px; }
+
+.GestionPublicaciones__buscador {
+  width: min(55vw, 710px);
+  height: 34px;
+  border: 1px solid var(--color-rosaEmpol);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background: var(--color-blancaso);
+}
+
+.GestionPublicaciones__buscador input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-carbon);
+  font: 18px 300 var(--font-CormGaram);
+}
+
+.GestionPublicaciones__buscador input::placeholder {
+  color: var(--color-rosaTerra);
+  opacity: 1;
+}
+
+.GestionPublicaciones__buscadorIcono {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-rosaTerra);
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .GestionPublicaciones__estado { display: flex; min-height: 34px; align-items: center; gap: 12px; padding: 0 10px; border: 1px solid color-mix(in srgb, var(--color-rosaEmpol) 65%, transparent); border-radius: 20px; color: var(--color-carbon); background: color-mix(in srgb, var(--color-rosaEmpol) 20%, var(--color-cremita)); font: 13px var(--font-manrope); white-space: nowrap; }
 .GestionPublicaciones__estado strong { font-size: 14px; font-weight: 700; }
 .GestionPublicaciones__estado span { display: inline-flex; align-items: center; gap: 4px; color: var(--color-rosaTerra); }
@@ -18,8 +52,20 @@
 .GestionPublicaciones__select { gap: 8px; margin-bottom: 14px; }
 .GestionPublicaciones__grilla { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 28px; }
 .GestionPublicaciones__tarjeta { position: relative; min-width: 0; }
-.GestionPublicaciones__tarjeta .TarjetaOutfit__favorito,
-.GestionPublicaciones__tarjeta .TarjetaPrenda__favorito { display: none; }
+.GestionPublicaciones__tarjeta .TarjetaIntercambio__favorito,
+.GestionPublicaciones__tarjeta .TarjetaVenta__favorito {
+  display: none;
+}
+
+.GestionPublicaciones__tarjeta .TarjetaPrenda__opciones {
+  background: var(--tarjeta-color);
+  color: var(--tarjeta-texto);
+  border-color: color-mix(
+    in srgb,
+    var(--tarjeta-texto) 75%,
+    transparent
+  );
+}
 
 @media (max-width: 1100px) {
   .GestionPublicaciones { padding-inline: 8%; }
