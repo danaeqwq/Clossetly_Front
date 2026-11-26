@@ -139,6 +139,39 @@
   overflow-wrap: break-word;
 }
 
+.VerificarCodigo__modal .Modal__ventana {
+  width: min(500px, 100%);
+  padding: 24px;
+}
+
+.VerificarCodigo__formularioPass {
+  display: grid;
+  gap: 12px;
+}
+
+.VerificarCodigo__formularioPass .Label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--color-carbon);
+  font: 600 16px var(--font-CormUpri);
+}
+
+.VerificarCodigo__formularioPass .Campo {
+  min-height: 44px;
+  margin-bottom: 4px;
+}
+
+.VerificarCodigo__formularioPass .Boton {
+  width: 100%;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .VerificarCodigo__modal .Modal__ventana {
+    padding: max(22px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+  }
+}
+
 @media (max-width: 900px) {
   .VerificarCodigo__contenido {
     width: calc(100% - 48px);
