@@ -9,6 +9,7 @@ import PublicacionesArmario from "./misPublicaciones/PublicacionesArmario";
 import PrendasArmario from "./misPrendas/PrendasArmario";
 import OutfitsArmario from "./misOutfits/OutfitsArmario";
 import CrearOutfit from "./misPrendas/mi modales/crear oufit/CrearOutfit";
+import Alert from "../../componentes/Alert/Alert";
 
 const opcionesArmario = [
   { valor: "publicaciones", texto: "MIS PUBLICACIONES" },
@@ -32,6 +33,7 @@ export default function MiArmario() {
   const [accionesPrendas, setAccionesPrendas] = useState(null);
   const [outfits, setOutfits] = useState([]);
   const [outfitEnEdicion, setOutfitEnEdicion] = useState(null);
+  const [outfitCreado, setOutfitCreado] = useState(false);
 
   // ABRIR PUBLICACIONES DESDE UNA NOTIFICACIÓN
   useEffect(() => {
@@ -254,6 +256,7 @@ export default function MiArmario() {
         setOutfits((actuales) => [...actuales, outfitGuardado]);
 
         accionesPrendas?.onCancelar?.();
+        setOutfitCreado(true);
 
         console.log("Outfit creado correctamente");
       }
@@ -401,6 +404,15 @@ export default function MiArmario() {
           outfit={outfitEnEdicion}
           onGuardar={guardarOutfit}
           onClose={() => setOutfitEnEdicion(null)}
+        />
+      )}
+
+      {outfitCreado && (
+        <Alert
+          titulo="¡Outfit creado!"
+          mensaje="Tu outfit se guardó correctamente."
+          textoBoton="Entendido"
+          onClick={() => setOutfitCreado(false)}
         />
       )}
     </main>

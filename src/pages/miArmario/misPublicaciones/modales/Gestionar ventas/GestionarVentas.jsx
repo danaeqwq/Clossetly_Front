@@ -4,7 +4,7 @@ import Modal from "../../../../../componentes/modal/Modal";
 import "./gestionarVentas.css";
 import iconwsp from "../../../../../assets/logo wsp mi armario.svg";
 
-export default function GestionarVentas({ idPublicacion, onClose }) {
+export default function GestionarVentas({ idPublicacion, onClose, onSaved,}) {
   const [ventas, setVentas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
@@ -126,6 +126,7 @@ export default function GestionarVentas({ idPublicacion, onClose }) {
         )
       );
 
+      await onSaved?.()
       onClose?.();
     } catch (error) {
       console.error(

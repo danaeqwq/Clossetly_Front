@@ -37,17 +37,17 @@ export default function DetalleVenta() {
                 }
             }
         )
-        .then((respuesta) => {
-            alert(respuesta.data.mensaje);
-        })
-        .catch((error) => {
-            console.error("Error al agregar al carrito:", error);
+            .then((respuesta) => {
+                alert(respuesta.data.mensaje);
+            })
+            .catch((error) => {
+                console.error("Error al agregar al carrito:", error);
 
-            alert(
-                error.response?.data?.mensaje ||
-                "No se pudo agregar el producto al carrito."
-            );
-        });
+                alert(
+                    error.response?.data?.mensaje ||
+                    "No se pudo agregar el producto al carrito."
+                );
+            });
     };
 
     useEffect(() => {
@@ -217,11 +217,13 @@ export default function DetalleVenta() {
                     </fieldset>
 
                     <p className="DetalleVenta__stock">
-                        Stock disponible: {producto.stock ?? 0} unidades
+                        {Number(producto.stock) <= 0
+                            ? "Agotado"
+                            : `Stock disponible: ${producto.stock} unidades`}
                     </p>
 
                     <Boton
-                        texto="Agregar al carrito"
+                        texto={Number(producto.stock) <= 0 ? "Sin stock" : "Agregar al carrito"}
                         variante="principal"
                         type="button"
                         onClick={agregarAlCarrito}

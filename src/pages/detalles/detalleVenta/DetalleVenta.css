@@ -332,7 +332,7 @@
   .DetalleVenta { width: 100%; max-width: 100%; padding: 8px 9px 28px; overflow-x: clip; }
   .DetalleVenta__principal { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .DetalleVenta__ficha { position: relative; grid-template-columns: minmax(0, 1fr); gap: 15px; min-height: 0; padding: 10px; }
-  .DetalleVenta__imagenMarco { justify-self: center; width: min(70vw, 520px); max-width: 100%; height: auto; aspect-ratio: 0.68; }
+  .DetalleVenta__imagenMarco { justify-self: center; width: min(58vw, 360px); max-width: 100%; height: auto; aspect-ratio: 0.92; }
   .DetalleVenta__imagenMarco > img { object-position: center; }
   .DetalleVenta__insignia { position: absolute; z-index: 1; top: 17px; left: calc(50% - min(35vw, 260px)); margin: 0; padding: 2px 6px; font-size: 11px; }
   .DetalleVenta__insignia span { font-size: 9px; }
@@ -374,7 +374,7 @@
 @media (max-width: 380px) {
   .DetalleVenta { padding-inline: 9px; }
   .DetalleVenta__ficha { gap: 9px; padding: 9px; }
-  .DetalleVenta__imagenMarco { width: min(70vw, 220px); }
+  .DetalleVenta__imagenMarco { width: min(58vw, 200px); }
   .DetalleVenta__insignia { left: calc(50% - min(35vw, 110px)); }
   .DetalleVenta__datos { gap: 8px 5px; }
   .DetalleVenta__estilos dd span { padding-inline: 4px; font-size: 7px; }

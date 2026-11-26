@@ -348,7 +348,7 @@
   .DetalleInter { width: 100%; max-width: 100%; padding: 8px 9px 28px; overflow-x: clip; }
   .DetalleInter__principal { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .DetalleInter__ficha { position: relative; grid-template-columns: minmax(0, 1fr); gap: 15px; min-height: 0; padding: 10px; }
-  .DetalleInter__imagenMarco { justify-self: center; width: min(70vw, 520px); max-width: 100%; height: auto; aspect-ratio: 0.68; }
+  .DetalleInter__imagenMarco { justify-self: center; width: min(58vw, 360px); max-width: 100%; height: auto; aspect-ratio: 0.92; }
   .DetalleInter__imagenMarco > img { object-position: center; }
   .DetalleInter__insignia { position: absolute; z-index: 1; top: 17px; left: calc(50% - min(35vw, 260px)); margin: 0; padding: 2px 6px; font-size: 11px; }
   .DetalleInter__insignia span { font-size: 9px; }
@@ -396,7 +396,7 @@
 @media (max-width: 380px) {
   .DetalleInter { padding-inline: 9px; }
   .DetalleInter__ficha { gap: 9px; padding: 9px; }
-  .DetalleInter__imagenMarco { width: min(70vw, 220px); }
+  .DetalleInter__imagenMarco { width: min(58vw, 200px); }
   .DetalleInter__insignia { left: calc(50% - min(35vw, 110px)); }
   .DetalleInter__datos { gap: 8px 5px; }
   .DetalleInter__estilos dd span { padding-inline: 4px; font-size: 7px; }

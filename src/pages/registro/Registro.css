@@ -109,38 +109,99 @@
 
 @media (max-width: 760px) {
   .Registro {
+    height: auto;
     min-height: 100vh;
-    overflow: auto;
+    min-height: 100dvh;
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: max(12px, env(safe-area-inset-top)) 0 max(20px, env(safe-area-inset-bottom));
   }
 
   .Registro__section {
-    display: block;
-    width: 100%;
-    padding: 32px 24px;
+    display: flex;
+    width: min(100%, 420px);
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 15px 16px;
   }
 
   .Registro__section-div {
+    width: 100%;
     max-width: 520px;
     margin: 0 auto;
   }
 
   .Registro__section-div2 {
-    display: none;
+    order: -1;
+    width: 100%;
+    height: auto;
+    margin-bottom: 2px;
   }
+
+  .Registro__section-div2-img {
+    width: min(150px, 45vw);
+    height: 105px;
+    max-height: 105px;
+    object-fit: contain;
+  }
+
+  .Registro__section-div-header { margin-bottom: 7px; }
 
   .Registro__section-div-header-h1 {
-    font-size: 40px;
-  }
-
-  .Registro__section-div-header-p {
-    font-size: 16px;
-  }
-
-  .Registro__section-div-form-label {
     font-size: 27px;
   }
 
-  .Registro__section-div-p {
-    font-size: 15px;
+  .Registro__section-div-header-p {
+    font-size: 11px;
+    line-height: 1.35;
   }
+
+  .Registro .Label {
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 1.15;
+  }
+
+  .Registro .Campo {
+    min-height: 31px;
+    gap: 6px;
+    margin-bottom: 7px;
+    padding-inline: 8px;
+    border-radius: 10px;
+  }
+
+  .Registro .Campo__iconoMaterial {
+    width: 16px;
+    height: 16px;
+    flex-basis: 16px;
+    font-size: 14px;
+  }
+
+  .Registro .Campo__input {
+    font-size: 10px;
+  }
+
+  .Registro .Campo__img-final {
+    width: 15px;
+    height: 15px;
+  }
+
+  .Registro__section-div-form .Boton {
+    min-height: 31px;
+    margin-top: 3px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+
+  .Registro__section-div-p {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .Registro__section { padding-inline: 13px; }
+  .Registro__section-div2-img { width: min(132px, 42vw); height: 92px; max-height: 92px; }
+  .Registro__section-div-header-h1 { font-size: 25px; }
 }

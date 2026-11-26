@@ -9,18 +9,23 @@ export default function CrearPrenda2({ datos, estilosDisponibles = [], coloresDi
 
   const nombresColores = coloresDisponibles.map((color) => color.color);
   const coloresAdicionales = datos.colores.filter((color) => !nombresColores.includes(color));
+
   const alternarEstilo = (estilo) => {
-    const seleccionados = datos.estilos.includes(estilo)
-      ? datos.estilos.filter((actual) => actual !== estilo)
-      : [...datos.estilos, estilo];
-    onCambiar("estilos", seleccionados);
+    onCambiar(
+      "estilos",
+      datos.estilos.some((actual) => actual === estilo)
+        ? datos.estilos.filter((actual) => actual !== estilo)
+        : [...datos.estilos, estilo]
+    );
   };
 
   const alternarColor = (color) => {
-    const seleccionados = datos.colores.includes(color)
-      ? datos.colores.filter((actual) => actual !== color)
-      : [...datos.colores, color];
-    onCambiar("colores", seleccionados);
+    onCambiar(
+      "colores",
+      datos.colores.some((actual) => actual === color)
+        ? datos.colores.filter((actual) => actual !== color)
+        : [...datos.colores, color]
+    );
   };
 
   return (

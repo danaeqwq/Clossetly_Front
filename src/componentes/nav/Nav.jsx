@@ -9,6 +9,7 @@ import iconBoutique from "../../assets/componentes/icon Boutique.svg";
 import iconExplorar from "../../assets/componentes/icon Explorar.svg";
 import iconMiArmario from "../../assets/componentes/icon mi armario.svg";
 import iconMiCuenta from "../../assets/componentes/icon Mi cuenta.svg";
+import logo from "../../assets/logo nav.svg";
 
 function NavAdmin() {
   return (
@@ -45,22 +46,19 @@ export default function Nav() {
         to="/boutique"
         className="Nav__enlace Nav__enlace--logo"
       >
-        <svg viewBox="0 0 24 24">
-          <rect x="4" y="4" width="16" height="16" rx="1" />
-          <path d="m7 16 3.5-4 2.5 2.5 1.5-1.5 2.5 3z" />
-          <circle cx="15.5" cy="8.5" r="1" />
-        </svg>
+        <img src={logo} alt="Clossetly" />
       </NavLink>
 
       <NavLink
         to="/guia-talle"
-        className={({ isActive }) =>
-          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
-        }
+        className="Nav__enlace Nav__enlace--deshabilitado"
         data-label="Guía de estilo"
-      >
+        onClick={(e) => e.preventDefault()}
+        aria-disabled="true"
+        tabIndex={-1}
+    >
         <img src={iconTest} alt="" />
-      </NavLink>
+    </NavLink>
 
       <NavLink
         to="/boutique"
@@ -74,13 +72,14 @@ export default function Nav() {
 
       <NavLink
         to="/explorar"
-        className={({ isActive }) =>
-          `Nav__enlace ${isActive ? "Nav__enlace--activo" : ""}`
-        }
+        className="Nav__enlace Nav__enlace--deshabilitado"
         data-label="Explorar"
-      >
+        onClick={(e) => e.preventDefault()}
+        aria-disabled="true"
+        tabIndex={-1}
+    >
         <img src={iconExplorar} alt="" />
-      </NavLink>
+    </NavLink>
 
       <NavLink
         to="/armario"

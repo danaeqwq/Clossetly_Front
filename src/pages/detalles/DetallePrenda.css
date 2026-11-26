@@ -89,9 +89,14 @@
 .DetallePrenda__datos {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-content: start;
   gap: 12px;
   margin-top: 28px;
   font-family: var(--font-manrope);
+}
+
+.DetallePrenda__datos > div {
+  min-width: 0;
 }
 
 
@@ -121,11 +126,6 @@
   flex-wrap: wrap;
   column-gap: 10px;
   row-gap: 8px;
-}
-
-.DetallePrenda__datoEstado,
-.DetallePrenda__datoGenero {
-    transform: translateY(-30px);
 }
 
 .DetallePrenda__estilos dd span {
@@ -296,11 +296,6 @@
     grid-column: 1 / -1;
   }
 
-  .DetallePrenda__datoEstado,
-  .DetallePrenda__datoGenero {
-    transform: none;
-  }
-
   .DetallePrenda__panel {
     padding: 24px 18px;
   }
@@ -370,10 +365,9 @@
 
   .DetallePrenda__imagenMarco {
     justify-self: center;
-    width: min(70vw, 520px);
+    width: min(100%, 360px);
     max-width: 100%;
-    height: auto;
-    aspect-ratio: 0.68;
+    aspect-ratio: 0.92;
   }
 
   .DetallePrenda__imagenMarco img {
@@ -424,7 +418,7 @@
 
   .DetallePrenda__datos dt {
     gap: 2px;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.25;
   }
 
@@ -440,7 +434,7 @@
 
   .DetallePrenda__datos dd {
     margin-top: 2px;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.25;
     overflow-wrap: anywhere;
   }
@@ -461,11 +455,6 @@
     padding: 2px 5px;
     font-size: 8px;
     line-height: 1.2;
-  }
-
-  .DetallePrenda__datoEstado,
-  .DetallePrenda__datoGenero {
-    transform: none;
   }
 
   .DetallePrenda__panel {

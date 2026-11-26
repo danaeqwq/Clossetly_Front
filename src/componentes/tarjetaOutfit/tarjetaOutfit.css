@@ -7,7 +7,7 @@
   height: 320px;
   overflow: hidden;
   border-radius: 10px;
-  background: var(--color-morado);
+  background: var(--color-bordoVino);
   box-shadow: 0 4px 8px #342c3042;
 }
 
@@ -136,7 +136,7 @@
   border-radius: 20px;
   border: solid 0.1px var(--color-blancaso);
   color: var(--color-blancaso);
-  background: var(--color-morado);
+  background: var(--color-bordoVino);
   font: 500 13px var(--font-manrope);
 }
 
@@ -159,7 +159,7 @@
   color: var(--color-blanco);
   background: color-mix(
     in srgb,
-    var(--color-morado) 50%,
+    var(--color-bordoVino) 50%,
     transparent
   );
   font-size: 18px;

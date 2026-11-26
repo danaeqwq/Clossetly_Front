@@ -18,7 +18,11 @@
   min-width: 0;
   height: 370px;
 }
-
+.CrearOutfit__error {
+  color: #B54242;
+  font-size: 14px;
+  margin-top: 10px;
+}
 .CrearOutfit__seleccionadas {
   display: flex;
   min-width: 0;

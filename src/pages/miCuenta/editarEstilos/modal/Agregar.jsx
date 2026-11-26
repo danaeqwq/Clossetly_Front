@@ -14,7 +14,6 @@ export default function Agregar({
     onClose,
 }) {
     const [seleccion, setSeleccion] = useState(seleccionadas);
-    const [busqueda, setBusqueda] = useState("");
     const [guardando, setGuardando] = useState(false);
 
     useEffect(() => {
@@ -63,34 +62,14 @@ export default function Agregar({
             });
     };
 
-    const estilosFiltrados = estilosDisponibles.filter(estilo =>
-        normalizar(estilo.estilo).includes(normalizar(busqueda))
-    );
-
     return (
         <Modal titulo="Mis estilos" onClose={onClose}>
             <div className="Agregar__contenido">
-                <div className="Agregar__busqueda">
-                    <input
-                        type="text"
-                        placeholder="Buscar estilo..."
-                        value={busqueda}
-                        onChange={e => setBusqueda(e.target.value)}
-                    />
-
-                    <span
-                        className="material-symbols-outlined"
-                        aria-hidden="true"
-                    >
-                        search
-                    </span>
-                </div>
-
                 <div
                     className="Agregar__lista"
                     aria-label="Estilos disponibles"
                 >
-                    {estilosFiltrados.map(estilo => {
+                    {estilosDisponibles.map(estilo => {
                         const resultado = esResultado(estilo.estilo);
                         const seleccionado = estaSeleccionado(estilo.estilo);
 
@@ -111,7 +90,7 @@ export default function Agregar({
                         );
                     })}
 
-                    {estilosFiltrados.length === 0 && (
+                    {estilosDisponibles.length === 0 && (
                         <span className="Agregar__sinResultados">
                             No se encontraron estilos.
                         </span>

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
@@ -9,8 +10,6 @@ import CrearPrenda2 from "./mi modales/crear prenda 2/CrearPrenda2";
 import CrearPrenda3Venta from "./mi modales/crear prenda 3 venta/CrearPrenda3Venta";
 import CrearPrenda3Intercambio from "./mi modales/crear prenda 3 intercambio/CrearPrenda3Intercambio";
 import EliminarPrenda from "./mi modales/eliminarPrenda/EliminarPrenda";
-
-const clavePrenda = (prenda) => prenda.claveArmario || `prenda-${prenda.id}`;
 
 const borradorInicial = {
   tipoPublicacion: "prenda",
@@ -33,13 +32,14 @@ const borradorInicial = {
   talleBuscado: "M",
 };
 
-export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas = [], onAccionesChange, onOutfitCreado }) {
-
+export default function PrendasArmario({
+  onPublicacionCreada,
+  prendasConvertidas = [],
+  onAccionesChange,
+  onOutfitCreado,
+}) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    obtenerPrendas();
-  }, []);
+  const token = localStorage.getItem("token");
 
   const [prendas, setPrendas] = useState([]);
   const [categoriasAbiertas, setCategoriasAbiertas] = useState([]);
@@ -54,6 +54,30 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   const [prendasOutfit, setPrendasOutfit] = useState([]);
   const [crearOutfitAbierto, setCrearOutfitAbierto] = useState(false);
 
+  const [categorias, setCategorias] = useState([]);
+  const [talles, setTalles] = useState([]);
+  const [temporadas, setTemporadas] = useState([]);
+  const [ocasiones, setOcasiones] = useState([]);
+  const [generos, setGeneros] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [colores, setColores] = useState([]);
+  const [estilos, setEstilos] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/prendas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((respuesta) => {
+        setPrendas(respuesta.data.prendas || []);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las prendas:", error);
+      });
+  }, []);
+
   const iniciarSeleccionOutfit = (prenda) => {
     setPrendasOutfit([prenda]);
     setCategoriasAbiertas(
@@ -63,9 +87,11 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const alternarSeleccionPrenda = (prenda) => {
-    setPrendasOutfit((actuales) => actuales.some((seleccionada) => clavePrenda(seleccionada) === clavePrenda(prenda))
-      ? actuales.filter((seleccionada) => clavePrenda(seleccionada) !== clavePrenda(prenda))
-      : [...actuales, prenda]);
+    setPrendasOutfit((actuales) =>
+      actuales.some((seleccionada) => seleccionada.id === prenda.id)
+        ? actuales.filter((seleccionada) => seleccionada.id !== prenda.id)
+        : [...actuales, prenda]
+    );
   };
 
   const cancelarSeleccionOutfit = () => {
@@ -83,13 +109,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
     setPrendasOutfit([]);
   };
 
-  const guardarNuevoOutfit = (datos) => {
-    onOutfitCreado?.(datos);
-    cerrarCrearOutfit();
-  };
-
   function abrirAltaPrenda() {
-    setBorradorPrenda({ ...borradorInicial });
+    setBorradorPrenda(borradorInicial);
     setPasoCreacion(1);
     setCrearPrendaAbierto(true);
     setErrorCreacion("");
@@ -97,8 +118,12 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
   useEffect(() => {
     setPrendas((actuales) => {
-      const ids = new Set(actuales.map(clavePrenda));
-      const nuevas = prendasConvertidas.filter((prenda) => !ids.has(clavePrenda(prenda)));
+      const ids = new Set(actuales.map((prenda) => prenda.id));
+
+      const nuevas = prendasConvertidas.filter(
+        (prenda) => !ids.has(prenda.id)
+      );
+
       return nuevas.length ? [...actuales, ...nuevas] : actuales;
     });
   }, [prendasConvertidas]);
@@ -115,54 +140,54 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   }, [modoSeleccionOutfit, prendasOutfit.length, prendas, onAccionesChange]);
 
   const alternarCategoria = (nombre) => {
-    setCategoriasAbiertas((actuales) => (
-      actuales.includes(nombre)
+    setCategoriasAbiertas((actuales) =>
+      actuales.some((categoria) => categoria === nombre)
         ? actuales.filter((categoria) => categoria !== nombre)
         : [...actuales, nombre]
-    ));
+    );
   };
 
   const manejarAccionTarjeta = (evento, prenda) => {
-    const botonOpciones = evento.target.closest(".TarjetaPrenda__opciones");
-
-    if (botonOpciones) {
-        setMenuAbiertoId((actual) =>
-            actual === clavePrenda(prenda) ? null : clavePrenda(prenda)
-        );
-        return;
+    if (evento.target.closest(".TarjetaPrenda__opciones")) {
+      setMenuAbiertoId((actual) =>
+        actual === prenda.id ? null : prenda.id
+      );
+      return;
     }
 
-    const opcion = evento.target.closest(".TarjetaPrenda__menu li");
-
-    if (opcion) {
-        const accion = opcion.dataset.accion;
-
-        if (accion === "eliminar") {
-            setMenuAbiertoId(null);
-            setPrendaAEliminar(prenda);
-        }
-
-        return;
+    if (evento.target.closest(".TarjetaPrenda__menu li")) {
+      setMenuAbiertoId(null);
+      switch (evento.target.closest("li").dataset.accion) {
+        case "eliminar":
+          setPrendaAEliminar(prenda);
+          break;
+        case "armar-outfit":
+          iniciarSeleccionOutfit(prenda);
+          break;
+        case "modificar":
+          iniciarEdicionPrenda(prenda);
+          break;
+      }
+      return;
     }
-
+    
     if (modoSeleccionOutfit) {
-        alternarSeleccionPrenda(prenda);
+      alternarSeleccionPrenda(prenda);
     } else {
-        navigate("/detalles/prenda", {
-            state: { prenda },
-        });
+      navigate("/detalles/prenda", {
+        state: { prenda },
+      });
     }
   };
 
-
   const iniciarEdicionPrenda = (prenda) => {
-    setPrendaEnEdicion({ ...prenda });
+    setPrendaEnEdicion(prenda);
 
     setBorradorPrenda({
       ...borradorInicial,
       ...prenda,
       tipoPublicacion: "prenda",
-      estilos: Array.isArray(prenda.estilos) ? prenda.estilos : [],
+      estilos: prenda.estilos || [],
       colores: prenda.colores || (prenda.color ? [prenda.color] : []),
     });
 
@@ -170,7 +195,6 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
     setCrearPrendaAbierto(true);
     setErrorCreacion("");
   };
-
 
   const cambiarDatoPrenda = (campo, valor) => {
     setBorradorPrenda((actual) => ({ ...actual, [campo]: valor }));
@@ -186,10 +210,7 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
   };
 
   const continuarDesdeDatos = () => {
-    if (
-      !borradorPrenda.nombre.trim() ||
-      !borradorPrenda.imagen
-    ) {
+    if (!borradorPrenda.nombre.trim() || !borradorPrenda.imagen) {
       setErrorCreacion("Completá el nombre y seleccioná una imagen.");
       return;
     }
@@ -205,25 +226,24 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       setErrorCreacion("Completá todas las categorías antes de continuar.");
       return;
     }
-
     setErrorCreacion("");
     setPasoCreacion(2);
   };
 
   const continuarDesdeEstilos = () => {
-    if (!borradorPrenda.estilos || borradorPrenda.estilos.length === 0) {
+    if (!borradorPrenda.estilos.length) {
       setErrorCreacion("Seleccioná al menos un estilo para continuar.");
       return;
     }
-
     setErrorCreacion("");
-
-    if (prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") {
-      guardarEdicion();
-    } else if (!prendaEnEdicion && borradorPrenda.tipoPublicacion === "prenda") {
-      guardarNuevaPrenda();
-    } else {
+    if (borradorPrenda.tipoPublicacion !== "prenda") {
       setPasoCreacion(3);
+      return;
+    }
+    if (prendaEnEdicion) {
+      guardarEdicion();
+    } else {
+      guardarNuevaPrenda();
     }
   };
 
@@ -232,8 +252,11 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       setErrorCreacion("Ingresá un precio y una cantidad de stock mayores a cero.");
       return;
     }
-    if (prendaEnEdicion) guardarTipoPublicacion("venta");
-    else guardarNuevaPrenda({ tipoPublicacion: "venta" });
+    if (prendaEnEdicion) {
+      guardarTipoPublicacion("venta");
+      return;
+    }
+    guardarNuevaPrenda({ tipoPublicacion: "venta" });
   };
 
   const guardarIntercambio = () => {
@@ -241,340 +264,246 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
       setErrorCreacion("Seleccioná al menos un tipo de prenda aceptado.");
       return;
     }
-
-    if (prendaEnEdicion) guardarTipoPublicacion("intercambio");
-    else guardarNuevaPrenda({ tipoPublicacion: "intercambio" });
+    if (prendaEnEdicion) {
+      guardarTipoPublicacion("intercambio");
+      return;
+    }
+    guardarNuevaPrenda({ tipoPublicacion: "intercambio" });
   };
 
-  const [categorias, setCategorias] = useState([]);
-  const [talles, setTalles] = useState([]);
-  const [temporadas, setTemporadas] = useState([]);
-  const [ocasiones, setOcasiones] = useState([]);
-  const [generos, setGeneros] = useState([]);
-  const [estados, setEstados] = useState([]);
-  const [colores, setColores] = useState([]);
-  const [estilos, setEstilos] = useState([]);
-
-
   useEffect(() => {
-    const obtenerFiltros = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const respuesta = await axios.get(
-          "http://localhost:3000/api/filtros",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setCategorias(respuesta.data.categorias || []);
-        setTalles(respuesta.data.talles || []);
-        setTemporadas(respuesta.data.temporadas || []);
-        setOcasiones(respuesta.data.ocasiones || []);
-        setGeneros(respuesta.data.generos || []);
-        setEstados(respuesta.data.estados || []);
-        setColores(respuesta.data.colores || []);
-        setEstilos(respuesta.data.estilos || []);
-
-      } catch (error) {
-        console.error(
-          "Error al obtener los filtros:",
-          error.response?.data || error
-        );
-      }
+    const obtenerFiltros = () => {
+      axios.get("http://localhost:3000/api/filtros", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((respuesta) => {
+          setCategorias(respuesta.data.categorias || []);
+          setTalles(respuesta.data.talles || []);
+          setTemporadas(respuesta.data.temporadas || []);
+          setOcasiones(respuesta.data.ocasiones || []);
+          setGeneros(respuesta.data.generos || []);
+          setEstados(respuesta.data.estados || []);
+          setColores(respuesta.data.colores || []);
+          setEstilos(respuesta.data.estilos || []);
+        })
+        .catch((error) => {
+          console.error(
+            "Error al obtener los filtros:",
+            error.response?.data || error
+          );
+        });
     };
-
     obtenerFiltros();
   }, []);
 
-
-
   const guardarTipoPublicacion = (tipoPublicacion) => {
+    const nombre = borradorPrenda.nombre.trim() || prendaEnEdicion.nombre;
     const actualizada = {
       ...prendaEnEdicion,
       ...borradorPrenda,
       id: prendaEnEdicion.id,
       tipoPublicacion,
-      nombre: borradorPrenda.nombre.trim() || prendaEnEdicion.nombre,
-      alt: borradorPrenda.nombre.trim() || prendaEnEdicion.alt || prendaEnEdicion.nombre,
+      nombre,
+      alt: nombre || prendaEnEdicion.alt,
     };
-    setPrendas((actuales) => actuales.filter((prenda) => clavePrenda(prenda) !== clavePrenda(prendaEnEdicion)));
+    setPrendas((actuales) =>
+      actuales.filter((prenda) => prenda.id !== prendaEnEdicion.id)
+    );
     onPublicacionCreada?.(actualizada, prendaEnEdicion.id);
     cerrarAltaPrenda();
   };
 
-  const obtenerPrendas = async () => {
-    const token = localStorage.getItem("token");
+  const buscarId = (opciones, campo, valor, id) =>
+  opciones.find(
+    (opcion) =>
+      String(opcion[campo]).trim().toLowerCase() ===
+      String(valor).trim().toLowerCase()
+  )?.[id];
 
-    try {
-      const respuesta = await axios.get(
-        "http://localhost:3000/api/prendas",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  const guardarNuevaPrenda = (datosAdicionales = {}) => {
+    const formulario = new FormData();
+    formulario.append("nombre", borradorPrenda.nombre);
+    formulario.append("categoria", borradorPrenda.categoria);
+    formulario.append("talle", borradorPrenda.talle);
+    formulario.append("temporada", borradorPrenda.temporada);
+    formulario.append("ocasion", borradorPrenda.ocasion);
+    formulario.append("genero", borradorPrenda.genero);
+    formulario.append("estado", borradorPrenda.estado);
+    formulario.append("privacidad", borradorPrenda.privacidad ? "1" : "0");
+    formulario.append("colores", JSON.stringify(borradorPrenda.colores));
+    formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
+    formulario.append("imagen", borradorPrenda.imagen);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    axios.post("http://localhost:3000/api/prendas", formulario, config)
+      .then((respuesta) => {
+        const idPrenda = respuesta.data.id_prenda;
+        const prendaGuardada = {
+          ...borradorPrenda,
+          ...datosAdicionales,
+          id: idPrenda,
+          imagen: `http://localhost:3000${respuesta.data.imagen}`,
+        };
+
+        if (datosAdicionales.tipoPublicacion === "venta") {
+          return axios.post("http://localhost:3000/api/publicaciones/compra",
+              {
+                id_prenda: idPrenda,
+                stock: Number(borradorPrenda.stock),
+                precio_unitario: Number(borradorPrenda.precio),
+              },
+              config
+            )
+            .then((respuesta) => ({
+              ...prendaGuardada,
+              id: respuesta.data.id,
+              idPrenda,
+            }));
         }
-      );
-      setPrendas(respuesta.data.prendas || []);
 
-      console.log("Prendas recibidas:", respuesta.data.prendas);
-
-    } catch (error) {
-      console.error("Error al obtener las prendas:", error);
-      console.log("Respuesta del backend:", error.response?.data);
-    }
-  };
-
-
-
-  const guardarNuevaPrenda = async (datosAdicionales = {}) => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const formulario = new FormData();
-
-      formulario.append("nombre", borradorPrenda.nombre);
-      formulario.append("categoria", borradorPrenda.categoria);
-      formulario.append("talle", borradorPrenda.talle);
-      formulario.append("temporada", borradorPrenda.temporada);
-      formulario.append("ocasion", borradorPrenda.ocasion);
-      formulario.append("genero", borradorPrenda.genero);
-      formulario.append("estado", borradorPrenda.estado);
-      formulario.append("privacidad", borradorPrenda.privacidad ? "1" : "0");
-      formulario.append("colores", JSON.stringify(borradorPrenda.colores));
-      formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
-      formulario.append("imagen", borradorPrenda.imagen);
-
-      // 1. Guardar la prenda
-      const respuesta = await axios.post(
-        "http://localhost:3000/api/prendas",
-        formulario,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const idPrenda = respuesta.data.id_prenda;
-
-      if (!idPrenda) {
-        throw new Error("No se recibió el ID de la prenda");
-      }
-
-      const prendaGuardada = {
-        ...borradorPrenda,
-        ...datosAdicionales,
-        id: idPrenda,
-        imagen: respuesta.data.imagen
-          ? `http://localhost:3000${respuesta.data.imagen}`
-          : "",
-      };
-
-      // 2. Crear publicación de venta
-      if (datosAdicionales.tipoPublicacion === "venta") {
-        const respuestaPublicacion = await axios.post(
-          "http://localhost:3000/api/publicaciones/compra",
-          {
-            id_prenda: idPrenda,
-            stock: Number(borradorPrenda.stock),
-            precio_unitario: Number(borradorPrenda.precio),
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        onPublicacionCreada?.({
-          ...prendaGuardada,
-          id: respuestaPublicacion.data.id,
-          idPrenda,
-        });
-      }
-
-      // 3. Crear publicación de intercambio
-      else if (datosAdicionales.tipoPublicacion === "intercambio") {
-        const buscarOpcion = (opciones, campo, valor) =>
-          opciones.find(
-            (opcion) =>
-              String(opcion[campo]).trim().toLowerCase() ===
-              String(valor).trim().toLowerCase()
+        if (datosAdicionales.tipoPublicacion === "intercambio") {
+          const categoriaIds = borradorPrenda.tiposAceptados
+            .map((nombre) =>
+              buscarId(categorias, "categoria", nombre, "id_categoria")
+            )
+            .filter((id) => id != null);
+          const estadoTodos = borradorPrenda.estadoMinimo
+            .trim()
+            .toUpperCase() === "TODOS";
+          const estadoId = estadoTodos
+            ? null
+            : buscarId(
+                estados,
+                "estado_prenda",
+                borradorPrenda.estadoMinimo,
+                "id_estado_prenda"
+              );
+          const talleId = buscarId(
+            talles,
+            "talla",
+            borradorPrenda.talleBuscado,
+            "id_talla"
           );
 
-        const categoriaIds = borradorPrenda.tiposAceptados
-          .map((nombre) =>
-            buscarOpcion(categorias, "categoria", nombre)?.id_categoria
-          )
-          .filter((id) => id != null);
-
-        const estadoTodos =
-          String(borradorPrenda.estadoMinimo).trim().toUpperCase() === "TODOS";
-
-        const estadoSeleccionado = estadoTodos
-          ? null
-          : buscarOpcion(estados, "estado_prenda", borradorPrenda.estadoMinimo);
-
-        const talleSeleccionado = buscarOpcion(
-          talles,
-          "talla",
-          borradorPrenda.talleBuscado
-        );
-
-        if (
-          !categoriaIds.length ||
-          !talleSeleccionado ||
-          (!estadoSeleccionado && !estadoTodos)
-        ) {
-          throw new Error("No se pudieron identificar las opciones del intercambio");
-        }
-
-        const respuestaPublicacion = await axios.post(
-          "http://localhost:3000/api/publicaciones/intercambio",
-          {
-            id_prenda: idPrenda,
-            estado_MA: estadoTodos
-              ? null
-              : estadoSeleccionado.id_estado_prenda,
-            talle_buscado: talleSeleccionado.id_talla,
-            categoriasAceptadas: categoriaIds,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+          if (!categoriaIds.length || !talleId || (!estadoId && !estadoTodos)) {
+            throw new Error("No se pudieron identificar las opciones del intercambio");
           }
+
+          return axios.post(
+              "http://localhost:3000/api/publicaciones/intercambio",
+              {
+                id_prenda: idPrenda,
+                estado_MA: estadoId,
+                talle_buscado: talleId,
+                categoriasAceptadas: categoriaIds,
+              },
+              config
+            )
+            .then((respuesta) => ({
+              ...prendaGuardada,
+              id: respuesta.data.id,
+              idPrenda,
+            }));
+        }
+
+        return prendaGuardada;
+      })
+      .then((prendaGuardada) => {
+        if (datosAdicionales.tipoPublicacion) {
+          onPublicacionCreada?.(prendaGuardada, prendaGuardada.id);
+        } else {
+          setPrendas((actuales) => [...actuales, prendaGuardada]);
+
+          setCategoriasAbiertas((actuales) =>
+            actuales.includes(prendaGuardada.categoria)
+              ? actuales
+              : [...actuales, prendaGuardada.categoria]
+          );
+        }
+
+        cerrarAltaPrenda();
+      })
+      .catch((error) => {
+        console.error(
+          "Error al guardar:",
+          error.response?.data || error.message || error
         );
-
-        onPublicacionCreada?.({
-          ...prendaGuardada,
-          id: respuestaPublicacion.data.id,
-          idPrenda,
-        });
-      }
-
-      // 4. Guardar solamente como prenda normal
-      else {
-        setPrendas((actuales) => [...actuales, prendaGuardada]);
-
-        setCategoriasAbiertas((actuales) =>
-          actuales.includes(prendaGuardada.categoria)
-            ? actuales
-            : [...actuales, prendaGuardada.categoria]
-        );
-      }
-
-      cerrarAltaPrenda();
-
-    } catch (error) {
-      console.error(
-        "Error al guardar:",
-        error.response?.data || error.message || error
-      );
-    }
+      });
   };
 
-
-  const guardarEdicion = async () => {
+  const guardarEdicion = () => {
     if (!prendaEnEdicion) return;
+    const formulario = new FormData();
+    formulario.append("nombre", borradorPrenda.nombre);
+    formulario.append("categoria", borradorPrenda.categoria);
+    formulario.append("talle", borradorPrenda.talle);
+    formulario.append("temporada", borradorPrenda.temporada);
+    formulario.append("ocasion", borradorPrenda.ocasion);
+    formulario.append("genero", borradorPrenda.genero);
+    formulario.append("estado", borradorPrenda.estado);
+    formulario.append("privacidad", borradorPrenda.privacidad ? "1" : "0");
+    formulario.append("colores", JSON.stringify(borradorPrenda.colores));
+    formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
 
-    const token = localStorage.getItem("token");
+    if (borradorPrenda.imagen instanceof File) {
+      formulario.append("imagen", borradorPrenda.imagen);
+    }
 
-    try {
-      const formulario = new FormData();
-
-      formulario.append("nombre", borradorPrenda.nombre);
-      formulario.append("categoria", borradorPrenda.categoria);
-      formulario.append("talle", borradorPrenda.talle);
-      formulario.append("temporada", borradorPrenda.temporada);
-      formulario.append("ocasion", borradorPrenda.ocasion);
-      formulario.append("genero", borradorPrenda.genero);
-      formulario.append("estado", borradorPrenda.estado);
-      formulario.append("privacidad", borradorPrenda.privacidad ? "1" : "0");
-      formulario.append("colores", JSON.stringify(borradorPrenda.colores));
-      formulario.append("estilos", JSON.stringify(borradorPrenda.estilos));
-
-      // Solo enviar imagen si se seleccionó una nueva
-      if (borradorPrenda.imagen instanceof File) {
-        formulario.append("imagen", borradorPrenda.imagen);
-      }
-
-      const respuesta = await axios.put(
-        `http://localhost:3000/api/prendas/${prendaEnEdicion.id}`,
+    axios.put(`http://localhost:3000/api/prendas/${prendaEnEdicion.id}`,
         formulario,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const prendaActualizada = {
-        ...prendaEnEdicion,
-        ...borradorPrenda,
-        id: prendaEnEdicion.id,
-        tipoPublicacion: "prenda",
-        imagen: respuesta.data.imagen || prendaEnEdicion.imagen,
-      };
-
-      setPrendas((actuales) =>
-        actuales.map((prenda) =>
-          clavePrenda(prenda) === clavePrenda(prendaEnEdicion)
-            ? prendaActualizada
-            : prenda
-        )
-      );
-
-      cerrarAltaPrenda();
-
-    } catch (error) {
-      console.error(
-        "Error al modificar la prenda:",
-        error.response?.data || error
-      );
-    }
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((respuesta) => {
+        const prendaActualizada = {
+          ...prendaEnEdicion,
+          ...borradorPrenda,
+          id: prendaEnEdicion.id,
+          tipoPublicacion: "prenda",
+          imagen: respuesta.data.imagen || prendaEnEdicion.imagen,
+        };
+        setPrendas((actuales) =>
+          actuales.map((prenda) =>
+            prenda.id === prendaEnEdicion.id ? prendaActualizada : prenda
+          )
+        );
+        cerrarAltaPrenda();
+      })
+      .catch((error) => {
+        console.error(
+          "Error al modificar la prenda:",
+          error.response?.data || error
+        );
+      });
   };
 
-
-  const confirmarEliminacion = async () => {
+  const confirmarEliminacion = () => {
     if (!prendaAEliminar) return;
-
-    const token = localStorage.getItem("token");
-
-    try {
-      const respuesta = await axios.delete(
-        `http://localhost:3000/api/prendas/${prendaAEliminar.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("Prenda eliminada correctamente:", respuesta.data);
-
-      setPrendas((actuales) =>
-        actuales.filter(
-          (prenda) =>
-            clavePrenda(prenda) !== clavePrenda(prendaAEliminar)
-        )
-      );
-
-      setPrendaAEliminar(null);
-
-    } catch (error) {
-      console.error("Error al eliminar la prenda:", error.response?.data || error);
-    }
+    axios.delete(`http://localhost:3000/api/prendas/${prendaAEliminar.id}`,
+        { headers: { Authorization: `Bearer ${token}` } })
+      .then((respuesta) => {
+        console.log("Prenda eliminada correctamente:", respuesta.data);
+        setPrendas((actuales) =>
+          actuales.filter((prenda) => prenda.id !== prendaAEliminar.id)
+        );
+        setPrendaAEliminar(null);
+      })
+      .catch((error) => {
+        console.error(
+          "Error al eliminar la prenda:",
+          error.response?.data || error
+        );
+      });
   };
-
 
   return (
     <>
-      <div className="MiArmario__otrasSecciones" aria-label="Categorías de prendas">
+      <div
+        className="MiArmario__otrasSecciones"
+      >
         {categorias.map((categoria) => {
           const nombreCategoria = categoria.categoria;
 
@@ -586,26 +515,42 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
 
           return (
             <section
-              className={abierta ? "MiArmario__seccion" : "MiArmario__seccionCerrada"}
-              aria-label={nombreCategoria}
+              className={
+                abierta
+                  ? "MiArmario__seccion"
+                  : "MiArmario__seccionCerrada"
+              }
               key={nombreCategoria}
             >
-              <div className={abierta ? "MiArmario__seccionEncabezado" : "MiArmario__seccionCerradaEncabezado"}>
+              <div
+                className={
+                  abierta
+                    ? "MiArmario__seccionEncabezado"
+                    : "MiArmario__seccionCerradaEncabezado"
+                }
+              >
                 <h2>{nombreCategoria}</h2>
 
                 <span>
-                  {prendasDeCategoria.length} {nombreCategoria === "Accesorios" ? "Accesorios" : "Prendas"}
+                  {prendasDeCategoria.length}{" "}
+                  {nombreCategoria === "Accesorios"
+                    ? "Accesorios"
+                    : "Prendas"}
                 </span>
 
                 <button
                   className="MiArmario__seccionFlecha"
                   type="button"
-                  aria-label={`${abierta ? "Contraer" : "Expandir"} ${nombreCategoria}`}
                   aria-expanded={abierta}
                   onClick={() => alternarCategoria(nombreCategoria)}
                 >
-                  <span className="material-symbols-outlined" aria-hidden="true">
-                    {abierta ? "keyboard_arrow_up" : "keyboard_arrow_down"}
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                  >
+                    {abierta
+                      ? "keyboard_arrow_up"
+                      : "keyboard_arrow_down"}
                   </span>
                 </button>
               </div>
@@ -616,16 +561,19 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
                     {prendasDeCategoria.map((prenda) => (
                       <div
                         className="MiArmario__tarjetaPrenda"
-                        key={clavePrenda(prenda)}
-                        onClick={(evento) => manejarAccionTarjeta(evento, prenda)}
+                        key={prenda.id}
+                        onClick={(evento) =>
+                          manejarAccionTarjeta(evento, prenda)
+                        }
                       >
                         <TarjetaPrenda
                           prenda={prenda}
                           mostrarOpciones
                           seleccionada={prendasOutfit.some(
-                            (seleccionada) => clavePrenda(seleccionada) === clavePrenda(prenda)
+                            (seleccionada) =>
+                              seleccionada.id === prenda.id
                           )}
-                          menuAbierto={menuAbiertoId === clavePrenda(prenda)}
+                          menuAbierto={menuAbiertoId === prenda.id}
                           clickable={false}
                         />
                       </div>
@@ -638,8 +586,8 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
         })}
       </div>
 
-      {crearPrendaAbierto && (
-        pasoCreacion === 1 ? (
+      {crearPrendaAbierto &&
+        (pasoCreacion === 1 ? (
           <CrearPrenda
             datos={borradorPrenda}
             categorias={categorias}
@@ -662,7 +610,10 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             coloresDisponibles={colores}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
-            onVolver={() => { setErrorCreacion(""); setPasoCreacion(1); }}
+            onVolver={() => {
+              setErrorCreacion("");
+              setPasoCreacion(1);
+            }}
             onSiguiente={continuarDesdeEstilos}
             onClose={cerrarAltaPrenda}
           />
@@ -671,22 +622,28 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
             datos={borradorPrenda}
             onCambiar={cambiarDatoPrenda}
             mensajeError={errorCreacion}
-            onVolver={() => { setErrorCreacion(""); setPasoCreacion(2); }}
+            onVolver={() => {
+              setErrorCreacion("");
+              setPasoCreacion(2);
+            }}
             onGuardar={guardarVenta}
             onClose={cerrarAltaPrenda}
           />
         ) : (
           <CrearPrenda3Intercambio
             datos={borradorPrenda}
+            categoriasDisponibles={categorias}
             onCambiar={cambiarDatoPrenda}
             talles={talles}
             mensajeError={errorCreacion}
-            onVolver={() => { setErrorCreacion(""); setPasoCreacion(2); }}
+            onVolver={() => {
+              setErrorCreacion("");
+              setPasoCreacion(2);
+            }}
             onGuardar={guardarIntercambio}
             onClose={cerrarAltaPrenda}
           />
-        )
-      )}
+        ))}
 
       {prendaAEliminar && (
         <EliminarPrenda
@@ -694,8 +651,23 @@ export default function PrendasArmario({ onPublicacionCreada, prendasConvertidas
           onCancelar={() => setPrendaAEliminar(null)}
         />
       )}
+
       {crearOutfitAbierto && (
-        <CrearOutfit prendas={prendasOutfit} onGuardar={guardarNuevoOutfit} onClose={cerrarCrearOutfit} />
+        <CrearOutfit
+          prendas={prendasOutfit}
+          onGuardar={(datos) => {
+            if (!datos.temporada || !datos.ocasion || !datos.genero) {
+              setErrorCreacion("Completá la temporada, ocasión y género.");
+              return;
+            }
+
+            setErrorCreacion("");
+            onOutfitCreado(datos);
+            cerrarCrearOutfit();
+          }}
+          onClose={cerrarCrearOutfit}
+          mensajeError={errorCreacion}
+        />
       )}
     </>
   );

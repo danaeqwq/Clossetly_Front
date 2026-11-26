@@ -32,19 +32,15 @@ export default function CrearPrenda({
 }) {
   const seleccionarImagen = (evento) => {
     const archivo = evento.target.files?.[0];
-
     if (!archivo) return;
 
     if (!archivo.type.startsWith("image/")) {
       evento.target.value = "";
       return;
     }
-
     const vistaPrevia = URL.createObjectURL(archivo);
-
     onCambiar("imagen", archivo);
     onCambiar("vistaPrevia", vistaPrevia);
-
     evento.target.value = "";
   };
 
@@ -57,7 +53,7 @@ export default function CrearPrenda({
       onClose={onClose}
     >
       <div className="AgregarPrenda">
-        <div className="AgregarPrenda__tipos" aria-label="Tipo de publicación">
+        <div className="AgregarPrenda__tipos">
           <span className="AgregarPrenda__tiposTitulo">Tipo de publicación:</span>
           <Select
             opciones={tiposPublicacion}
@@ -127,7 +123,6 @@ export default function CrearPrenda({
               <button
                 className={`AgregarPrenda__switch${datos.privacidad ? " AgregarPrenda__switch--activa" : ""}`}
                 type="button"
-                aria-label="Cambiar privacidad"
                 aria-pressed={datos.privacidad}
                 onClick={() => onCambiar("privacidad", !datos.privacidad)}
               ><span /></button>
@@ -169,7 +164,6 @@ export default function CrearPrenda({
                       onChange={(evento) =>
                         onCambiar(etiqueta.campo, evento.target.value)
                       }
-                      aria-label={etiqueta.nombre}
                     >
                       <option value="">{etiqueta.placeholder}</option>
 
