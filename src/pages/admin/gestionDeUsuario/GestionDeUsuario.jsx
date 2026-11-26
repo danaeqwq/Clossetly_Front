@@ -12,37 +12,26 @@ import ExpulsarUsuario from "./modales/expulsarUsuario/ExpulsarUsuario";
 import BloquearUsuario from "./modales/bloquearUsuario/BloquearUsuario";
 
 export default function GestionDeUsuario() {
-
     const [usuarios, setUsuarios] = useState([]);
-
     const [resumen, setResumen] = useState({
         total: 0,
         activos: 0,
         bloqueados: 0,
         expulsados: 0
     });
-
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
-
-    // MODALES
+    
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
     const [usuarioAExpulsar, setUsuarioAExpulsar] = useState(null);
     const [usuarioABloquear, setUsuarioABloquear] = useState(null);
 
-    // ACTUALIZAR LISTADO
     const [actualizarLista, setActualizarLista] = useState(0);
 
-    // ==========================================
-    // OBTENER USUARIOS Y RESUMEN
-    // ==========================================
     useEffect(() => {
-
         const token = localStorage.getItem("token");
-
         setCargando(true);
         setError("");
-
         axios.get("http://localhost:3000/api/admin/usuarios", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -62,17 +51,11 @@ export default function GestionDeUsuario() {
 
     }, [actualizarLista]);
 
-    // ==========================================
-    // ACTUALIZAR DESPUÉS DE BLOQUEAR
-    // ==========================================
     const handleUsuarioBloqueado = () => {
         setActualizarLista(prev => prev + 1);
         setUsuarioABloquear(null);
     };
 
-    // ==========================================
-    // ACTUALIZAR DESPUÉS DE EXPULSAR
-    // ==========================================
     const handleUsuarioExpulsado = () => {
         setActualizarLista(prev => prev + 1);
         setUsuarioAExpulsar(null);
@@ -202,7 +185,6 @@ export default function GestionDeUsuario() {
 
             )}
 
-            {/* MODAL BLOQUEAR USUARIO */}
             {usuarioABloquear !== null && (
 
                 <BloquearUsuario
@@ -213,7 +195,6 @@ export default function GestionDeUsuario() {
 
             )}
 
-            {/* MODAL EXPULSAR USUARIO */}
             {usuarioAExpulsar !== null && (
 
                 <ExpulsarUsuario

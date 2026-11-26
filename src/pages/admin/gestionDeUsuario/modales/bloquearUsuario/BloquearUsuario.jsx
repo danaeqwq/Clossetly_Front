@@ -23,24 +23,15 @@ export default function BloquearUsuario({
     const [enviando, setEnviando] = useState(false);
     const [errorEnvio, setErrorEnvio] = useState("");
 
-    // Duración seleccionada
     const [duracionSeleccionada, setDuracionSeleccionada] = useState(7);
     const [motivo, setMotivo] = useState("");
 
     const duraciones = [3, 7, 14, 30];
-
-    // ==========================================
-    // OBTENER DATOS DEL USUARIO
-    // ==========================================
     useEffect(() => {
-
         if (!usuarioId) return;
-
         const token = localStorage.getItem("token");
-
         setCargando(true);
         setError("");
-
         axios.get(`http://localhost:3000/api/admin/usuarios/${usuarioId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -59,9 +50,6 @@ export default function BloquearUsuario({
 
     }, [usuarioId]);
 
-    // ==========================================
-    // FOTO DE PERFIL
-    // ==========================================
     const fotoPerfil = usuario?.foto_perfil
         ? (
             usuario.foto_perfil.startsWith("http")
@@ -70,22 +58,14 @@ export default function BloquearUsuario({
         )
         : Avatar;
 
-    // ==========================================
-    // BLOQUEAR USUARIO
-    // ==========================================
     const handleBloquear = () => {
-
-        // Validar motivo
         if (!motivo.trim()) {
             setErrorEnvio("Debés ingresar el motivo del bloqueo.");
             return;
         }
-
         const token = localStorage.getItem("token");
-
         setEnviando(true);
         setErrorEnvio("");
-
         axios.post(
             `http://localhost:3000/api/admin/usuarios/${usuarioId}/bloquear`,
             {
@@ -99,21 +79,15 @@ export default function BloquearUsuario({
             }
         )
         .then((respuesta) => {
-
             console.log(respuesta.data.mensaje);
-
-            // Actualizar listado y resumen
             if (onBloqueado) {
                 onBloqueado();
             }
 
-            // Cerrar modal
             onClose();
         })
         .catch((error) => {
-
             console.error("Error al bloquear usuario:", error);
-
             setErrorEnvio(
                 error.response?.data?.mensaje ||
                 "No se pudo bloquear al usuario."
@@ -123,7 +97,6 @@ export default function BloquearUsuario({
             setEnviando(false);
         });
     };
-
     return (
         <Modal
             titulo="Bloquear usuario"

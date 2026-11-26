@@ -1,5 +1,4 @@
-
-import { useEffect, useMemo, useState } from "react";
+import { useEffect,  useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import "./GestionPublicaciones.css";
@@ -111,51 +110,47 @@ export default function GestionPublicaciones() {
 
   const token = localStorage.getItem("token");
 
-  const obtenerPublicaciones = async () => {
-    try {
-      setError("");
+  useEffect(() => {
+  setError("");
 
-      const respuesta = await axios.get(
-        "http://localhost:3000/api/admin/publicaciones",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+  axios.get(
+    "http://localhost:3000/api/admin/publicaciones",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+    .then((respuesta) => {
       setPublicaciones(respuesta.data.publicaciones || []);
-    } catch (error) {
+    })
+    .catch((error) => {
       console.error("Error al obtener publicaciones:", error);
       setError("No se pudieron cargar las publicaciones.");
-    } finally {
+    })
+    .finally(() => {
       setCargando(false);
-    }
-  };
+    });
 
-  useEffect(() => {
-    obtenerPublicaciones();
   }, []);
 
   const buscar = (evento) => {
     evento.preventDefault();
   };
 
-  const publicacionesFiltradas = useMemo(() => {
-    return publicaciones.filter((publicacion) => {
-      const coincideTipo =
-        filtroTipo === "todos" ||
-        publicacion.tipo === filtroTipo;
+ const publicacionesFiltradas = publicaciones.filter((publicacion) => {
+  const coincideTipo =
+    filtroTipo === "todos" ||
+    publicacion.tipo === filtroTipo;
 
-      const texto = busqueda.trim().toLowerCase();
+  const texto = busqueda.trim().toLowerCase();
 
-      const coincideBusqueda =
-        (publicacion.nombre || "").toLowerCase().includes(texto) ||
-        (publicacion.usuario || "").toLowerCase().includes(texto);
+  const coincideBusqueda =
+    (publicacion.nombre || "").toLowerCase().includes(texto) ||
+    (publicacion.usuario || "").toLowerCase().includes(texto);
 
-      return coincideTipo && coincideBusqueda;
-    });
-  }, [publicaciones, filtroTipo, busqueda]);
+  return coincideTipo && coincideBusqueda;
+});
 
   const eliminarPublicacion = (publicacion) => {
     setMenuAbierto(null);
@@ -166,61 +161,55 @@ export default function GestionPublicaciones() {
 
   const cerrarAlert = () => {
     if (eliminando) return;
-
     setPublicacionSeleccionada(null);
     setMotivo("");
     setErrorMotivo("");
   };
 
-  const confirmarEliminacion = async () => {
+  const confirmarEliminacion = () => {
     if (!motivo.trim()) {
       setErrorMotivo("Tenés que indicar el motivo de eliminación.");
       return;
     }
-
     if (!publicacionSeleccionada) return;
-
-    try {
-      setEliminando(true);
-      setErrorMotivo("");
-
-      await axios.delete(
-        `http://localhost:3000/api/admin/publicaciones/${publicacionSeleccionada.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: {
-            tipo: publicacionSeleccionada.tipo,
-            motivo: motivo.trim(),
-          },
-        }
-      );
-
-      setPublicaciones((actuales) =>
-        actuales.filter(
-          (publicacion) =>
-            !(
-              publicacion.id === publicacionSeleccionada.id &&
-              publicacion.tipo === publicacionSeleccionada.tipo
-            )
-        )
-      );
-
-      setPublicacionSeleccionada(null);
-      setMotivo("");
-    } catch (error) {
-      console.error("Error al eliminar publicación:", error);
-
-      setErrorMotivo(
-        error.response?.data?.mensaje ||
-        "No se pudo eliminar la publicación. Intentá nuevamente."
-      );
-    } finally {
-      setEliminando(false);
-    }
+    setEliminando(true);
+    setErrorMotivo("");
+    axios.delete(
+      `http://localhost:3000/api/admin/publicaciones/${publicacionSeleccionada.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          tipo: publicacionSeleccionada.tipo,
+          motivo: motivo.trim(),
+        },
+      }
+    )
+      .then(() => {
+        setPublicaciones((actuales) =>
+          actuales.filter(
+            (publicacion) =>
+              !(
+                publicacion.id === publicacionSeleccionada.id &&
+                publicacion.tipo === publicacionSeleccionada.tipo
+              )
+          )
+        );
+        setPublicacionSeleccionada(null);
+        setMotivo("");
+      })
+      .catch((error) => {
+        console.error("Error al eliminar publicación:", error);
+        setErrorMotivo(
+          error.response?.data?.mensaje ||
+          "No se pudo eliminar la publicación. Intentá nuevamente."
+        );
+      })
+      .finally(() => {
+        setEliminando(false);
+      });
   };
-
   return (
     <main
       className="GestionPublicaciones"

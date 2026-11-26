@@ -19,13 +19,9 @@ export default function VerUsuario({ usuarioId, onClose }) {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        if (!usuarioId) return;
-
         const token = localStorage.getItem("token");
-
         setCargando(true);
         setError("");
-
         axios.get(`http://localhost:3000/api/admin/usuarios/${usuarioId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -42,26 +38,19 @@ export default function VerUsuario({ usuarioId, onClose }) {
         .finally(() => {
             setCargando(false);
         });
-
     }, [usuarioId]);
 
-    // Formatear fechas
     const formatearFecha = (fecha) => {
         if (!fecha) return "Sin fecha";
-
         const fechaLimpia = fecha.split("T")[0].split(" ")[0];
         const [anio, mes, dia] = fechaLimpia.split("-");
-
         return `${dia}/${mes}/${anio}`;
     };
-
-    // Foto de perfil
     const fotoPerfil = usuario?.foto_perfil
         ? (usuario.foto_perfil.startsWith("http")
             ? usuario.foto_perfil
             : `http://localhost:3000/${usuario.foto_perfil.replace(/^\/+/, "")}`)
         : Avatar;
-
     return (
         <Modal
             titulo="Ver usuario"

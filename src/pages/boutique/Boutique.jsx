@@ -74,9 +74,7 @@ export default function Boutique({
         };
         Promise.all([
             axios.get("http://localhost:3000/api/publicaciones/compra", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
+                headers: { Authorization: `Bearer ${token}`},
                 params,
                 paramsSerializer: serializarParams,
             }),
@@ -101,16 +99,13 @@ export default function Boutique({
                     navigate("/login");
                     return;
                 }
-
                 console.error("Error al obtener publicaciones:", error);
             });
 
     }, [filtro, criterios, colores, categoriasActivas, tiposAceptados, navigate]);
 
-    // FILTRAR PUBLICACIONES SEGÚN LA BÚSQUEDA DEL HEADER
     const productosFiltrados = productos.filter((producto) => {
         if (!busqueda) return true;
-
         const textoProducto = `
             ${producto.nombre || ""}
             ${producto.descripcion || ""}
@@ -118,17 +113,14 @@ export default function Boutique({
             ${producto.categoria || ""}
             ${producto.marca || ""}
         `.toLowerCase();
-
         return textoProducto.includes(busqueda);
     });
 
-    // Abrir detalle de la publicación
     const abrirDetalle = (producto) => {
         const ruta =
             producto.tipo === "intercambio"
                 ? `/detalles/intercambio/${producto.id}`
                 : `/detalles/venta/${producto.id}`;
-
         navigate(ruta);
     };
 

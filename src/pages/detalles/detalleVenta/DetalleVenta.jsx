@@ -197,7 +197,6 @@ export default function DetalleVenta() {
 
                     <fieldset className="DetalleVenta__colores">
                         <legend>Colores:</legend>
-
                         {producto.color && (
                             <span
                                 className="DetalleVenta__muestraColor"

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
@@ -20,91 +19,81 @@ export default function PropuestaDeIntercambio() {
   const [error, setError] = useState("");
   const [propuestaEnviada, setPropuestaEnviada] = useState(false);
 
-  // CARGAR PRENDAS COMPATIBLES
   useEffect(() => {
-    const cargarPrendas = async () => {
-      if (!producto?.id) {
-        setError("No se encontró la publicación de intercambio.");
-        setCargando(false);
-        return;
+    if (!producto?.id) {
+      setError("No se encontró la publicación de intercambio.");
+      setCargando(false);
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    axios.get(
+      `http://localhost:3000/api/prendas/disponibles-intercambio?publicacion=${producto.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-
-      const token = localStorage.getItem("token");
-
-      try {
-        const respuesta = await axios.get(
-          `http://localhost:3000/api/prendas/disponibles-intercambio?publicacion=${producto.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+    )
+      .then((respuesta) => {
         setPrendasDisponibles(respuesta.data.prendas || []);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Error al cargar las prendas:", error);
 
         setError(
           error.response?.data?.mensaje ||
           "No se pudieron cargar tus prendas."
         );
-      } finally {
+      })
+      .finally(() => {
         setCargando(false);
-      }
-    };
-
-    cargarPrendas();
+      });
   }, [producto?.id]);
 
-  // SELECCIONAR PRENDA
   const seleccionarPrenda = () => {
     setPrendaSeleccionada(prendaEnVista);
     setPrendaEnVista(null);
     setError("");
   };
 
-  // CONFIRMAR PROPUESTA
-  const confirmarPropuesta = async () => {
+  const confirmarPropuesta = () => {
     if (!producto?.id || !prendaSeleccionada?.id) {
       setError("Faltan datos para enviar la propuesta.");
       return;
     }
-
     const token = localStorage.getItem("token");
-
     setEnviando(true);
     setError("");
 
-    try {
-      await axios.post(
-        "http://localhost:3000/api/propuestas",
-        {
-          publicacion_intercambio: producto.id,
-          prenda_ofrecida: prendaSeleccionada.id,
-          mensaje: "",
+    axios.post(
+      "http://localhost:3000/api/propuestas",
+      {
+        publicacion_intercambio: producto.id,
+        prenda_ofrecida: prendaSeleccionada.id,
+        mensaje: "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setPropuestaEnviada(true);
-    } catch (error) {
-      console.error("Error al enviar la propuesta:", error);
-
-      setError(
-        error.response?.data?.mensaje ||
-        "No se pudo enviar la propuesta. Intentá nuevamente."
-      );
-    } finally {
-      setEnviando(false);
-    }
+      }
+    )
+      .then(() => {
+        setPropuestaEnviada(true);
+      })
+      .catch((error) => {
+        console.error("Error al enviar la propuesta:", error);
+        setError(
+          error.response?.data?.mensaje ||
+          "No se pudo enviar la propuesta. Intentá nuevamente."
+        );
+      })
+      .finally(() => {
+        setEnviando(false);
+      });
   };
 
-  // CANCELAR PROPUESTA
   const cancelarPropuesta = () => {
     navigate(-1);
   };
@@ -140,8 +129,9 @@ export default function PropuestaDeIntercambio() {
             />
 
             <span
-              className={`Propuesta__cambiar material-symbols-outlined ${enviando ? "Propuesta__cambiar--girando" : ""
-                }`}
+              className={`Propuesta__cambiar material-symbols-outlined ${
+                enviando ? "Propuesta__cambiar--girando" : ""
+              }`}
               aria-label="Intercambiar prendas"
             >
               autorenew
@@ -240,10 +230,11 @@ export default function PropuestaDeIntercambio() {
             ) : (
               prendasDisponibles.map((prenda) => (
                 <div
-                  className={`Propuesta__prenda ${prendaEnVista?.id === prenda.id
+                  className={`Propuesta__prenda ${
+                    prendaEnVista?.id === prenda.id
                       ? "Propuesta__prenda--activa"
                       : ""
-                    }`}
+                  }`}
                   key={prenda.id}
                   onClick={() => setPrendaEnVista(prenda)}
                   role="button"

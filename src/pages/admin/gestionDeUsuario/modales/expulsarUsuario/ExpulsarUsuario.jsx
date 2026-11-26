@@ -17,10 +17,8 @@ export default function ExpulsarUsuario({ usuarioId, onClose, onExpulsado }) {
     const [enviando, setEnviando] = useState(false);
     const [error, setError] = useState("");
 
-    // Obtener los datos del usuario
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         axios.get(`http://localhost:3000/api/admin/usuarios/${usuarioId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -37,25 +35,20 @@ export default function ExpulsarUsuario({ usuarioId, onClose, onExpulsado }) {
 
     }, [usuarioId]);
 
-    // Obtener foto de perfil
     const fotoPerfil = usuario?.foto_perfil
         ? usuario.foto_perfil.startsWith("http")
             ? usuario.foto_perfil
             : `http://localhost:3000/${usuario.foto_perfil.replace(/^\/+/, "")}`
         : Avatar;
 
-    // Confirmar expulsión
 
-// Confirmar expulsión
 const handleExpulsar = () => {
 
     if (!motivo.trim()) {
         setError("Debés ingresar el motivo de la expulsión.");
         return;
     }
-
     const token = localStorage.getItem("token");
-
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -64,23 +57,19 @@ const handleExpulsar = () => {
             motivo: motivo.trim()
         }
     };
-
     setEnviando(true);
     setError("");
-
     axios.delete(
         `http://localhost:3000/api/admin/usuarios/${usuarioId}/expulsar`,
         config
     )
     .then((respuesta) => {
         alert(respuesta.data.mensaje);
-
         onExpulsado();
         onClose();
     })
     .catch((error) => {
         console.error("Error al expulsar al usuario:", error);
-
         setError(
             error.response?.data?.mensaje ||
             "No se pudo expulsar al usuario."
@@ -90,7 +79,6 @@ const handleExpulsar = () => {
         setEnviando(false);
     });
 };
-
 
     return (
         <Modal

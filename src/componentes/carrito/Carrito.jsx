@@ -13,27 +13,21 @@ const URL_BASE = "http://localhost:3000";
 const URL_PEDIDOS = `${URL_BASE}/api/pedidos`;
 const URL_PEDIDO_ITEMS = `${URL_BASE}/api/pedido-items`;
 
-// Obtener la URL completa de las imágenes
 const obtenerImagen = (imagen) => {
     if (!imagen) return null;
-
     if (
         imagen.startsWith("http://") ||
         imagen.startsWith("https://")
     ) {
         return imagen;
     }
-
     const rutaLimpia = imagen.replace(/\\/g, "/");
-
     return `${URL_BASE}/${rutaLimpia.replace(/^\/+/, "")}`;
 };
 
-// Formatear precios
 const formatearPrecio = (precio) =>
     `$${Number(precio || 0).toLocaleString("es-AR")}`;
 
-// Generar mensaje para WhatsApp
 const generarUrlWhatsapp = (pedido, subtotal) => {
     const productos = pedido.productos
         .map(
@@ -55,7 +49,6 @@ Usuario: ${pedido.usuario}
     )}`;
 };
 
-// Apariencia de los estados
 const aparienciaEstado = {
     "En contacto": {
         icono: "schedule",
@@ -78,19 +71,23 @@ export default function Carrito({ onCerrar }) {
     const [itemsProcesando, setItemsProcesando] = useState([]);
     const [pedidosProcesando, setPedidosProcesando] = useState([]);
     const [limpiando, setLimpiando] = useState(false);
-
-    // Estado del componente Alert
     const [alerta, setAlerta] = useState(null);
 
-    // Mostrar alerta personalizada
     const mostrarAlerta = (mensaje) => {
+    setAlerta({
+        titulo: "¡Atención!",
+        mensaje,
+    });
+};
+
+    const mostrarConfirmacion = (mensaje, accion) => {
         setAlerta({
-            titulo: "¡Atención!",
+            titulo: "Confirmar acción",
             mensaje,
+            accion,
         });
     };
 
-    // Obtener pedidos e items del usuario autenticado
     useEffect(() => {
         const token = localStorage.getItem("token");
 
@@ -113,19 +110,14 @@ export default function Carrito({ onCerrar }) {
             .then(([respuestaPedidos, respuestaItems]) => {
                 const pedidosRecibidos =
                     respuestaPedidos.data.pedidos || [];
-
                 const itemsRecibidos =
                     respuestaItems.data.pedidoItems || [];
-
                 const productosPorPedido = {};
-
                 itemsRecibidos.forEach((item) => {
                     const idPedido = String(item.idPedido);
-
                     if (!productosPorPedido[idPedido]) {
                         productosPorPedido[idPedido] = [];
                     }
-
                     productosPorPedido[idPedido].push({
                         ...item,
                         imagen: obtenerImagen(item.imagen),
@@ -134,17 +126,13 @@ export default function Carrito({ onCerrar }) {
 
                 const pedidosPreparados = pedidosRecibidos.map((pedido) => ({
                     ...pedido,
-
                     imagenVendedora: obtenerImagen(
                         pedido.imagenVendedora
                     ),
-
                     expandido: false,
-
                     productos:
                         productosPorPedido[String(pedido.id)] || [],
                 }));
-
                 setPedidos(pedidosPreparados);
             })
             .catch((error) => {
@@ -152,7 +140,6 @@ export default function Carrito({ onCerrar }) {
                     "Error al obtener los pedidos y sus productos:",
                     error
                 );
-
                 setError(
                     error.response?.data?.mensaje ||
                     "No se pudieron cargar los pedidos."
@@ -163,7 +150,6 @@ export default function Carrito({ onCerrar }) {
             });
     }, []);
 
-    // Desplegar o contraer un pedido
     const alternarPedido = (idPedido) => {
         setPedidos((actuales) =>
             actuales.map((pedido) =>
@@ -177,23 +163,17 @@ export default function Carrito({ onCerrar }) {
         );
     };
 
-    // MODIFICAR CANTIDAD DE UN PRODUCTO
     const cambiarCantidad = (idPedido, productoId, cambio) => {
         const pedido = pedidos.find(
             (pedido) => pedido.id === idPedido
         );
-
         if (!pedido) return;
-
         const producto = pedido.productos.find(
             (producto) => producto.id === productoId
         );
-
         if (!producto) return;
-
         const nuevaCantidad =
             Number(producto.cantidad) + cambio;
-
         if (
             nuevaCantidad < 1 ||
             nuevaCantidad > Number(producto.stock)
@@ -202,20 +182,16 @@ export default function Carrito({ onCerrar }) {
         }
 
         if (itemsProcesando.includes(productoId)) return;
-
         const token = localStorage.getItem("token");
-
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         };
-
         setItemsProcesando((actuales) => [
             ...actuales,
             productoId,
         ]);
-
         axios.patch(
             `${URL_PEDIDO_ITEMS}/${productoId}`,
             {
@@ -261,23 +237,18 @@ export default function Carrito({ onCerrar }) {
             });
     };
 
-    // ELIMINAR UN PRODUCTO DEL CARRITO
     const eliminarProducto = (idPedido, productoId) => {
         if (itemsProcesando.includes(productoId)) return;
-
         const token = localStorage.getItem("token");
-
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         };
-
         setItemsProcesando((actuales) => [
             ...actuales,
             productoId,
         ]);
-
         axios.delete(
             `${URL_PEDIDO_ITEMS}/${productoId}`,
             config
@@ -301,7 +272,6 @@ export default function Carrito({ onCerrar }) {
                     "Error al eliminar el producto:",
                     error
                 );
-
                 mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "No se pudo eliminar el producto."
@@ -314,51 +284,47 @@ export default function Carrito({ onCerrar }) {
             });
     };
 
-    // Eliminar un pedido completo
     const eliminarPedido = (idPedido) => {
         if (pedidosProcesando.includes(idPedido)) return;
 
-        const confirmar = window.confirm(
-            "¿Estás segura de que querés eliminar este pedido?"
+        mostrarConfirmacion(
+            "¿Estás segura de que querés eliminar este pedido?",
+            () => {
+                const token = localStorage.getItem("token");
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                setPedidosProcesando((actuales) => [
+                    ...actuales,
+                    idPedido,
+                ]);
+                axios.delete(`${URL_PEDIDOS}/${idPedido}`, config)
+                    .then(() => {
+                        setPedidos((actuales) =>
+                            actuales.filter(
+                                (pedido) => pedido.id !== idPedido
+                            )
+                        );
+                    })
+                    .catch((error) => {
+                        console.error("Error al eliminar el pedido:", error);
+
+                        mostrarAlerta(
+                            error.response?.data?.mensaje ||
+                            "No se pudo eliminar el pedido."
+                        );
+                    })
+                    .finally(() => {
+                        setPedidosProcesando((actuales) =>
+                            actuales.filter((id) => id !== idPedido)
+                        );
+                    });
+            }
         );
-
-        if (!confirmar) return;
-
-        const token = localStorage.getItem("token");
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-
-        setPedidosProcesando((actuales) => [
-            ...actuales,
-            idPedido,
-        ]);
-
-        axios.delete(`${URL_PEDIDOS}/${idPedido}`, config)
-            .then(() => {
-                setPedidos((actuales) =>
-                    actuales.filter((pedido) => pedido.id !== idPedido)
-                );
-            })
-            .catch((error) => {
-                console.error("Error al eliminar el pedido:", error);
-
-                mostrarAlerta(
-                    error.response?.data?.mensaje ||
-                    "No se pudo eliminar el pedido."
-                );
-            })
-            .finally(() => {
-                setPedidosProcesando((actuales) =>
-                    actuales.filter((id) => id !== idPedido)
-                );
-            });
     };
 
-    // Calcular subtotal de cada pedido
     const calcularSubtotal = (productos) =>
         productos.reduce(
             (total, producto) =>
@@ -368,14 +334,12 @@ export default function Carrito({ onCerrar }) {
             0
         );
 
-    // Calcular total de compra
     const totalCompra = pedidos.reduce(
         (total, pedido) =>
             total + calcularSubtotal(pedido.productos),
         0
     );
 
-    // VACIAR CARRITO
     const limpiarCarrito = () => {
         if (pedidosProcesando.length > 0 || limpiando) return;
 
@@ -390,59 +354,52 @@ export default function Carrito({ onCerrar }) {
             return;
         }
 
-        const confirmar = window.confirm(
-            "¿Estás segura de que querés eliminar todos los pedidos pendientes del carrito?"
-        );
+        mostrarConfirmacion(
+            "¿Estás segura de que querés eliminar todos los pedidos pendientes del carrito?",
+            () => {
+                const token = localStorage.getItem("token");
 
-        if (!confirmar) return;
+                setLimpiando(true);
 
-        const token = localStorage.getItem("token");
+                axios.delete(
+                    `${URL_PEDIDOS}/limpiar`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                )
+                    .then((respuesta) => {
+                        setPedidos((actuales) =>
+                            actuales.filter((pedido) => pedido.estado)
+                        );
 
-        setLimpiando(true);
+                        mostrarAlerta(respuesta.data.mensaje);
+                    })
+                    .catch((error) => {
+                        console.error("Error al limpiar el carrito:", error);
 
-        axios.delete(
-            `${URL_PEDIDOS}/limpiar`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                        mostrarAlerta(
+                            error.response?.data?.mensaje ||
+                            "No se pudo vaciar el carrito."
+                        );
+                    })
+                    .finally(() => {
+                        setLimpiando(false);
+                    });
             }
-        )
-            .then((respuesta) => {
-                setPedidos((actuales) =>
-                    actuales.filter((pedido) => pedido.estado)
-                );
-
-                mostrarAlerta(respuesta.data.mensaje);
-            })
-            .catch((error) => {
-                console.error("Error al limpiar el carrito:", error);
-
-                mostrarAlerta(
-                    error.response?.data?.mensaje ||
-                    "No se pudo vaciar el carrito."
-                );
-            })
-            .finally(() => {
-                setLimpiando(false);
-            });
+        );
     };
 
-    // CONTACTAR AL VENDEDOR POR WHATSAPP
     const contactarWhatsapp = (pedido, subtotal) => {
         if (!pedido.telefono || pedido.productos.length === 0) {
             mostrarAlerta("No se puede contactar al vendedor.");
             return;
         }
-
         const url = generarUrlWhatsapp(pedido, subtotal);
-
         window.open(url, "_blank");
-
         if (pedido.estado) return;
-
         const token = localStorage.getItem("token");
-
         axios.patch(
             `${URL_PEDIDOS}/${pedido.id}/contacto`,
             {},
@@ -469,7 +426,6 @@ export default function Carrito({ onCerrar }) {
                     "Error al cambiar el estado del pedido:",
                     error
                 );
-
                 mostrarAlerta(
                     error.response?.data?.mensaje ||
                     "WhatsApp se abrió, pero no se pudo actualizar el estado del pedido."
@@ -736,8 +692,20 @@ export default function Carrito({ onCerrar }) {
                 <Alert
                     titulo={alerta.titulo}
                     mensaje={alerta.mensaje}
-                    textoBoton="Entendido"
-                    onClick={() => setAlerta(null)}
+                    textoBoton={alerta.accion ? "Confirmar" : "Entendido"}
+                    onClick={() => {
+                        const accion = alerta.accion;
+
+                        setAlerta(null);
+
+                        if (accion) {
+                            accion();
+                        }
+                    }}
+                    textoBotonSecundario={
+                        alerta.accion ? "Cancelar" : undefined
+                    }
+                    onClickSecundario={() => setAlerta(null)}
                 />
             )}
 
