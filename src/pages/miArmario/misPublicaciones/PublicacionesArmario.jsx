@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import "./PublicacionesArmario.css";
 import TarjetaVentaArmario from "../../../componentes/tarjetaVentaArmario/TarjetaVentaArmario";
@@ -57,9 +57,6 @@ const crearDatosEdicion = (publicacion, tipo) => {
   };
 };
 
-const mismoValor = (a, b) =>
-  JSON.stringify(a) === JSON.stringify(b);
-
 export default function PublicacionesArmario({
   publicacionesCreadas = { venta: [], intercambio: [] },
   onPublicacionActualizada,
@@ -67,7 +64,7 @@ export default function PublicacionesArmario({
   onPropuestasAbiertas,
 }) {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("token");
   const [publicacionesVenta, setPublicacionesVenta] = useState([]);
   const [publicacionesIntercambio, setPublicacionesIntercambio] =
     useState([]);
@@ -87,71 +84,56 @@ export default function PublicacionesArmario({
   const [propuestasCargadas, setPropuestasCargadas] =
     useState(false);
 
-  const recargarVentas = async () => {
-    const token = localStorage.getItem("token");
-
-    if (!token) return;
-
+  const recargarVentas = () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    try {
-      const [ventasRes, contadoresRes] = await Promise.all([
-        axios.get(
-          "http://localhost:3000/api/publicaciones/compra/mis",
-          config
-        ),
-        axios.get(
-          "http://localhost:3000/api/ventas/contadores",
-          config
-        ),
-      ]);
-
-      const contadores = contadoresRes.data.contadores || [];
-
-      const ventas = (ventasRes.data.publicaciones || []).map((p) => {
-        const contador = contadores.find(
-          (item) => Number(item.idPublicacion) === Number(p.id)
-        );
-
-        return {
-          ...p,
-          imagen: p.imagen?.startsWith("http")
-            ? p.imagen
-            : `http://localhost:3000${p.imagen}`,
-          solicitudes: [
-            ...Array(
-              Number(contador?.solicitudesPendientes || 0)
-            ).fill({ estado: null }),
-            ...Array(
-              Number(contador?.ventas || 0)
-            ).fill({ estado: "CONFIRMADO" }),
-          ],
-        };
-      });
-
-      setPublicacionesVenta(ventas);
-    } catch (error) {
-      console.error(
-        "Error al actualizar las ventas:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  const publicacionesRecibidas = useRef(
-    new Set([
-      ...publicacionesCreadas.venta.map(
-        (publicacion) => `venta-${publicacion.id}`
+    Promise.all([
+      axios.get(
+        "http://localhost:3000/api/publicaciones/compra/mis",
+        config
       ),
-      ...publicacionesCreadas.intercambio.map(
-        (publicacion) => `intercambio-${publicacion.id}`
+      axios.get(
+        "http://localhost:3000/api/ventas/contadores",
+        config
       ),
     ])
-  );
+      .then(([ventasRes, contadoresRes]) => {
+        const contadores = contadoresRes.data.contadores || [];
+
+        const ventas = (ventasRes.data.publicaciones || []).map((p) => {
+          const contador = contadores.find(
+            (item) => Number(item.idPublicacion) === Number(p.id)
+          );
+
+          return {
+            ...p,
+            imagen: p.imagen?.startsWith("http")
+              ? p.imagen
+              : `http://localhost:3000${p.imagen}`,
+            solicitudes: [
+              ...Array(
+                Number(contador?.solicitudesPendientes || 0)
+              ).fill({ estado: null }),
+              ...Array(
+                Number(contador?.ventas || 0)
+              ).fill({ estado: "CONFIRMADO" }),
+            ],
+          };
+        });
+
+        setPublicacionesVenta(ventas);
+      })
+      .catch((error) => {
+        console.error(
+          "Error al actualizar las ventas:",
+          error.response?.data || error.message
+        );
+      });
+  };
 
   const [categorias, setCategorias] = useState([]);
   const [talles, setTalles] = useState([]);
@@ -162,118 +144,101 @@ export default function PublicacionesArmario({
   const [colores, setColores] = useState([]);
   const [estilos, setEstilos] = useState([]);
 
-  // CARGAR PROPUESTAS RECIBIDAS
-  const cargarPropuestas = async (publicaciones) => {
-    const token = localStorage.getItem("token");
-
-    if (!token) return publicaciones;
-
-    try {
-      const respuesta = await axios.get(
+  const cargarPropuestas = (publicaciones) => {
+    return axios
+      .get(
         "http://localhost:3000/api/propuestas/recibidas",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+      )
+      .then((respuesta) => {
+        const datos = Array.isArray(respuesta.data)
+          ? respuesta.data
+          : [];
+        const propuestas = datos.map((propuesta) => {
+          const imagen = propuesta.imagen_ofrecida?.startsWith("http")
+            ? propuesta.imagen_ofrecida
+            : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`;
+          return {
+            id: propuesta.id_propuesta,
+            idPublicacion: propuesta.publicacion_intercambio,
+            estado: propuesta.estado_propuesta,
+            usuario: propuesta.usuario,
+            mensaje: propuesta.mensaje,
+            fecha: propuesta.fecha,
+            imagen,
+            producto: {
+              id: propuesta.id_prenda_ofrecida,
+              nombre: propuesta.prenda_ofrecida,
+              imagen: propuesta.imagen_ofrecida?.startsWith("http")
+                ? propuesta.imagen_ofrecida
+                : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`,
+              privacidad: propuesta.privacidad_ofrecida,
+              categoria: propuesta.categoria_ofrecida,
+              talle: propuesta.talle_ofrecido,
+              temporada: propuesta.temporada_ofrecida,
+              estado: propuesta.estado_ofrecido,
+              ocasion: propuesta.ocasion_ofrecida,
+              genero: propuesta.genero_ofrecido,
+              color: propuesta.color_ofrecido,
+              codigoColor: propuesta.codigo_color_ofrecido,
+              estilos: Array.isArray(propuesta.estilos_ofrecidos)
+                ? propuesta.estilos_ofrecidos
+                : typeof propuesta.estilos_ofrecidos === "string"
+                  ? JSON.parse(propuesta.estilos_ofrecidos)
+                  : [],
+            },
+          };
+        });
 
-      const datos = Array.isArray(respuesta.data)
-        ? respuesta.data
-        : [];
+        return publicaciones.map((publicacion) => ({
+          ...publicacion,
+          propuestas: propuestas.filter(
+            (propuesta) =>
+              Number(propuesta.idPublicacion) ===
+              Number(publicacion.id)
+          ),
+        }));
+      })
+      .catch((error) => {
+        console.error(
+          "Error al cargar las propuestas:",
+          error.response?.data || error.message
+        );
 
-      const propuestas = datos.map((propuesta) => {
-        const imagen = propuesta.imagen_ofrecida?.startsWith("http")
-          ? propuesta.imagen_ofrecida
-          : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`;
-
-        return {
-          id: propuesta.id_propuesta,
-          idPublicacion: propuesta.publicacion_intercambio,
-          estado: propuesta.estado_propuesta,
-          usuario: propuesta.usuario,
-          mensaje: propuesta.mensaje,
-          fecha: propuesta.fecha,
-          imagen,
-          producto: {
-            id: propuesta.id_prenda_ofrecida,
-            nombre: propuesta.prenda_ofrecida,
-            imagen: propuesta.imagen_ofrecida?.startsWith("http")
-              ? propuesta.imagen_ofrecida
-              : `http://localhost:3000${propuesta.imagen_ofrecida || ""}`,
-            privacidad: propuesta.privacidad_ofrecida,
-            categoria: propuesta.categoria_ofrecida,
-            talle: propuesta.talle_ofrecido,
-            temporada: propuesta.temporada_ofrecida,
-            estado: propuesta.estado_ofrecido,
-            ocasion: propuesta.ocasion_ofrecida,
-            genero: propuesta.genero_ofrecido,
-            color: propuesta.color_ofrecido,
-            codigoColor: propuesta.codigo_color_ofrecido,
-            estilos: Array.isArray(propuesta.estilos_ofrecidos)
-              ? propuesta.estilos_ofrecidos
-              : typeof propuesta.estilos_ofrecidos === "string"
-                ? JSON.parse(propuesta.estilos_ofrecidos)
-                : [],
-          },
-        };
+        return publicaciones;
       });
-
-      return publicaciones.map((publicacion) => ({
-        ...publicacion,
-        propuestas: propuestas.filter(
-          (propuesta) =>
-            Number(propuesta.idPublicacion) ===
-            Number(publicacion.id)
-        ),
-      }));
-
-    } catch (error) {
-      console.error(
-        "Error al cargar las propuestas:",
-        error.response?.data || error.message
-      );
-
-      return publicaciones;
-    }
   };
 
-  // CARGAR PUBLICACIONES
-
-  // CARGAR PUBLICACIONES
   useEffect(() => {
-    const cargarPublicaciones = async () => {
-      const token = localStorage.getItem("token");
+    if (!token) {
+      setPropuestasCargadas(true);
+      return;
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-      if (!token) {
-        setPropuestasCargadas(true);
-        return;
-      }
-
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const [ventasRes, intercambiosRes, contadoresRes] =
-          await Promise.all([
-            axios.get(
-              "http://localhost:3000/api/publicaciones/compra/mis",
-              config
-            ),
-            axios.get(
-              "http://localhost:3000/api/publicaciones/intercambio/mis",
-              config
-            ),
-            axios.get(
-              "http://localhost:3000/api/ventas/contadores",
-              config
-            ),
-          ]);
-
-        // PUBLICACIONES DE COMPRA
+    Promise.all([
+      axios.get(
+        "http://localhost:3000/api/publicaciones/compra/mis",
+        config
+      ),
+      axios.get(
+        "http://localhost:3000/api/publicaciones/intercambio/mis",
+        config
+      ),
+      axios.get(
+        "http://localhost:3000/api/ventas/contadores",
+        config
+      ),
+    ])
+      .then(([ventasRes, intercambiosRes, contadoresRes]) => {
         const contadores = contadoresRes.data.contadores || [];
 
         const ventas = (
@@ -300,7 +265,6 @@ export default function PublicacionesArmario({
           };
         });
 
-        // PUBLICACIONES DE INTERCAMBIO
         const intercambios = (
           Array.isArray(intercambiosRes.data)
             ? intercambiosRes.data
@@ -320,30 +284,26 @@ export default function PublicacionesArmario({
               : [],
         }));
 
-        const intercambiosConPropuestas =
-          await cargarPropuestas(intercambios);
-
-        setPublicacionesVenta(ventas);
-        setPublicacionesIntercambio(intercambiosConPropuestas);
-
-      } catch (error) {
+        return cargarPropuestas(intercambios).then(
+          (intercambiosConPropuestas) => {
+            setPublicacionesVenta(ventas);
+            setPublicacionesIntercambio(intercambiosConPropuestas);
+          }
+        );
+      })
+      .catch((error) => {
         console.error(
           "Error al cargar las publicaciones:",
           error.response?.data || error.message
         );
-      } finally {
+      })
+      .finally(() => {
         setPropuestasCargadas(true);
-      }
-    };
-
-    cargarPublicaciones();
+      });
   }, []);
 
-
-  // ABRIR PROPUESTAS DESDE UNA NOTIFICACIÓN
   useEffect(() => {
     if (!abrirPropuestas || !propuestasCargadas) return;
-
     const publicacion = publicacionesIntercambio.find(
       (publicacion) =>
         publicacion.propuestas?.some(
@@ -366,63 +326,41 @@ export default function PublicacionesArmario({
 
   // REGISTRAR NUEVAS PUBLICACIONES
   useEffect(() => {
-    const nuevasVentas = publicacionesCreadas.venta.filter(
-      (publicacion) =>
-        !publicacionesRecibidas.current.has(
-          `venta-${publicacion.id}`
-        )
-    );
-
-    const nuevosIntercambios =
-      publicacionesCreadas.intercambio.filter(
-        (publicacion) =>
-          !publicacionesRecibidas.current.has(
-            `intercambio-${publicacion.id}`
+    setPublicacionesVenta((actuales) => {
+      const nuevas = publicacionesCreadas.venta.filter(
+        (nueva) =>
+          !actuales.some(
+            (actual) => String(actual.id) === String(nueva.id)
           )
       );
 
-    if (nuevasVentas.length) {
-      setPublicacionesVenta((actuales) => [
-        ...actuales,
-        ...nuevasVentas,
-      ]);
+      return [...actuales, ...nuevas];
+    });
 
-      nuevasVentas.forEach((publicacion) =>
-        publicacionesRecibidas.current.add(
-          `venta-${publicacion.id}`
-        )
+    setPublicacionesIntercambio((actuales) => {
+      const nuevas = publicacionesCreadas.intercambio.filter(
+        (nueva) =>
+          !actuales.some(
+            (actual) => String(actual.id) === String(nueva.id)
+          )
       );
-    }
 
-    if (nuevosIntercambios.length) {
-      setPublicacionesIntercambio((actuales) => [
-        ...actuales,
-        ...nuevosIntercambios,
-      ]);
-
-      nuevosIntercambios.forEach((publicacion) =>
-        publicacionesRecibidas.current.add(
-          `intercambio-${publicacion.id}`
-        )
-      );
-    }
+      return [...actuales, ...nuevas];
+    });
   }, [publicacionesCreadas]);
 
   // OBTENER FILTROS
   useEffect(() => {
-    const obtenerFiltros = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const respuesta = await axios.get(
-          "http://localhost:3000/api/filtros",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+    axios
+      .get(
+        "http://localhost:3000/api/filtros",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((respuesta) => {
         setCategorias(respuesta.data.categorias || []);
         setTalles(respuesta.data.talles || []);
         setTemporadas(respuesta.data.temporadas || []);
@@ -431,16 +369,13 @@ export default function PublicacionesArmario({
         setEstados(respuesta.data.estados || []);
         setColores(respuesta.data.colores || []);
         setEstilos(respuesta.data.estilos || []);
-
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error(
           "Error al obtener los filtros:",
           error.response?.data || error
         );
-      }
-    };
-
-    obtenerFiltros();
+      });
   }, []);
 
   const cerrarEdicion = () => {
@@ -516,13 +451,9 @@ export default function PublicacionesArmario({
 
   const valorGuardado = (campo, campoOriginal = campo) => {
     const cambio = publicacionEnEdicion[campo];
+    const valorInicial = publicacionEnEdicion.valoresIniciales[campo];
 
-    if (
-      !mismoValor(
-        cambio,
-        publicacionEnEdicion.valoresIniciales[campo]
-      )
-    ) {
+    if (JSON.stringify(cambio) !== JSON.stringify(valorInicial)) {
       return cambio;
     }
 
@@ -531,28 +462,16 @@ export default function PublicacionesArmario({
     );
   };
 
-  const guardarEdicion = async () => {
+  // GUARDAR EDICIÓN
+  const guardarEdicion = () => {
     if (!publicacionEnEdicion) return;
-
-    const { tipo, original } = publicacionEnEdicion;
-    const tipoDestino = publicacionEnEdicion.tipoPublicacion;
-
-    // Por ahora no guardamos conversiones entre tipos.
-    if (tipo !== tipoDestino) {
-      setErrorEdicion(
-        "Por ahora solo podés modificar publicaciones sin cambiar su tipo."
-      );
-      return;
-    }
-
-    const token = localStorage.getItem("token");
-
     if (!token) {
       setErrorEdicion(
         "Tu sesión venció. Iniciá sesión nuevamente."
       );
       return;
     }
+    const { tipo, original } = publicacionEnEdicion;
 
     const config = {
       headers: {
@@ -560,195 +479,187 @@ export default function PublicacionesArmario({
       },
     };
 
-    try {
-      const categoria = valorGuardado(
-        "categoria",
-        tipo === "venta" ? "categoria" : "prenda"
+    const categoria = valorGuardado("categoria");
+    const colores = valorGuardado("colores");
+    const estilos = valorGuardado("estilos");
+    const imagen = valorGuardado("imagen");
+    let datosIntercambio = null;
+    if (tipo === "intercambio") {
+      const estadoMinimo = valorGuardado(
+        "estadoMinimo",
+        "estadoMinimoAceptado"
       );
 
-      const colores = valorGuardado("colores");
-      const estilos = valorGuardado("estilos");
-      const imagen = valorGuardado("imagen");
+      const talleBuscado = valorGuardado("talleBuscado");
+      const tiposAceptados = valorGuardado("tiposAceptados");
 
-      // 1. ACTUALIZAR LOS DATOS DE LA PRENDA
-      const datosPrenda = new FormData();
-
-      datosPrenda.append("nombre", valorGuardado("nombre"));
-      datosPrenda.append("categoria", categoria);
-      datosPrenda.append("talle", valorGuardado("talle"));
-      datosPrenda.append("temporada", valorGuardado("temporada"));
-      datosPrenda.append("ocasion", valorGuardado("ocasion"));
-      datosPrenda.append("genero", valorGuardado("genero"));
-      datosPrenda.append("estado", valorGuardado("estado"));
-
-      datosPrenda.append(
-        "privacidad",
-        String(valorGuardado("privacidad"))
-      );
-
-      datosPrenda.append("colores", JSON.stringify(colores));
-      datosPrenda.append("estilos", JSON.stringify(estilos));
-
-      if (imagen instanceof File) {
-        datosPrenda.append("imagen", imagen);
-      }
-
-      await axios.put(
-        `http://localhost:3000/api/prendas/${original.idPrenda}`,
-        datosPrenda,
-        config
-      );
-
-      // 2. ACTUALIZAR LOS DATOS DE LA PUBLICACIÓN
-      if (tipo === "venta") {
-        const precio = Number(valorGuardado("precio"));
-        const stock = Number(valorGuardado("stock"));
-
-        await axios.put(
-          `http://localhost:3000/api/publicaciones/compra/${original.id}`,
-          {
-            precio_unitario: precio,
-            stock,
-          },
-          config
-        );
-      }
-
-      if (tipo === "intercambio") {
-        const estadoMinimo = valorGuardado(
-          "estadoMinimo",
-          "estadoMinimoAceptado"
+      const buscarId = (opciones, campo, valor) =>
+        opciones.find(
+          (opcion) =>
+            String(opcion[campo]).toLowerCase() ===
+            String(valor).toLowerCase()
         );
 
-        const talleBuscado = valorGuardado("talleBuscado");
-        const tiposAceptados = valorGuardado("tiposAceptados");
-
-        const buscarId = (opciones, campo, valor) =>
-          opciones.find(
-            (opcion) =>
-              String(opcion[campo]).toLowerCase() ===
-              String(valor).toLowerCase()
-          );
-
-        const estadoSeleccionado =
-          estadoMinimo === "TODOS"
-            ? null
-            : buscarId(
+      const estadoSeleccionado =
+        estadoMinimo === "TODOS"
+          ? null
+          : buscarId(
               estados,
               "estado_prenda",
               estadoMinimo
             );
 
-        const talleSeleccionado = buscarId(
-          talles,
-          "talla",
-          talleBuscado
+      const talleSeleccionado = buscarId(
+        talles,
+        "talla",
+        talleBuscado
+      );
+
+      const categoriasSeleccionadas = tiposAceptados.map(
+        (nombre) =>
+          buscarId(categorias, "categoria", nombre)?.id_categoria
+      );
+
+      if (
+        (!estadoSeleccionado && estadoMinimo !== "TODOS") ||
+        !talleSeleccionado
+      ) {
+        setErrorEdicion(
+          "No se pudieron identificar el estado mínimo o el talle buscado."
         );
-
-        const categoriasSeleccionadas = tiposAceptados.map(
-          (nombre) =>
-            buscarId(categorias, "categoria", nombre)
-              ?.id_categoria
-        );
-
-        if (
-          (!estadoSeleccionado && estadoMinimo !== "TODOS") ||
-          !talleSeleccionado
-        ) {
-          setErrorEdicion(
-            "No se pudieron identificar el estado mínimo o el talle buscado."
-          );
-          return;
-        }
-
-        if (categoriasSeleccionadas.some((id) => !id)) {
-          setErrorEdicion(
-            "No se pudieron identificar todas las categorías aceptadas."
-          );
-          return;
-        }
-
-        await axios.put(
-          `http://localhost:3000/api/publicaciones/intercambio/${original.id}`,
-          {
-            estado_MA:
-              estadoSeleccionado?.id_estado_prenda ?? null,
-            talle_buscado: talleSeleccionado.id_talla,
-            categoriasAceptadas: categoriasSeleccionadas,
-          },
-          config
-        );
+        return;
       }
 
-      // 3. ACTUALIZAR LAS TARJETAS
-      const actualizada = {
-        ...original,
-        nombre: valorGuardado("nombre"),
-        imagen:
-          imagen instanceof File
-            ? URL.createObjectURL(imagen)
-            : original.imagen,
-        categoria,
-        prenda: categoria,
-        talle: valorGuardado("talle"),
-        temporada: valorGuardado("temporada"),
-        ocasion: valorGuardado("ocasion"),
-        genero: valorGuardado("genero"),
-        estado: valorGuardado("estado"),
-        privacidad: valorGuardado("privacidad"),
-        colores,
-        estilos,
+      if (categoriasSeleccionadas.some((id) => !id)) {
+        setErrorEdicion(
+          "No se pudieron identificar todas las categorías aceptadas."
+        );
+        return;
+      }
+
+      datosIntercambio = {
+        estado_MA: estadoSeleccionado?.id_estado_prenda ?? null,
+        talle_buscado: talleSeleccionado.id_talla,
+        categoriasAceptadas: categoriasSeleccionadas,
       };
-
-      if (tipo === "venta") {
-        actualizada.precio = Number(
-          valorGuardado("precio")
-        );
-
-        actualizada.stock = Number(
-          valorGuardado("stock")
-        );
-
-        setPublicacionesVenta((items) =>
-          items.map((item) =>
-            item.id === original.id ? actualizada : item
-          )
-        );
-      }
-
-      if (tipo === "intercambio") {
-        actualizada.tiposAceptados =
-          valorGuardado("tiposAceptados");
-
-        actualizada.estadoMinimoAceptado = valorGuardado(
-          "estadoMinimo",
-          "estadoMinimoAceptado"
-        );
-
-        actualizada.talleBuscado =
-          valorGuardado("talleBuscado");
-
-        setPublicacionesIntercambio((items) =>
-          items.map((item) =>
-            item.id === original.id ? actualizada : item
-          )
-        );
-      }
-
-      onPublicacionActualizada?.(actualizada, tipo);
-      cerrarEdicion();
-
-    } catch (error) {
-      console.error(
-        "Error al guardar la modificación:",
-        error.response?.data || error
-      );
-
-      setErrorEdicion(
-        error.response?.data?.mensaje ||
-        "No se pudieron guardar los cambios. Intentá nuevamente."
-      );
     }
+
+    const datosPrenda = new FormData();
+    datosPrenda.append("nombre", valorGuardado("nombre"));
+    datosPrenda.append("categoria", categoria);
+    datosPrenda.append("talle", valorGuardado("talle"));
+    datosPrenda.append("temporada", valorGuardado("temporada"));
+    datosPrenda.append("ocasion", valorGuardado("ocasion"));
+    datosPrenda.append("genero", valorGuardado("genero"));
+    datosPrenda.append("estado", valorGuardado("estado"));
+
+    datosPrenda.append(
+      "privacidad",
+      String(valorGuardado("privacidad"))
+    );
+
+    datosPrenda.append("colores", JSON.stringify(colores));
+    datosPrenda.append("estilos", JSON.stringify(estilos));
+
+    if (imagen instanceof File) {
+      datosPrenda.append("imagen", imagen);
+    }
+
+    axios.put(
+        `http://localhost:3000/api/prendas/${original.idPrenda}`,
+        datosPrenda,
+        config
+      )
+      .then(() => {
+        if (tipo === "venta") {
+          return axios.put(
+            `http://localhost:3000/api/publicaciones/compra/${original.id}`,
+            {
+              precio_unitario: Number(
+                valorGuardado("precio")
+              ),
+              stock: Number(valorGuardado("stock")),
+            },
+            config
+          );
+        }
+
+        if (tipo === "intercambio") {
+          return axios.put(
+            `http://localhost:3000/api/publicaciones/intercambio/${original.id}`,
+            datosIntercambio,
+            config
+          );
+        }
+      })
+      .then(() => {
+        const actualizada = {
+          ...original,
+          nombre: valorGuardado("nombre"),
+          imagen:
+            imagen instanceof File
+              ? URL.createObjectURL(imagen)
+              : original.imagen,
+          categoria,
+          prenda: categoria,
+          talle: valorGuardado("talle"),
+          temporada: valorGuardado("temporada"),
+          ocasion: valorGuardado("ocasion"),
+          genero: valorGuardado("genero"),
+          estado: valorGuardado("estado"),
+          privacidad: valorGuardado("privacidad"),
+          colores,
+          estilos,
+        };
+
+        if (tipo === "venta") {
+          actualizada.precio = Number(
+            valorGuardado("precio")
+          );
+
+          actualizada.stock = Number(
+            valorGuardado("stock")
+          );
+
+          setPublicacionesVenta((items) =>
+            items.map((item) =>
+              item.id === original.id ? actualizada : item
+            )
+          );
+        }
+
+        if (tipo === "intercambio") {
+          actualizada.tiposAceptados =
+            valorGuardado("tiposAceptados");
+          actualizada.estadoMinimoAceptado = valorGuardado(
+            "estadoMinimo",
+            "estadoMinimoAceptado"
+          );
+
+          actualizada.talleBuscado =
+            valorGuardado("talleBuscado");
+
+          setPublicacionesIntercambio((items) =>
+            items.map((item) =>
+              item.id === original.id ? actualizada : item
+            )
+          );
+        }
+
+        onPublicacionActualizada?.(actualizada, tipo);
+        cerrarEdicion();
+      })
+      .catch((error) => {
+        console.error(
+          "Error al guardar la modificación:",
+          error.response?.data || error
+        );
+
+        setErrorEdicion(
+          error.response?.data?.mensaje ||
+          "No se pudieron guardar los cambios. Intentá nuevamente."
+        );
+      });
   };
 
   const guardarVentaEditada = () => {
@@ -793,10 +704,9 @@ export default function PublicacionesArmario({
   const eliminarPublicacion = (publicacion, tipo) =>
     setPublicacionAEliminar({ ...publicacion, tipo });
 
-  const confirmarEliminacion = async () => {
+  // CONFIRMAR ELIMINACIÓN
+  const confirmarEliminacion = () => {
     if (!publicacionAEliminar) return;
-
-    const token = localStorage.getItem("token");
 
     if (!token) {
       console.error("Tu sesión venció. Iniciá sesión nuevamente.");
@@ -811,45 +721,35 @@ export default function PublicacionesArmario({
         ? `http://localhost:3000/api/publicaciones/compra/${id}`
         : `http://localhost:3000/api/publicaciones/intercambio/${id}`;
 
-    try {
-      await axios.delete(ruta, {
+    axios
+      .delete(ruta, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      })
+      .then(() => {
+        if (tipo === "venta") {
+          setPublicacionesVenta((publicaciones) =>
+            publicaciones.filter(
+              (publicacion) => publicacion.id !== id
+            )
+          );
+        } else {
+          setPublicacionesIntercambio((publicaciones) =>
+            publicaciones.filter(
+              (publicacion) => publicacion.id !== id
+            )
+          );
+        }
+
+        setPublicacionAEliminar(null);
+      })
+      .catch((error) => {
+        console.error(
+          "Error al eliminar la publicación:",
+          error.response?.data || error.message
+        );
       });
-
-      if (tipo === "venta") {
-        setPublicacionesVenta((publicaciones) =>
-          publicaciones.filter(
-            (publicacion) => publicacion.id !== id
-          )
-        );
-      } else {
-        setPublicacionesIntercambio((publicaciones) =>
-          publicaciones.filter(
-            (publicacion) => publicacion.id !== id
-          )
-        );
-      }
-
-      setPublicacionAEliminar(null);
-
-    } catch (error) {
-      console.error(
-        "Error al eliminar la publicación:",
-        error.response?.data || error.message
-      );
-    }
-  };
-
-  const actualizarSolicitudes = (id, solicitudes) => {
-    setPublicacionesVenta((publicaciones) =>
-      publicaciones.map((publicacion) =>
-        publicacion.id === id
-          ? { ...publicacion, solicitudes }
-          : publicacion
-      )
-    );
   };
 
   const guardarPropuestasPendientes = (publicacionId, propuestas) => {
@@ -866,7 +766,9 @@ export default function PublicacionesArmario({
     const prenda = propuesta?.producto;
 
     if (!prenda) {
-      console.error("No se encontraron los datos de la prenda ofrecida.");
+      console.error(
+        "No se encontraron los datos de la prenda ofrecida."
+      );
       return;
     }
 

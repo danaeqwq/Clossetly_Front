@@ -10,7 +10,6 @@ import TarjetaIntercambio from "../../componentes/tarjetaIntercambio/TarjetaInte
 import TarjetaVenta from "../../componentes/tarjetaVenta/TarjetaVenta";
 import Filtros from "../../componentes/filtros/Filtros";
 
-// Categorías de Boutique
 const filtrosBoutique = [
     { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" },
     { valor: "todos", texto: "TODOS", icono: "sell" },
@@ -40,15 +39,10 @@ export default function Boutique({
         talleBuscado: "",
         ordenPrecio: "MAYOR MENOR",
     });
-
-    // OBTENER BÚSQUEDA DESDE LA URL
     const parametros = new URLSearchParams(location.search);
     const busqueda = (parametros.get("busqueda") || "").trim().toLowerCase();
-
-    // OBTENER PUBLICACIONES
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         const params = {
             categoria: criterios.prenda,
             talle: criterios.talle,
@@ -59,20 +53,16 @@ export default function Boutique({
             colores,
             estilos: categoriasActivas,
         };
-
         if (filtro === "compra" || filtro === "todos") {
             params.ordenPrecio = criterios.ordenPrecio;
         }
-
         if (filtro === "intercambio" || filtro === "todos") {
             params.estadoMinimoAceptado = criterios.estadoMinimoAceptado;
             params.talleBuscado = criterios.talleBuscado;
             params.categoriasAceptadas = tiposAceptados;
         }
-
         const serializarParams = (params) => {
             const resultado = new URLSearchParams();
-
             Object.entries(params).forEach(([clave, valor]) => {
                 (Array.isArray(valor) ? valor : [valor]).forEach((item) => {
                     if (item !== "" && item !== null && item !== undefined) {
@@ -80,10 +70,8 @@ export default function Boutique({
                     }
                 });
             });
-
             return resultado.toString();
         };
-
         Promise.all([
             axios.get("http://localhost:3000/api/publicaciones/compra", {
                 headers: {
@@ -92,7 +80,6 @@ export default function Boutique({
                 params,
                 paramsSerializer: serializarParams,
             }),
-
             axios.get("http://localhost:3000/api/publicaciones/intercambio", {
                 headers: {
                     Authorization: `Bearer ${token}`

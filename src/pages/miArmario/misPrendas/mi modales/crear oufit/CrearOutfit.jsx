@@ -51,44 +51,32 @@ export default function CrearOutfit({
     (prenda) => prenda !== prendaPrincipal
   );
 
-  // Cargar opciones desde la base de datos
   useEffect(() => {
-    const obtenerFiltros = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const respuesta = await axios.get(
-          "http://localhost:3000/api/filtros",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+    const token = localStorage.getItem("token");
+    axios.get("http://localhost:3000/api/filtros", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((respuesta) => {
         console.log("FILTROS RECIBIDOS:", respuesta.data);
 
         setTemporadas(respuesta.data.temporadas || []);
         setOcasiones(respuesta.data.ocasiones || []);
         setGeneros(respuesta.data.generos || []);
-
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error(
           "Error al cargar los filtros:",
           error.response?.data || error
         );
-      }
-    };
-
-    obtenerFiltros();
+      });
   }, []);
 
-  // Obtener el texto de cada opción
   const obtenerValorOpcion = (opcion, campo) => {
     if (typeof opcion !== "object" || opcion === null) {
       return opcion;
     }
-
     return (
       opcion[campo] ||
       opcion.ocacion ||
@@ -100,7 +88,6 @@ export default function CrearOutfit({
     );
   };
 
-  // Guardar el outfit
   const guardar = () => {
     onGuardar?.({
       nombre,
@@ -118,7 +105,7 @@ export default function CrearOutfit({
     <Modal
       titulo={outfit ? "Modificar Outfit" : "Crear Outfit"}
       descripcion="Combiná tus prendas y creá tu look."
-      confirmar={{ texto: "Guardar  →", onClick: guardar }}
+      confirmar={{ texto: "Guardar →", onClick: guardar }}
       cancelar={{
         texto: "Salir sin guardar",
         icono: "logout",
@@ -208,8 +195,7 @@ export default function CrearOutfit({
             </span>
 
             <button
-              className={`CrearOutfit__switch${privacidad ? " CrearOutfit__switch--activa" : ""
-                }`}
+              className={`CrearOutfit__switch${privacidad ? " CrearOutfit__switch--activa" : ""}`}
               type="button"
               aria-label="Cambiar privacidad"
               aria-pressed={privacidad}
@@ -245,9 +231,9 @@ export default function CrearOutfit({
             ].map(({ etiqueta, valor, cambiar, opciones, campo }) => (
               <label
                 className={`CrearOutfit__etiqueta${etiqueta === "Género"
-                    ? " CrearOutfit__etiqueta--genero"
-                    : ""
-                  }`}
+                  ? " CrearOutfit__etiqueta--genero"
+                  : ""
+                }`}
                 key={etiqueta}
               >
                 <span>{etiqueta}</span>
@@ -285,6 +271,7 @@ export default function CrearOutfit({
               </label>
             ))}
           </div>
+
           {mensajeError && (
             <p className="CrearOutfit__error" role="alert">
               {mensajeError}

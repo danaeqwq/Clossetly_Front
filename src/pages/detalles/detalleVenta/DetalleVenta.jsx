@@ -198,14 +198,13 @@ export default function DetalleVenta() {
                     <fieldset className="DetalleVenta__colores">
                         <legend>Colores:</legend>
 
-                        {producto.colores?.map((color) => (
+                        {producto.color && (
                             <span
-                                key={color.color}
                                 className="DetalleVenta__muestraColor"
-                                aria-label={color.color}
-                                style={{ backgroundColor: color.codigoColor }}
+                                aria-label={producto.color}
+                                style={{ backgroundColor: producto.codigoColor }}
                             />
-                        ))}
+                        )}
                     </fieldset>
 
                     <fieldset className="DetalleVenta__talles">
