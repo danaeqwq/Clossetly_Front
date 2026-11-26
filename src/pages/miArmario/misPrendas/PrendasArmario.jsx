@@ -129,15 +129,15 @@ export default function PrendasArmario({
   }, [prendasConvertidas]);
 
   useEffect(() => {
-    onAccionesChange?.({
-      modoSeleccionOutfit,
-      cantidad: prendasOutfit.length,
-      onCrearOutfit: abrirCrearOutfit,
-      onCancelar: cancelarSeleccionOutfit,
-      onAgregarPrendas: abrirAltaPrenda,
-      prendasDisponibles: prendas,
-    });
-  }, [modoSeleccionOutfit, prendasOutfit.length, prendas, onAccionesChange]);
+  onAccionesChange?.({
+    modoSeleccionOutfit,
+    cantidad: prendasOutfit.length,
+    onCrearOutfit: abrirCrearOutfit,
+    onCancelar: cancelarSeleccionOutfit,
+    onAgregarPrendas: abrirAltaPrenda,
+    prendasDisponibles: prendas,
+  });
+}, [modoSeleccionOutfit, prendasOutfit.length, prendas]);
 
   const alternarCategoria = (nombre) => {
     setCategoriasAbiertas((actuales) =>
