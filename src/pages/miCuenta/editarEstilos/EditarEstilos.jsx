@@ -10,6 +10,7 @@ import "../../../styles/variables.css";
 const preferenciasIniciales = [
     {
         id: "favoritas",
+        idPregunta: 1,
         icono: "favorite_border",
         titulo: "Mis prendas favoritas:",
         elementos: [],
@@ -17,6 +18,7 @@ const preferenciasIniciales = [
     },
     {
         id: "temporadas",
+        idPregunta: 3,
         icono: "calendar_today",
         titulo: "Mis temporadas:",
         elementos: [],
@@ -24,6 +26,7 @@ const preferenciasIniciales = [
     },
     {
         id: "colores",
+        idPregunta: 2,
         icono: "palette",
         titulo: "Mis colores:",
         elementos: [],
@@ -31,6 +34,7 @@ const preferenciasIniciales = [
     },
     {
         id: "transmitir",
+        idPregunta: 4,
         icono: "auto_awesome",
         titulo: "Vibras que quiero transmitir:",
         elementos: [],
@@ -38,6 +42,7 @@ const preferenciasIniciales = [
     },
     {
         id: "ropa",
+        idPregunta: 5,
         icono: "checkroom",
         titulo: "Cómo me gusta la ropa:",
         elementos: [],
@@ -45,125 +50,13 @@ const preferenciasIniciales = [
     },
     {
         id: "estilos",
+        idPregunta: 6,
         icono: "styler",
         titulo: "Mis estilos:",
         elementos: [],
         seleccionados: [],
     },
 ];
-
-const normalizar = texto =>
-    String(texto || "").trim().toLowerCase();
-
-function Preferencia({ preferencia, onCambiar, onAgregar }) {
-    const elementosMostrar =
-        preferencia.id === "estilos" ||
-        preferencia.id === "transmitir"
-            ? preferencia.seleccionados
-            : preferencia.elementos || [];
-
-    return (
-        <section
-            className={`EditarEstilos__grupo EditarEstilos__grupo--${preferencia.id}`}
-        >
-            <div className="EditarEstilos__encabezadoGrupo">
-                <h2>
-                    <span
-                        className="material-symbols-outlined"
-                        aria-hidden="true"
-                    >
-                        {preferencia.icono}
-                    </span>
-                    {preferencia.titulo}
-                </h2>
-
-                {(preferencia.id === "estilos" ||
-                    preferencia.id === "transmitir") && (
-                    <button
-                        className="EditarEstilos__agregar"
-                        type="button"
-                        onClick={onAgregar}
-                    >
-                        <span aria-hidden="true">＋</span> Agregar
-                    </button>
-                )}
-            </div>
-
-            {preferencia.id === "colores" ? (
-                <div
-                    className="EditarEstilos__paleta"
-                    aria-label="Colores preferidos"
-                >
-                    {(preferencia.elementos || []).map(color => {
-                        const seleccionado =
-                            preferencia.seleccionados.includes(color.color);
-
-                        return (
-                            <label
-                                className="EditarEstilos__opcionColor"
-                                key={color.id_color}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={seleccionado}
-                                    onChange={() =>
-                                        onCambiar("colores", color.color)
-                                    }
-                                />
-
-                                <span
-                                    className="EditarEstilos__muestraColor"
-                                    style={{
-                                        backgroundColor: color.codigo
-                                    }}
-                                    aria-hidden="true"
-                                />
-
-                                <span>{color.color}</span>
-                            </label>
-                        );
-                    })}
-                </div>
-            ) : (
-                <div className="EditarEstilos__etiquetas">
-                    {elementosMostrar.map((elemento, indice) => {
-                        const seleccionado =
-                            preferencia.seleccionados.includes(elemento);
-
-                        return (
-                            <button
-                                key={`${preferencia.id}-${elemento}-${indice}`}
-                                type="button"
-                                disabled={
-                                    preferencia.id === "estilos" ||
-                                    preferencia.id === "transmitir"
-                                }
-                                onClick={() => onCambiar(preferencia.id, elemento)}
-                                className={
-                                    seleccionado
-                                        ? "EditarEstilos__etiqueta EditarEstilos__etiqueta--seleccionada"
-                                        : "EditarEstilos__etiqueta"
-                                }
-                            >
-                                {typeof elemento === "object"
-                                    ? elemento.estilo
-                                    : elemento}
-                            </button>
-                        );
-                    })}
-
-                    {elementosMostrar.length === 0 && (
-                        <span className="EditarEstilos__sinSeleccion">
-                            {preferencia.id === "estilos"
-                                ? "Todavía no seleccionaste estilos."
-                                : "Todavía no seleccionaste opciones."}
-                        </span>
-                    )}
-                </div>
-            )}
-        </section>
-    );
-}
 
 export default function EditarEstilos() {
     const [preferencias, setPreferencias] = useState(preferenciasIniciales);
@@ -175,16 +68,9 @@ export default function EditarEstilos() {
     const [modalVibrasAbierto, setModalVibrasAbierto] = useState(false);
 
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            setCargando(false);
-            navigate("/login");
-            return;
-        }
-
         axios.get("http://localhost:3000/api/usuarios/mi-cuenta", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -197,9 +83,7 @@ export default function EditarEstilos() {
 
             setResultados(resultadosTest);
             setCatalogos(catalogosRecibidos);
-
             const estilosIniciales = datos.estilos || [];
-
             setPreferencias([
                 {
                     ...preferenciasIniciales[0],
@@ -239,7 +123,6 @@ export default function EditarEstilos() {
                 "Error al obtener las preferencias:",
                 error
             );
-
             alert(
                 error.response?.data?.mensaje ||
                 "No se pudieron cargar las preferencias."
@@ -250,43 +133,18 @@ export default function EditarEstilos() {
         });
     }, [navigate]);
 
-    // CAMBIAR Y GUARDAR UNA PREFERENCIA
-    const cambiarSeleccion = (
-        idPreferencia,
-        elemento,
-        seleccionadaForzada = null
-    ) => {
-        const token = localStorage.getItem("token");
 
-        const preguntas = {
-            favoritas: 1,
-            colores: 2,
-            temporadas: 3,
-            transmitir: 4,
-            ropa: 5,
-            estilos: 6
-        };
-
-        const idPregunta = preguntas[idPreferencia];
-
-        const preferenciaActual = preferencias.find(
-            preferencia => preferencia.id === idPreferencia
-        );
-
-        if (!preferenciaActual || !idPregunta) {
-            return Promise.resolve();
-        }
+    const cambiarSeleccion = (idPreferencia, elemento, seleccionadaForzada = null) => {
+        const preferencia = preferencias.find(p => p.id === idPreferencia);
 
         const seleccionada = seleccionadaForzada !== null
             ? seleccionadaForzada
-            : !preferenciaActual.seleccionados.some(
-                item => normalizar(item) === normalizar(elemento)
-            );
+            : !preferencia.seleccionados.includes(elemento);
 
         return axios.put(
             "http://localhost:3000/api/usuarios/mi-cuenta/preferencias",
             {
-                id_pregunta: idPregunta,
+                id_pregunta: preferencia.idPregunta,
                 opcion: elemento,
                 seleccionada
             },
@@ -297,144 +155,40 @@ export default function EditarEstilos() {
             }
         )
         .then(() => {
-            setPreferencias(prev =>
-                prev.map(preferencia => {
-                    if (preferencia.id !== idPreferencia) {
-                        return preferencia;
-                    }
-
-                    const yaExiste = preferencia.seleccionados.some(
-                        item => normalizar(item) === normalizar(elemento)
-                    );
-
-                    return {
-                        ...preferencia,
-                        seleccionados: seleccionada
-                            ? yaExiste
-                                ? preferencia.seleccionados
-                                : [...preferencia.seleccionados, elemento]
-                            : preferencia.seleccionados.filter(
-                                item =>
-                                    normalizar(item) !== normalizar(elemento)
-                            )
-                    };
-                })
-            );
+            setPreferencias(prev => prev.map(preferencia => {
+                if (preferencia.id !== idPreferencia) return preferencia;
+                return {
+                    ...preferencia,
+                    seleccionados: seleccionada
+                        ? [...preferencia.seleccionados, elemento]
+                        : preferencia.seleccionados.filter(item => item !== elemento)
+                };
+            }));
         })
         .catch(error => {
-            console.error(
-                "Error al guardar la preferencia:",
-                error
-            );
-
+            console.error("Error al guardar la preferencia:", error);
             throw error;
         });
     };
 
     // GUARDAR LOS ESTILOS DEL MODAL
     const guardarEstilos = nuevosEstilos => {
-        const actuales =
-            preferencias.find(p => p.id === "estilos")?.seleccionados || [];
-
-        const agregados = nuevosEstilos.filter(
-            estilo =>
-                !actuales.some(
-                    actual => normalizar(actual) === normalizar(estilo)
-                )
-        );
-
-        const eliminados = actuales.filter(
-            actual =>
-                !nuevosEstilos.some(
-                    estilo => normalizar(estilo) === normalizar(actual)
-                )
-        );
-
-        const cambios = [
-            ...agregados.map(estilo => ({
-                elemento: estilo,
-                seleccionada: true
-            })),
-            ...eliminados.map(estilo => ({
-                elemento: estilo,
-                seleccionada: false
-            }))
-        ];
-
-        return cambios.reduce(
-            (promesa, cambio) =>
-                promesa.then(() =>
-                    cambiarSeleccion(
-                        "estilos",
-                        cambio.elemento,
-                        cambio.seleccionada
-                    )
-                ),
-            Promise.resolve()
-        )
-        .catch(error => {
-            console.error(
-                "Error al guardar los estilos:",
-                error
-            );
-
-            alert(
-                error.response?.data?.mensaje ||
-                "No se pudieron guardar los estilos."
-            );
-
-            throw error;
-        });
+        const actuales = preferencias.find(p => p.id === "estilos").seleccionados;
+        const agregados = nuevosEstilos.filter(estilo => !actuales.includes(estilo));
+        const eliminados = actuales.filter(estilo => !nuevosEstilos.includes(estilo));
+        agregados.forEach(estilo => cambiarSeleccion("estilos", estilo, true));
+        eliminados.forEach(estilo => cambiarSeleccion("estilos", estilo, false));
     };
 
     // GUARDAR LAS VIBRAS DEL MODAL
     const guardarVibras = nuevasVibras => {
-        const actuales =
-            preferencias.find(p => p.id === "transmitir")?.seleccionados || [];
+        const actuales = preferencias.find(p => p.id === "transmitir").seleccionados;
 
-        const agregadas = nuevasVibras.filter(
-            vibra => !actuales.includes(vibra)
-        );
+        const agregadas = nuevasVibras.filter(vibra => !actuales.includes(vibra));
+        const eliminadas = actuales.filter(vibra => !nuevasVibras.includes(vibra));
 
-        const eliminadas = actuales.filter(
-            vibra => !nuevasVibras.includes(vibra)
-        );
-
-        const cambios = [
-            ...agregadas.map(vibra => ({
-                elemento: vibra,
-                seleccionada: true
-            })),
-            ...eliminadas.map(vibra => ({
-                elemento: vibra,
-                seleccionada: false
-            }))
-        ];
-
-        return cambios.reduce(
-            (promesa, cambio) =>
-                promesa.then(() =>
-                    cambiarSeleccion(
-                        "transmitir",
-                        cambio.elemento,
-                        cambio.seleccionada
-                    )
-                ),
-            Promise.resolve()
-        )
-        .catch(error => {
-            console.error(
-                "Error al guardar las vibras:",
-                error
-            );
-
-            alert(
-                error.response?.data?.mensaje ||
-                "No se pudieron guardar las vibras."
-            );
-
-            throw error;
-        });
+        agregadas.forEach(vibra => cambiarSeleccion("transmitir", vibra, true));
+        eliminadas.forEach(vibra => cambiarSeleccion("transmitir", vibra, false));
     };
 
     const abrirModal = categoria => {
@@ -454,12 +208,8 @@ export default function EditarEstilos() {
             </main>
         );
     }
-
-    const estilosSeleccionados =
-        preferencias.find(p => p.id === "estilos")?.seleccionados || [];
-
-    const vibrasSeleccionadas =
-        preferencias.find(p => p.id === "transmitir")?.seleccionados || [];
+    const estilosSeleccionados = preferencias.find(p => p.id === "estilos")?.seleccionados || [];
+    const vibrasSeleccionadas = preferencias.find(p => p.id === "transmitir")?.seleccionados || [];
 
     return (
         <main className="EditarEstilos">
@@ -472,14 +222,130 @@ export default function EditarEstilos() {
                 </h1>
 
                 <div className="EditarEstilos__preferencias">
-                    {preferencias.map(preferencia => (
-                        <Preferencia
-                            key={preferencia.id}
-                            preferencia={preferencia}
-                            onCambiar={cambiarSeleccion}
-                            onAgregar={() => abrirModal(preferencia.id)}
-                        />
-                    ))}
+                    {preferencias.map(preferencia => {
+                        const elementosMostrar =
+                            preferencia.id === "estilos" ||
+                            preferencia.id === "transmitir"
+                                ? preferencia.seleccionados
+                                : preferencia.elementos || [];
+
+                        return (
+                            <section
+                                className={`EditarEstilos__grupo EditarEstilos__grupo--${preferencia.id}`}
+                                key={preferencia.id}
+                            >
+                                <div className="EditarEstilos__encabezadoGrupo">
+                                    <h2>
+                                        <span
+                                            className="material-symbols-outlined"
+                                            aria-hidden="true"
+                                        >
+                                            {preferencia.icono}
+                                        </span>
+
+                                        {preferencia.titulo}
+                                    </h2>
+
+                                    {(preferencia.id === "estilos" ||
+                                        preferencia.id === "transmitir") && (
+                                        <button
+                                            className="EditarEstilos__agregar"
+                                            type="button"
+                                            onClick={() => abrirModal(preferencia.id)}
+                                        >
+                                            <span aria-hidden="true">＋</span>
+                                            Agregar
+                                        </button>
+                                    )}
+                                </div>
+
+                                {preferencia.id === "colores" ? (
+                                    <div
+                                        className="EditarEstilos__paleta"
+                                        aria-label="Colores preferidos"
+                                    >
+                                        {(preferencia.elementos || []).map(color => {
+                                            const seleccionado =
+                                                preferencia.seleccionados.includes(
+                                                    color.color
+                                                );
+
+                                            return (
+                                                <label
+                                                    className="EditarEstilos__opcionColor"
+                                                    key={color.id_color}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={seleccionado}
+                                                        onChange={() =>
+                                                            cambiarSeleccion(
+                                                                "colores",
+                                                                color.color
+                                                            )
+                                                        }
+                                                    />
+
+                                                    <span
+                                                        className="EditarEstilos__muestraColor"
+                                                        style={{
+                                                            backgroundColor: color.codigo
+                                                        }}
+                                                        aria-hidden="true"
+                                                    />
+
+                                                    <span>{color.color}</span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="EditarEstilos__etiquetas">
+                                        {elementosMostrar.map((elemento, indice) => {
+                                            const seleccionado =
+                                                preferencia.seleccionados.includes(
+                                                    elemento
+                                                );
+
+                                            return (
+                                                <button
+                                                    key={`${preferencia.id}-${elemento}-${indice}`}
+                                                    type="button"
+                                                    disabled={
+                                                        preferencia.id === "estilos" ||
+                                                        preferencia.id === "transmitir"
+                                                    }
+                                                    onClick={() =>
+                                                        cambiarSeleccion(
+                                                            preferencia.id,
+                                                            elemento
+                                                        )
+                                                    }
+                                                    className={
+                                                        seleccionado
+                                                            ? "EditarEstilos__etiqueta EditarEstilos__etiqueta--seleccionada"
+                                                            : "EditarEstilos__etiqueta"
+                                                    }
+                                                >
+                                                    {typeof elemento === "object"
+                                                        ? elemento.estilo
+                                                        : elemento}
+                                                </button>
+                                            );
+                                        })}
+
+                                        {elementosMostrar.length === 0 && (
+                                            <span className="EditarEstilos__sinSeleccion">
+                                                {preferencia.id === "estilos"
+                                                    ? "Todavía no seleccionaste estilos."
+                                                    : "Todavía no seleccionaste opciones."}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                            </section>
+                        );
+                    })}
                 </div>
 
                 <div className="EditarEstilos__acciones">

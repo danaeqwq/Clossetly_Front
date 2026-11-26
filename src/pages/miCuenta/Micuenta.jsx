@@ -1,4 +1,3 @@
-
 import "./Micuenta.css";
 import "../../styles/global.css";
 import "../../styles/variables.css";
@@ -7,13 +6,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import LineaM from "../../componentes/LineaM/LineaM";
 import Boton from "../../componentes/Boton/Boton";
-import Avatar from "../../assets/userfoto.jpg";
+import Avatar from "../../../../Back/uploads/perfiles/fotoUsuario1.png";
 
 export default function Micuenta() {
     const navigate = useNavigate();
-
     const [usuario, setUsuario] = useState(null);
-
     const [estadisticas, setEstadisticas] = useState({
         publicaciones: 0,
         ventas: 0,
@@ -38,20 +35,14 @@ export default function Micuenta() {
     useEffect(() => {
         const token = localStorage.getItem("token");
 
-        if (!token) {
-            setError(true);
-            setCargando(false);
-            return;
-        }
-
         axios.get("http://localhost:3000/api/usuarios/mi-cuenta", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
+
         .then((respuesta) => {
             console.log("Datos recibidos:", respuesta.data);
-
             setUsuario(respuesta.data.usuario);
             setEstadisticas(respuesta.data.estadisticas);
             setPreferencias(respuesta.data.preferencias);
@@ -67,7 +58,6 @@ export default function Micuenta() {
 
     }, []);
 
-    // CARGANDO
     if (cargando) {
         return (
             <main className="Micuenta">
@@ -76,12 +66,10 @@ export default function Micuenta() {
         );
     }
 
-    // ERROR
     if (error || !usuario) {
         return (
             <main className="Micuenta">
                 <p>No se pudieron cargar los datos de tu cuenta.</p>
-
                 <Boton
                     texto="Volver a iniciar sesión"
                     variante="principal"
@@ -94,8 +82,8 @@ export default function Micuenta() {
 
     // FOTO DE PERFIL
     const fotoPerfil = usuario.foto_perfil
-        ? `http://localhost:3000${usuario.foto_perfil}`
-        : Avatar;
+    ? `http://localhost:3000${usuario.foto_perfil}`
+    : Avatar;
 
     return (
         <main className="Micuenta">
@@ -104,9 +92,6 @@ export default function Micuenta() {
                 className="Micuenta__tarjeta"
                 aria-label="Información de mi cuenta"
             >
-
-                {/* PERFIL */}
-
                 <div className="Micuenta__perfil">
 
                     <img

@@ -63,8 +63,6 @@ const mismoValor = (a, b) =>
 export default function PublicacionesArmario({
   publicacionesCreadas = { venta: [], intercambio: [] },
   onPublicacionActualizada,
-  onPublicacionConvertida,
-  onPublicacionConvertidaAPrenda,
   abrirPropuestas = false,
   onPropuestasAbiertas,
 }) {

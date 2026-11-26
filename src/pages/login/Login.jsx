@@ -41,10 +41,8 @@ export default function Login({ setUsuario }) {
         })
         .then((respuesta) => {
             const { token, usuario } = respuesta.data;
-
             localStorage.setItem("token", token);
             localStorage.setItem("usuario", JSON.stringify(usuario));
-
             setUsuario(usuario);
             navigate("/boutique");
         })

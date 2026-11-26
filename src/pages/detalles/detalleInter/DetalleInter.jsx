@@ -65,13 +65,6 @@ export default function DetalleInter() {
     })
     .sort((a, b) => b.coincidencias - a.coincidencias)
     .slice(0, 5);
-    if (!producto) {
-        return (
-            <main className="DetalleInter">
-                <p>No se encontró la publicación.</p>
-            </main>
-        );
-    }
 
     return (
         <main className="DetalleInter">

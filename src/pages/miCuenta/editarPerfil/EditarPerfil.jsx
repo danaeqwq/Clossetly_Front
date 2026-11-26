@@ -13,12 +13,35 @@ import Avatar from "../../../assets/userfoto.jpg";
 
 export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
     const navigate = useNavigate();
+    const inputFoto = useRef(null);
+    const token = localStorage.getItem("token");
 
     const [usuario, setUsuario] = useState(null);
-    const [eliminandoCuenta, setEliminandoCuenta] = useState(false);
-    const inputFoto = useRef(null);
     const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
     const [fotoPreview, setFotoPreview] = useState(null);
+    const [formulario, setFormulario] = useState({
+        nombre: "",
+        telefono: "",
+        descripcion: ""
+    });
+    const [contrasenas, setContrasenas] = useState({
+        contrasenaActual: "",
+        nuevaContrasena: "",
+        confirmarContrasena: ""
+    });
+    const [estadisticas, setEstadisticas] = useState({
+        publicaciones: 0,
+        ventas: 0,
+        intercambios: 0
+    });
+    const [cargando, setCargando] = useState(true);
+    const [guardando, setGuardando] = useState(false);
+    const [cambiandoContrasena, setCambiandoContrasena] = useState(false);
+    const [eliminandoCuenta, setEliminandoCuenta] = useState(false);
+    const [alerta, setAlerta] = useState(null);
+    const [contrasenaEliminar, setContrasenaEliminar] = useState("");
+
+    // Cerrar sesión
     const cerrarSesion = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("usuario");
@@ -26,109 +49,63 @@ export default function EditarPerfil({ setUsuario: actualizarUsuario }) {
         navigate("/");
     };
 
+    // Seleccionar foto de perfil
     const seleccionarFoto = (e) => {
         const archivo = e.target.files[0];
-
         if (!archivo) return;
-
         if (!archivo.type.startsWith("image/")) {
             setAlerta({
                 titulo: "Archivo no válido",
                 mensaje: "Seleccioná una imagen para tu foto de perfil.",
                 textoBoton: "Aceptar"
             });
-
             return;
         }
-
         setFotoSeleccionada(archivo);
         setFotoPreview(URL.createObjectURL(archivo));
     };
-    const [formulario, setFormulario] = useState({
-        nombre: "",
-        telefono: "",
-        descripcion: ""
-    });
 
-    const [contrasenas, setContrasenas] = useState({
-        contrasenaActual: "",
-        nuevaContrasena: "",
-        confirmarContrasena: ""
-    });
-
-    const [estadisticas, setEstadisticas] = useState({
-        publicaciones: 0,
-        ventas: 0,
-        intercambios: 0
-    });
-
-    const [cargando, setCargando] = useState(true);
-    const [guardando, setGuardando] = useState(false);
-    const [cambiandoContrasena, setCambiandoContrasena] = useState(false);
-    const [alerta, setAlerta] = useState(null);
-    const [contrasenaEliminar, setContrasenaEliminar] = useState("");
-
-    // Obtener datos de la cuenta
+    // Obtener datos del perfil
     useEffect(() => {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            navigate("/login");
-            return;
-        }
-
         axios.get("http://localhost:3000/api/usuarios/mi-cuenta", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((respuesta) => {
-            setUsuario(respuesta.data.usuario);
-
-            setFormulario({
-                nombre: respuesta.data.usuario.nombre || "",
-                telefono: respuesta.data.usuario.telefono || "",
-                descripcion: respuesta.data.usuario.descripcion || ""
-            });
-
-            setEstadisticas(respuesta.data.estadisticas);
-        })
-        .catch((error) => {
-            console.error("Error al obtener el perfil:", error);
-        })
-        .finally(() => {
-            setCargando(false);
-        });
-
+            .then((respuesta) => {
+                const datosUsuario = respuesta.data.usuario;
+                setUsuario(datosUsuario);
+                setFormulario({
+                    nombre: datosUsuario.nombre || "",
+                    telefono: datosUsuario.telefono || "",
+                    descripcion: datosUsuario.descripcion || ""
+                });
+                setEstadisticas(respuesta.data.estadisticas);
+            })
+            .catch((error) => {
+                console.error("Error al obtener el perfil:", error);
+            })
+            .finally(() => setCargando(false));
     }, []);
 
-    // Modificar los campos personales
     const manejarCambio = (e) => {
         const { name, value } = e.target;
-
         setFormulario({
             ...formulario,
             [name]: value
         });
     };
 
-    // Modificar los campos de contraseña
     const manejarCambioContrasena = (e) => {
         const { name, value } = e.target;
-
         setContrasenas({
             ...contrasenas,
             [name]: value
         });
     };
 
-    // Guardar cambios personales
     const guardarCambios = () => {
-        const token = localStorage.getItem("token");
-
-console.log("Token:", token);
         const datos = new FormData();
-
         datos.append("nombre", formulario.nombre);
         datos.append("telefono", formulario.telefono);
         datos.append("descripcion", formulario.descripcion);
@@ -136,59 +113,37 @@ console.log("Token:", token);
         if (fotoSeleccionada) {
             datos.append("fotoPerfil", fotoSeleccionada);
         }
-
         setGuardando(true);
-
-        axios.put(
-            
-            "http://localhost:3000/api/usuarios/mi-cuenta",
-            datos,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+        axios.put("http://localhost:3000/api/usuarios/mi-cuenta", datos, {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-        )
-        .then((respuesta) => {
-            setUsuario({
-                ...usuario,
-                nombre: formulario.nombre,
-                telefono: formulario.telefono,
-                descripcion: formulario.descripcion,
-                foto_perfil: respuesta.data.foto_perfil || usuario.foto_perfil
-            });
-
-            setFotoSeleccionada(null);
-
-            setAlerta({
-                titulo: "¡Perfil actualizado!",
-                mensaje: "Tus datos personales y tu foto se guardaron correctamente.",
-                textoBoton: "Aceptar"
-            });
         })
-        .catch((error) => {
-            console.error("Error al guardar el perfil:", error);
-
-            setAlerta({
-                titulo: "Error al guardar",
-                mensaje: error.response?.data?.mensaje || "No se pudieron guardar los cambios.",
-                textoBoton: "Aceptar"
-            });
-        })
-        .finally(() => {
-            setGuardando(false);
-        });
+            .then((respuesta) => {
+                setUsuario({
+                    ...usuario,
+                    ...formulario,
+                    foto_perfil: respuesta.data.foto_perfil || usuario.foto_perfil
+                });
+                setFotoSeleccionada(null);
+                setAlerta({
+                    titulo: "¡Perfil actualizado!",
+                    mensaje: "Tus datos personales y tu foto se guardaron correctamente.",
+                    textoBoton: "Aceptar"
+                });
+            })
+            .catch((error) => {
+                setAlerta({
+                    titulo: "Error al guardar",
+                    mensaje: error.response?.data?.mensaje || "No se pudieron guardar los cambios.",
+                    textoBoton: "Aceptar"
+                });
+            })
+            .finally(() => setGuardando(false));
     };
 
-    // Cambiar contraseña
     const cambiarContrasena = () => {
-        const token = localStorage.getItem("token");
-
-        if (
-            !contrasenas.contrasenaActual ||
-            !contrasenas.nuevaContrasena ||
-            !contrasenas.confirmarContrasena
-        ) {
+        if (!contrasenas.contrasenaActual || !contrasenas.nuevaContrasena || !contrasenas.confirmarContrasena) {
             setAlerta({
                 titulo: "Datos incompletos",
                 mensaje: "Completá todos los campos de contraseña.",
@@ -208,46 +163,35 @@ console.log("Token:", token);
 
         setCambiandoContrasena(true);
 
-        axios.put("http://localhost:3000/api/usuarios/cambiar-contrasena", {
-            contrasenaActual: contrasenas.contrasenaActual,
-            nuevaContrasena: contrasenas.nuevaContrasena,
-            confirmarContrasena: contrasenas.confirmarContrasena
-        }, {
+        axios.put("http://localhost:3000/api/usuarios/cambiar-contrasena", contrasenas, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((respuesta) => {
-            setAlerta({
-                titulo: "¡Contraseña actualizada!",
-                mensaje: respuesta.data.mensaje || "Contraseña actualizada correctamente.",
-                textoBoton: "Aceptar"
-            });
-
-            setContrasenas({
-                contrasenaActual: "",
-                nuevaContrasena: "",
-                confirmarContrasena: ""
-            });
-        })
-        .catch((error) => {
-            console.error("Error al cambiar la contraseña:", error);
-
-            setAlerta({
-                titulo: "Error al cambiar contraseña",
-                mensaje: error.response?.data?.mensaje || "No se pudo cambiar la contraseña.",
-                textoBoton: "Aceptar"
-            });
-        })
-        .finally(() => {
-            setCambiandoContrasena(false);
-        });
+            .then((respuesta) => {
+                setAlerta({
+                    titulo: "¡Contraseña actualizada!",
+                    mensaje: respuesta.data.mensaje || "Contraseña actualizada correctamente.",
+                    textoBoton: "Aceptar"
+                });
+                setContrasenas({
+                    contrasenaActual: "",
+                    nuevaContrasena: "",
+                    confirmarContrasena: ""
+                });
+            })
+            .catch((error) => {
+                setAlerta({
+                    titulo: "Error al cambiar contraseña",
+                    mensaje: error.response?.data?.mensaje || "No se pudo cambiar la contraseña.",
+                    textoBoton: "Aceptar"
+                });
+            })
+            .finally(() => setCambiandoContrasena(false));
     };
 
-    // Eliminar cuenta
     const eliminarCuenta = () => {
         setContrasenaEliminar("");
-
         setAlerta({
             titulo: "Eliminar cuenta",
             mensaje: "Esta acción eliminará tu cuenta y todos tus datos. Ingresá tu contraseña actual para confirmar.",
@@ -263,7 +207,6 @@ console.log("Token:", token);
         });
     };
 
-    // Confirmar eliminación de cuenta
     const confirmarEliminarCuenta = () => {
         if (!contrasenaEliminar) {
             setAlerta({
@@ -273,8 +216,6 @@ console.log("Token:", token);
             });
             return;
         }
-
-        const token = localStorage.getItem("token");
 
         setEliminandoCuenta(true);
 
@@ -286,26 +227,22 @@ console.log("Token:", token);
                 contrasenaActual: contrasenaEliminar
             }
         })
-        .then((respuesta) => {
-            setAlerta({
-                titulo: "Cuenta eliminada",
-                mensaje: respuesta.data.mensaje || "Tu cuenta se eliminó correctamente.",
-                textoBoton: "Aceptar",
-                onClick: cerrarSesion
-            });
-        })
-        .catch((error) => {
-            console.error("Error al eliminar la cuenta:", error);
-
-            setAlerta({
-                titulo: "Error al eliminar cuenta",
-                mensaje: error.response?.data?.mensaje || "No se pudo eliminar la cuenta.",
-                textoBoton: "Aceptar"
-            });
-        })
-        .finally(() => {
-            setEliminandoCuenta(false);
-        });
+            .then((respuesta) => {
+                setAlerta({
+                    titulo: "Cuenta eliminada",
+                    mensaje: respuesta.data.mensaje || "Tu cuenta se eliminó correctamente.",
+                    textoBoton: "Aceptar",
+                    onClick: cerrarSesion
+                });
+            })
+            .catch((error) => {
+                setAlerta({
+                    titulo: "Error al eliminar cuenta",
+                    mensaje: error.response?.data?.mensaje || "No se pudo eliminar la cuenta.",
+                    textoBoton: "Aceptar"
+                });
+            })
+            .finally(() => setEliminandoCuenta(false));
     };
 
     if (cargando) {
@@ -324,13 +261,10 @@ console.log("Token:", token);
         );
     }
 
-    const fotoPerfil = usuario.foto_perfil
-        ? `http://localhost:3000${usuario.foto_perfil}`
-        : Avatar;
-
     return (
         <main className="EditarPerfil">
             <section className="EditarPerfil__panel">
+
                 <header className="EditarPerfil__cabecera">
                     <div className="EditarPerfil__foto">
                         <img
@@ -361,7 +295,6 @@ console.log("Token:", token);
                             onChange={seleccionarFoto}
                             hidden
                         />
-
                     </div>
 
                     <div className="EditarPerfil__identidad">
@@ -394,6 +327,7 @@ console.log("Token:", token);
                         <h2 id="EditarPerfil__tituloDatos">
                             Datos personales
                         </h2>
+
                         <div className="EditarPerfil__campo">
                             <label htmlFor="editar-perfil-usuario">
                                 User
@@ -437,7 +371,6 @@ console.log("Token:", token);
 
                         {/* CAMBIAR CONTRASEÑA */}
                         <div className="EditarPerfil__contrasena">
-
                             <h2>Cambiar contraseña</h2>
 
                             <div className="EditarPerfil__campo">
@@ -500,9 +433,7 @@ console.log("Token:", token);
                                 type="button"
                                 onClick={cambiarContrasena}
                             />
-
                         </div>
-
                     </section>
 
                     {/* DIVISOR */}
@@ -517,9 +448,7 @@ console.log("Token:", token);
                     <section className="EditarPerfil__preferencias">
 
                         <div className="EditarPerfil__notificaciones">
-
                             <div className="EditarPerfil__notificacionesTitulo">
-
                                 <span className="material-symbols-outlined">
                                     notifications_active
                                 </span>
@@ -527,18 +456,15 @@ console.log("Token:", token);
                                 <h2>Notificaciones</h2>
 
                                 <span className="EditarPerfil__interruptor" />
-
                             </div>
 
                             <p>
                                 Recibí avisos sobre compras, ventas, intercambios,
                                 consultas y novedades importantes.
                             </p>
-
                         </div>
 
                         <div className="EditarPerfil__acciones">
-
                             <Boton
                                 texto={guardando ? "Guardando..." : "Guardar cambios"}
                                 variante="principal EditarPerfil__boton--guardar"
@@ -564,12 +490,8 @@ console.log("Token:", token);
                         </div>
 
                     </section>
-
                 </div>
-
             </section>
-
-            {/* ALERTAS */}
             {alerta && (
                 <Alert
                     titulo={alerta.titulo}
@@ -584,7 +506,6 @@ console.log("Token:", token);
                     onClickSecundario={alerta.onClickSecundario}
                 />
             )}
-
         </main>
     );
 }

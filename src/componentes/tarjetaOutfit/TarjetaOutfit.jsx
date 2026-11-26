@@ -25,9 +25,7 @@ export default function TarjetaOutfit({ outfit = {} }) {
   ).slice(0, 3);
 
   const irAlDetalle = () => {
-    navigate("/detalles/outfit", {
-      state: { outfit },
-    });
+      navigate(`/detalles/outfit/${outfit.id}`);
   };
 
   return (

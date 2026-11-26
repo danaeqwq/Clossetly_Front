@@ -7,7 +7,6 @@ import axios from "axios";
 import CampoFormulario from "../../componentes/CampoFormulario/CampoFormulario";
 import Boton from "../../componentes/Boton/Boton";
 import Alert from "../../componentes/Alert/Alert";
-
 import ilustracion from "../../assets/Ilustracion__registro.svg";
 import Icono__ojo from "../../assets/Icono__ojo-cerrado.svg";
 import Icono__ojo_abierto from "../../assets/Icono__ojo-abierto.svg";
@@ -22,8 +21,6 @@ export default function Registro() {
     const [telefono, setTelefono] = useState("");
 
     const [alerta, setAlerta] = useState(null);
-
-    // MOSTRAR ALERTA
     function mostrarAlerta(titulo, mensaje, registroExitoso = false) {
         setAlerta({
             titulo,
@@ -31,11 +28,8 @@ export default function Registro() {
             registroExitoso
         });
     }
-
-    // REGISTRAR USUARIO
     function handleRegistro(e) {
         e.preventDefault();
-        // VALIDAR CAMPOS OBLIGATORIOS
         if (
             !nombre.trim() ||
             !correo.trim() ||
@@ -50,7 +44,6 @@ export default function Registro() {
             return;
         }
 
-        // VALIDAR NOMBRE DE USUARIO
         if (nombre.trim().length < 3) {
             mostrarAlerta(
                 "Nombre inválido",
@@ -58,9 +51,8 @@ export default function Registro() {
             );
             return;
         }
-        // VALIDAR EMAIL
-        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!formatoEmail.test(correo.trim())) {
             mostrarAlerta(
                 "Correo inválido",
@@ -69,7 +61,6 @@ export default function Registro() {
             return;
         }
 
-        // VALIDAR CONTRASEÑA
         if (pass.length < 6) {
             mostrarAlerta(
                 "Contraseña inválida",
@@ -77,8 +68,6 @@ export default function Registro() {
             );
             return;
         }
-
-        // VALIDAR REPETICIÓN DE CONTRASEÑA
         if (pass !== repetirPass) {
             mostrarAlerta(
                 "Las contraseñas no coinciden",
@@ -87,9 +76,7 @@ export default function Registro() {
             return;
         }
 
-        // VALIDAR TELÉFONO
         const cantidadDigitos = telefono.replace(/\D/g, "").length;
-
         if (cantidadDigitos < 8 || cantidadDigitos > 15) {
             mostrarAlerta(
                 "Número inválido",
@@ -98,7 +85,6 @@ export default function Registro() {
             return;
         }
 
-        // ENVIAR DATOS AL BACKEND
         axios.post("http://localhost:3000/api/registro", {
             nombre: nombre.trim(),
             correo: correo.trim(),
@@ -121,7 +107,6 @@ export default function Registro() {
         })
         .catch((error) => {
             console.error("Error al registrar usuario:", error);
-
             mostrarAlerta(
                 "No se pudo crear la cuenta",
                 error.response?.data?.mensaje ||

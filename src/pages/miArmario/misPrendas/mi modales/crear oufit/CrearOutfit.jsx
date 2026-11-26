@@ -22,7 +22,7 @@ export default function CrearOutfit({
   onClose,
   mensajeError
 }) {
-  const [nombre, setNombre] = useState(outfit?.nombre || "");
+  const [nombre, setNombre] = useState(outfit?.nombre || "oufit");
   const [descripcion, setDescripcion] = useState(outfit?.descripcion || "");
   const [privacidad, setPrivacidad] = useState(outfit?.privacidad ?? true);
 
