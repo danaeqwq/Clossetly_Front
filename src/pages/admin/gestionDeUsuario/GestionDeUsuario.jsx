@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -16,12 +15,12 @@ export default function GestionDeUsuario() {
     const [resumen, setResumen] = useState({
         total: 0,
         activos: 0,
-        bloqueados: 0,
-        expulsados: 0
+        bloqueados: 0
     });
+
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
-    
+
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
     const [usuarioAExpulsar, setUsuarioAExpulsar] = useState(null);
     const [usuarioABloquear, setUsuarioABloquear] = useState(null);
@@ -30,8 +29,10 @@ export default function GestionDeUsuario() {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
+
         setCargando(true);
         setError("");
+
         axios.get("http://localhost:3000/api/admin/usuarios", {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -93,11 +94,6 @@ export default function GestionDeUsuario() {
                         titulo: "Usuarios bloqueados",
                         valor: resumen.bloqueados,
                         icono: "block"
-                    },
-                    {
-                        titulo: "Usuarios expulsados",
-                        valor: resumen.expulsados,
-                        icono: "person_remove"
                     }
                 ].map((dato) => (
 
@@ -185,6 +181,7 @@ export default function GestionDeUsuario() {
 
             )}
 
+            {/* MODAL BLOQUEAR USUARIO */}
             {usuarioABloquear !== null && (
 
                 <BloquearUsuario
@@ -195,6 +192,7 @@ export default function GestionDeUsuario() {
 
             )}
 
+            {/* MODAL EXPULSAR USUARIO */}
             {usuarioAExpulsar !== null && (
 
                 <ExpulsarUsuario

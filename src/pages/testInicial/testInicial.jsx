@@ -14,7 +14,6 @@ export default function TestInicial() {
 
     const navigate = useNavigate()
 
-    // OBTENER PREGUNTAS
     useEffect(() => {
         axios.get("http://localhost:3000/api/test-estilo/preguntas")
             .then((respuesta) => {
@@ -28,11 +27,9 @@ export default function TestInicial() {
             })
     }, [])
 
-    // SELECCIONAR OPCIONES
     const seleccionarOpcion = (idPregunta, idOpcion) => {
         setRespuestas((prev) => {
             const opcionesActuales = prev[idPregunta] || []
-
             if (opcionesActuales.includes(idOpcion)) {
                 return {
                     ...prev,
@@ -41,7 +38,6 @@ export default function TestInicial() {
                     )
                 }
             }
-
             return {
                 ...prev,
                 [idPregunta]: [...opcionesActuales, idOpcion]
@@ -49,9 +45,7 @@ export default function TestInicial() {
         })
     }
 
-    // CONFIRMAR TEST
     const confirmarTest = () => {
-        // VERIFICAR QUE TODAS LAS PREGUNTAS TENGAN RESPUESTAS
         const todasRespondidas = preguntas.every(
             (pregunta) => (respuestas[pregunta.Id_pregunta] || []).length > 0
         )
@@ -62,16 +56,12 @@ export default function TestInicial() {
         }
 
         const respuestasSeleccionadas = Object.values(respuestas).flat()
-
-        // OBTENER ID DEL USUARIO
         const idUsuario = localStorage.getItem("idUsuario")
-
         if (!idUsuario) {
             alert("No se pudo identificar al usuario")
             return
         }
-
-        // ENVIAR RESPUESTAS
+        
         axios.post("http://localhost:3000/api/test-estilo/resultados", {
             idUsuario: Number(idUsuario),
             respuestas: respuestasSeleccionadas

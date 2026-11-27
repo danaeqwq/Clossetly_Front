@@ -61,16 +61,13 @@ const terminosDerecha = [
 ]
 
 export default function Terminos() {
-    const [terminoAbierto, setTerminoAbierto] = useState(
-        terminosIzquierda[0].titulo
-    )
+    const [terminoAbierto, setTerminoAbierto] = useState(null)
 
     const manejarApertura = (titulo) => {
         setTerminoAbierto(
             terminoAbierto === titulo ? null : titulo
         )
     }
-
     return (
         <div className="Terminos">
             <main className="Terminos__main">

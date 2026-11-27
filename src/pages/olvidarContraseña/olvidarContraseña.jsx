@@ -23,21 +23,16 @@ export default function OlvidarContraseña() {
 
     const solicitarCodigo = (e) => {
         e.preventDefault();
-
         if (!correo.trim()) {
             setMensaje("Ingresá tu correo electrónico.");
             setAlerta(true);
             return;
         }
-
         setCargando(true);
-
         axios.post("http://localhost:3000/api/recuperar-pass", {
             correo: correo.trim()
         })
-            .then((respuesta) => {
-
-                // SI EL CORREO EXISTE Y SE ENVIÓ EL CÓDIGO
+            .then(() => {
                 navigate("/verificar-codigo", {
                     state: {
                         correo: correo.trim()
@@ -46,7 +41,6 @@ export default function OlvidarContraseña() {
 
             })
             .catch((error) => {
-
                 if (error.response?.status === 404) {
                     setMensaje("No se encontró ninguna cuenta asociada a ese correo electrónico.");
                 } else {
@@ -55,9 +49,7 @@ export default function OlvidarContraseña() {
                         "Ocurrió un error al solicitar el código. Intentá nuevamente."
                     );
                 }
-
                 setAlerta(true);
-
             })
             .finally(() => {
                 setCargando(false);

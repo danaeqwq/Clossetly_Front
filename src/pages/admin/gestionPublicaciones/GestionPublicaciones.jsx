@@ -122,6 +122,8 @@ export default function GestionPublicaciones() {
     }
   )
     .then((respuesta) => {
+      console.log("Publicaciones recibidas:", respuesta.data.publicaciones);
+    setPublicaciones(respuesta.data.publicaciones || []);
       setPublicaciones(respuesta.data.publicaciones || []);
     })
     .catch((error) => {

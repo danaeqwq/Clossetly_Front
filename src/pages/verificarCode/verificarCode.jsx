@@ -20,10 +20,8 @@ export default function VerificarCodigo() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // RECUPERAR CORREO DE LA PANTALLA ANTERIOR
     const correo = location.state?.correo || "";
 
-    // ESTADOS
     const [codigo, setCodigo] = useState(["", "", "", "", "", ""]);
     const [alerta, setAlerta] = useState(false);
     const [mensaje, setMensaje] = useState("");
@@ -35,33 +33,23 @@ export default function VerificarCodigo() {
     const [confirmarPass, setConfirmarPass] = useState("");
     const [cambioExitoso, setCambioExitoso] = useState(false);
 
-    // CUENTA REGRESIVA PARA REENVIAR EL CÓDIGO
     useEffect(() => {
         if (segundos === 0) return;
-
         const temporizador = setTimeout(() => {
             setSegundos(segundos - 1);
         }, 1000);
-
         return () => clearTimeout(temporizador);
     }, [segundos]);
 
-    // ACTUALIZAR CADA CASILLA
     const cambiarCodigo = (valor, indice) => {
-
         if (!/^\d?$/.test(valor)) return;
-
         const nuevoCodigo = [...codigo];
         nuevoCodigo[indice] = valor;
-
         setCodigo(nuevoCodigo);
     };
 
-    // VERIFICAR CÓDIGO
     const verificarCodigo = () => {
-
         const codigoCompleto = codigo.join("");
-
         if (codigoCompleto.length !== 6) {
             setMensaje("Ingresá los 6 dígitos del código.");
             setAlerta(true);
@@ -75,20 +63,15 @@ export default function VerificarCodigo() {
             codigo: codigoCompleto
         })
             .then((respuesta) => {
-
                 setTokenRecuperacion(respuesta.data.token);
                 setModalNuevaPass(true);
-
             })
             .catch((error) => {
-
                 setMensaje(
                     error.response?.data?.mensaje ||
                     "No se pudo verificar el código. Intentá nuevamente."
                 );
-
                 setAlerta(true);
-
             })
             .finally(() => {
                 setCargando(false);
@@ -137,32 +120,23 @@ export default function VerificarCodigo() {
             });
     };
 
-    // REENVIAR CÓDIGO
     const reenviarCodigo = () => {
-
         if (segundos > 0 || cargando) return;
-
         axios.post("http://localhost:3000/api/recuperar-pass", {
             correo: correo
         })
             .then(() => {
-
                 setCodigo(["", "", "", "", "", ""]);
                 setSegundos(60);
-
                 setMensaje("Te enviamos un nuevo código a tu correo.");
                 setAlerta(true);
-
             })
             .catch((error) => {
-
                 setMensaje(
                     error.response?.data?.mensaje ||
                     "No se pudo reenviar el código."
                 );
-
                 setAlerta(true);
-
             });
     };
 

@@ -62,8 +62,12 @@ const estados = [
 ];
 
 export default function PreguntaAbierta() {
-    const [preguntaSeleccionada, setPreguntaSeleccionada] = useState(0);
-    const preguntaActual = preguntas[preguntaSeleccionada];
+    const [preguntaAbierta, setPreguntaAbierta] = useState(null);
+    const preguntaActual = preguntas.find((pregunta) => pregunta.titulo === preguntaAbierta);
+
+    const manejarApertura = (titulo) => {
+        setPreguntaAbierta((abierta) => abierta === titulo ? null : titulo);
+    };
 
     return (
         <main className="PreguntaAbierta">
@@ -78,11 +82,10 @@ export default function PreguntaAbierta() {
                         <TerminoPregunta
                             key={`${pregunta.titulo}-${index}`}
                             titulo={pregunta.titulo}
-                            abierto={preguntaSeleccionada === index}
+                            contenido={pregunta.contenido}
+                            abierto={preguntaAbierta === pregunta.titulo}
                             mostrarContenido={false}
-                            onToggle={() => setPreguntaSeleccionada((seleccionada) =>
-                                seleccionada === index ? null : index
-                            )}
+                            onClick={() => manejarApertura(pregunta.titulo)}
                         />
                     ))}
                 </section>
@@ -104,7 +107,7 @@ export default function PreguntaAbierta() {
                         <LineaM lado="derecho" />
                     </div>
 
-                    {preguntaSeleccionada === 0 ? (
+                    {preguntaAbierta === preguntas[0].titulo ? (
                         <div className="PreguntaAbierta__estados">
                             {estados.map((estado) => (
                                 <section className="PreguntaAbierta__estado" key={estado.titulo}>
