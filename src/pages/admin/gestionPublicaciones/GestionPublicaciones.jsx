@@ -12,7 +12,7 @@ import Alert from "../../../componentes/Alert/Alert";
 const filtros = [
   { valor: "todos", texto: "TODOS", icono: "space_dashboard" },
   { valor: "compra", texto: "COMPRA", icono: "shopping_basket" },
-  { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" },
+  { valor: "intercambio", texto: "INTERCAMBIO", icono: "autorenew" }, 
 ];
 
 function TarjetaPublicacion({
