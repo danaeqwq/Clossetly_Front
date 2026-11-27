@@ -13,7 +13,6 @@ export default function DetalleOutfit() {
     const [outfit, setOutfit] = useState(null);
     const [cargando, setCargando] = useState(true);
 
-    // OBTENER OUTFIT
     useEffect(() => {
         const token = localStorage.getItem("token");
 
@@ -35,7 +34,6 @@ export default function DetalleOutfit() {
 
     const obtenerImagen = (imagen) => {
         if (!imagen) return Outfit;
-
         if (
             imagen.startsWith("http") ||
             imagen.startsWith("data:") ||
@@ -43,7 +41,6 @@ export default function DetalleOutfit() {
         ) {
             return imagen;
         }
-
         return `http://localhost:3000${imagen}`;
     };
 

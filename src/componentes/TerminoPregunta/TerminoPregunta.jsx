@@ -1,33 +1,19 @@
-
-import "./TerminoPregunta.css"
-import { useState } from "react"
-import Flecha from "../../assets/flecha.svg"
+import "./TerminoPregunta.css";
+import Flecha from "../../assets/flecha.svg";
 
 export default function TerminoPregunta({
     titulo,
     contenido,
     abierto,
     onClick,
-    onToggle,
-    mostrarContenido = true,
 }) {
-    const [abiertoLocal, setAbiertoLocal] = useState(false)
-    const controlado = abierto !== undefined
-    const estaAbierto = controlado ? abierto : abiertoLocal
-
-    const alternar = () => {
-        if (!controlado) setAbiertoLocal((valor) => !valor)
-        onToggle?.()
-        onClick?.()
-    }
-
     return (
-        <article className={`TerminoPregunta${estaAbierto ? " TerminoPregunta--abierto" : ""}`}>
+        <article className={`TerminoPregunta${abierto ? " TerminoPregunta--abierto" : ""}`}>
             <button
                 className="TerminoPregunta__encabezado"
                 type="button"
-                onClick={alternar}
-                aria-expanded={estaAbierto}
+                onClick={onClick}
+                aria-expanded={abierto}
             >
                 <h2 className="TerminoPregunta__titulo">
                     {titulo}
@@ -41,16 +27,15 @@ export default function TerminoPregunta({
                 />
             </button>
 
-            {mostrarContenido && <div
-                className="TerminoPregunta__contenido"
-                aria-hidden={!estaAbierto}
-            >
-                <div className="TerminoPregunta__contenido-interior">
-                    <p className="TerminoPregunta__texto">
-                        {contenido}
-                    </p>
+            {abierto && (
+                <div className="TerminoPregunta__contenido">
+                    <div className="TerminoPregunta__contenido-interior">
+                        <p className="TerminoPregunta__texto">
+                            {contenido}
+                        </p>
+                    </div>
                 </div>
-            </div>}
+            )}
         </article>
-    )
+    );
 }

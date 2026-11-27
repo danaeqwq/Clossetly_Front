@@ -1,10 +1,9 @@
+import { useState } from "react";
 
-import { useState } from "react"
-
-import "./Terminos.css"
-import "../../styles/variables.css"
-import "../../styles/global.css"
-import TerminoPregunta from "../../componentes/TerminoPregunta/TerminoPregunta"
+import "./Terminos.css";
+import "../../styles/variables.css";
+import "../../styles/global.css";
+import TerminoPregunta from "../../componentes/TerminoPregunta/TerminoPregunta";
 
 const terminosIzquierda = [
     {
@@ -31,7 +30,7 @@ const terminosIzquierda = [
         titulo: "Modificaciones de estos términos",
         contenido: "Clossetly podrá actualizar estos Términos y Condiciones cuando se incorporen nuevas funcionalidades, se modifiquen las existentes o resulte necesario realizar aclaraciones sobre el uso de la plataforma. Las modificaciones serán comunicadas mediante los medios disponibles dentro de la aplicación. El usuario deberá consultar periódicamente esta sección para mantenerse informado sobre las condiciones vigentes. El uso continuado de la plataforma luego de la publicación de los cambios implica que el usuario conoce las condiciones actualizadas.",
     },
-]
+];
 
 const terminosDerecha = [
     {
@@ -58,16 +57,19 @@ const terminosDerecha = [
         titulo: "¿Qué son las notificaciones y cómo contacto al equipo?",
         contenido: "Las notificaciones permiten mantenerte informado sobre acontecimientos relacionados con tu cuenta y tu actividad en Clossetly. Podés recibir avisos sobre propuestas de intercambio, cambios en el estado de tus operaciones y otras novedades de la plataforma. Desde Mi Cuenta podés activar o desactivar las notificaciones según tus preferencias. Si necesitás asistencia con tu cuenta, tenés dudas sobre una operación o querés realizar una consulta, podés comunicarte con el equipo responsable mediante los canales oficiales de contacto que se encuentren habilitados.",
     },
-]
+];
 
 export default function Terminos() {
-    const [terminoAbierto, setTerminoAbierto] = useState(null)
+    const [terminoAbierto, setTerminoAbierto] = useState(null);
 
-    const manejarApertura = (titulo) => {
-        setTerminoAbierto(
-            terminoAbierto === titulo ? null : titulo
-        )
-    }
+    const manejarApertura = (indice) => {
+        if (terminoAbierto === indice) {
+            setTerminoAbierto(null);
+        } else {
+            setTerminoAbierto(indice);
+        }
+    };
+
     return (
         <div className="Terminos">
             <main className="Terminos__main">
@@ -90,25 +92,25 @@ export default function Terminos() {
 
                     <div className="Terminos__columnas">
                         <div className="Terminos__columna">
-                            {terminosIzquierda.map((termino) => (
+                            {terminosIzquierda.map((termino, index) => (
                                 <TerminoPregunta
                                     key={termino.titulo}
                                     titulo={termino.titulo}
                                     contenido={termino.contenido}
-                                    abierto={terminoAbierto === termino.titulo}
-                                    onClick={() => manejarApertura(termino.titulo)}
+                                    abierto={terminoAbierto === index}
+                                    onClick={() => manejarApertura(index)}
                                 />
                             ))}
                         </div>
 
                         <div className="Terminos__columna">
-                            {terminosDerecha.map((termino) => (
+                            {terminosDerecha.map((termino, index) => (
                                 <TerminoPregunta
                                     key={termino.titulo}
                                     titulo={termino.titulo}
                                     contenido={termino.contenido}
-                                    abierto={terminoAbierto === termino.titulo}
-                                    onClick={() => manejarApertura(termino.titulo)}
+                                    abierto={terminoAbierto === index + terminosIzquierda.length}
+                                    onClick={() => manejarApertura(index + terminosIzquierda.length)}
                                 />
                             ))}
                         </div>
@@ -116,5 +118,5 @@ export default function Terminos() {
                 </section>
             </main>
         </div>
-    )
+    );
 }

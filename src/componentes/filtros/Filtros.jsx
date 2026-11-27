@@ -28,7 +28,6 @@ export default function Filtros({
 }) {
   const [mostrarTodasCategorias, setMostrarTodasCategorias] = useState(false);
 
-  // Opciones provenientes de MySQL
   const [opciones, setOpciones] = useState({
     categorias: [],
     talles: [],
@@ -40,7 +39,6 @@ export default function Filtros({
     estilos: [],
   });
 
-  // Obtener opciones de filtros desde el backend
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
@@ -57,7 +55,6 @@ export default function Filtros({
         });
   }, []);
 
-  // Opciones dinámicas
   const opcionesPrenda = [
     "TODAS",
     ...opciones.categorias.map((item) => item.categoria),
@@ -128,7 +125,6 @@ export default function Filtros({
     intercambio: "FiltrosIntercambio",
   }[tipo] || "FiltrosTodo";
 
-  // Actualizar un criterio de filtro
   const actualizarCriterio = (clave, valor) => {
     setCriterios((actuales) => ({
       ...actuales,
@@ -136,7 +132,6 @@ export default function Filtros({
     }));
   };
 
-  // Seleccionar o deseleccionar elementos
   const alternarElemento = (setter, elemento) => {
     setter((actuales) =>
       actuales.includes(elemento)
